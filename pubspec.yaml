@@ -13,6 +13,7 @@ dependencies:
   path_provider: ^1.6.5
   cupertino_icons: ^0.1.2
   flutter_audio_query: ^0.3.4+2
+  audioplayer: ^0.8.1
 
 dev_dependencies:
   flutter_test:
