@@ -34,8 +34,12 @@ class _HomeState extends State<Home> {
     musicList = await audioList.getSongs(sortType: SongSortType.DISPLAY_NAME);
     musicPathList.clear();
     musicList.forEach((obj) {
-      var stringobj = obj.toString().split(',')[0].split(':').last.trim();
-      print(stringobj);
+
+      //var objX = obj.toString().split('_data:').last.split(',').first;
+      //print(objX);
+      
+      var stringobj = obj.toString().split('_data:').last.split(',').first.trim();
+      //print(stringobj);
       musicPathList.add(stringobj);
     });
     setState(() {
@@ -75,7 +79,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.purple,
-        statusBarColor: Colors.transparent));
+        statusBarColor: Colors.purple));
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
