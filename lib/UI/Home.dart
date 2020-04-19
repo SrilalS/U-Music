@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
     musicList = await audioList.getSongs(sortType: SongSortType.DISPLAY_NAME);
     musicPathList.clear();
     musicList.forEach((obj) {
-      var stringobj = obj.toString().split(',')[11].split(':')[1].trim();
+      var stringobj = obj.toString().split(',')[0].split(':').last.trim();
       print(stringobj);
       musicPathList.add(stringobj);
     });
@@ -96,9 +96,7 @@ class _HomeState extends State<Home> {
 
                     if (index == nowindex) {
                       return InkWell(
-                        hoverColor: Colors.purple,
-                        focusColor: Colors.purple,
-                        highlightColor: Colors.purple,
+                        
                         splashColor: Colors.purple,
                         borderRadius: BorderRadius.circular(8),
                         onTap: () {
@@ -110,7 +108,8 @@ class _HomeState extends State<Home> {
                           play(musicPathList[index]);
                         },
                         child: Card(
-                          //color: Colors.purple,
+                          margin: EdgeInsets.only(left: 16,right: 16,top: 4, bottom: 4),
+                          color: Colors.purple,
                           child: ListTile(
                             
                             title: Text(
@@ -136,6 +135,7 @@ class _HomeState extends State<Home> {
                         play(musicPathList[index]);
                       },
                       child: Card(
+                        margin: EdgeInsets.only(left: 16,right: 16,top: 4, bottom: 4),
                         child: ListTile(
                           title: Text(
                             musicList[index].title,
