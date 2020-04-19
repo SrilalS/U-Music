@@ -22,6 +22,7 @@ class _HomeState extends State<Home> {
   int possition = 0;
   int nowindex = 0;
   String nowplayingtitle = '';
+  int progressinmillies =0;
 
   //iconfor play pause
   Icon ppx = Icon(Icons.play_arrow);
@@ -34,12 +35,8 @@ class _HomeState extends State<Home> {
     musicList = await audioList.getSongs(sortType: SongSortType.DISPLAY_NAME);
     musicPathList.clear();
     musicList.forEach((obj) {
-
-      //var objX = obj.toString().split('_data:').last.split(',').first;
-      //print(objX);
-      
-      var stringobj = obj.toString().split('_data:').last.split(',').first.trim();
-      //print(stringobj);
+      var stringobj =
+          obj.toString().split('_data:').last.split(',').first.trim();
       musicPathList.add(stringobj);
     });
     setState(() {
@@ -55,12 +52,15 @@ class _HomeState extends State<Home> {
         } else if (audioEngine.state == AudioPlayerState.PAUSED) {
           ppx = Icon(Icons.play_arrow);
         }
+
+        
       });
     });
 
     audioEngine.onAudioPositionChanged.listen((dx) {
       setState(() {
         possition = dx.inSeconds;
+        progressinmillies = dx.inMilliseconds;
         var dura = audioEngine.duration;
         progress = dx.inMilliseconds / dura.inMilliseconds;
         //print(progress);
@@ -83,76 +83,81 @@ class _HomeState extends State<Home> {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
-     
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Container(
-              height: h * listcaliber,
-              width: w,
-              child: ListView.builder(
-                  itemCount: musicCount,
-                  itemBuilder: (context, index) {
-                    if (musicCount < 1){
-                      return Center(child: CircularProgressIndicator(),);
-                    }
+            Stack(
+              children: <Widget>[
+                Container(
+                  height: h * listcaliber,
+                  width: w,
+                  child: ListView.builder(
+                      itemCount: musicCount,
+                      itemBuilder: (context, index) {
+                        if (musicCount < 1) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                    if (index == nowindex) {
-                      return InkWell(
-                        
-                        splashColor: Colors.purple,
-                        borderRadius: BorderRadius.circular(8),
-                        onTap: () {
-                          setState(() {
-                            nowplayingtitle = musicList[index].title;
-                          });
-                          nowplaying = musicPathList[index];
-                          nowindex = index;
-                          play(musicPathList[index]);
-                        },
-                        child: Card(
-                          margin: EdgeInsets.only(left: 16,right: 16,top: 4, bottom: 4),
-                          color: Colors.purple,
-                          child: ListTile(
-                            
-                            title: Text(
-                              musicList[index].title,
-                              overflow: TextOverflow.clip,
-                              maxLines: 1,
+                        if (index == nowindex) {
+                          return InkWell(
+                            splashColor: Colors.purple,
+                            borderRadius: BorderRadius.circular(8),
+                            onTap: () {
+                              setState(() {
+                                nowplayingtitle = musicList[index].title;
+                              });
+                              nowplaying = musicPathList[index];
+                              nowindex = index;
+                              play(musicPathList[index]);
+                            },
+                            child: Card(
+                              margin: EdgeInsets.only(
+                                  left: 16, right: 16, top: 4, bottom: 4),
+                              color: Colors.purple,
+                              child: ListTile(
+                                title: Text(
+                                  musicList[index].title,
+                                  overflow: TextOverflow.clip,
+                                  maxLines: 1,
+                                ),
+                                subtitle: Text(millitomini(
+                                        int.parse(musicList[index].duration))
+                                    .toString()),
+                              ),
                             ),
-                            subtitle: Text(millitomini(
-                                    int.parse(musicList[index].duration))
-                                .toString()),
-                          ),
-                        ),
-                      );
-                    }
-                    return InkWell(
-                      borderRadius: BorderRadius.circular(8),
-                      onTap: () {
-                        setState(() {
-                          nowplayingtitle = musicList[index].title;
-                        });
-                        nowplaying = musicPathList[index];
-                        nowindex = index;
-                        play(musicPathList[index]);
-                      },
-                      child: Card(
-                        margin: EdgeInsets.only(left: 16,right: 16,top: 4, bottom: 4),
-                        child: ListTile(
-                          title: Text(
-                            musicList[index].title,
-                            overflow: TextOverflow.clip,
-                            maxLines: 1,
-                          ),
-                          subtitle: Text(
-                              millitomini(int.parse(musicList[index].duration))
+                          );
+                        }
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(8),
+                          onTap: () {
+                            setState(() {
+                              nowplayingtitle = musicList[index].title;
+                            });
+                            nowplaying = musicPathList[index];
+                            nowindex = index;
+                            play(musicPathList[index]);
+                          },
+                          child: Card(
+                            margin: EdgeInsets.only(
+                                left: 16, right: 16, top: 4, bottom: 4),
+                            child: ListTile(
+                              title: Text(
+                                musicList[index].title,
+                                overflow: TextOverflow.clip,
+                                maxLines: 1,
+                              ),
+                              subtitle: Text(millitomini(
+                                      int.parse(musicList[index].duration))
                                   .toString()),
-                        ),
-                      ),
-                    );
-                  }),
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+              ],
             ),
             AnimatedContainer(
               duration: Duration(milliseconds: 250),
@@ -176,6 +181,7 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(nowplayingtitle),
+                        Text(millitomini(progressinmillies).toString()+' / '+millitomini(audioEngine.duration.inMilliseconds).toString()),
                         Container(
                           child: Slider(
                               value: progress,
@@ -191,8 +197,11 @@ class _HomeState extends State<Home> {
                                 child: Icon(Icons.skip_previous),
                                 onPressed: () {
                                   audioEngine.stop();
-                                  audioEngine
-                                      .play(musicPathList[nowindex - 1]);
+                                  audioEngine.play(musicPathList[nowindex - 1]);
+                                  setState(() {
+                                    nowplaying = musicPathList[nowindex-1];
+                                    nowindex -= 1;
+                                  });
                                 }),
                             RaisedButton(
                                 child: ppx,
@@ -205,8 +214,7 @@ class _HomeState extends State<Home> {
                                 shape: rounded(128.0),
                                 onPressed: () {
                                   audioEngine.stop();
-                                  audioEngine
-                                      .play(musicPathList[nowindex + 1]);
+                                  audioEngine.play(musicPathList[nowindex + 1]);
                                 }),
                           ],
                         ),
