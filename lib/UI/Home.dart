@@ -1,8 +1,8 @@
-
 import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:umusic/AudioEngines/DataService.dart';
 import 'package:umusic/AudioEngines/MainEngine.dart';
 import 'package:umusic/Styles/Styles.dart';
@@ -15,7 +15,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final FlutterAudioQuery audioList = FlutterAudioQuery();
+  final FlutterLocalNotificationsPlugin noti =
+      FlutterLocalNotificationsPlugin();
   
+
   var musicList;
   var musicPathList = [];
   var musicArtList = [];
@@ -29,6 +32,18 @@ class _HomeState extends State<Home> {
 
   var sorting = SongSortType.DISPLAY_NAME;
 
+  void setnoti() async {
+    
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        '0', '0', '0', playSound: false,
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await noti.show(0, 'Now Playing: '+ nowplayingtitle ,'', platformChannelSpecifics,
+        payload: 'item x');
+  }
 
   //iconfor play pause
   Icon ppx = Icon(Icons.play_arrow);
@@ -41,7 +56,7 @@ class _HomeState extends State<Home> {
           obj.toString().split('_data:').last.split(',').first.trim();
       musicPathList.add(stringobj);
 
-       var stringobjalbumart =
+      var stringobjalbumart =
           obj.toString().split('album_artwork:').last.split(',').first.trim();
       musicArtList.add(stringobjalbumart);
       //print(musicArtList);
@@ -52,21 +67,21 @@ class _HomeState extends State<Home> {
   }
 
   void audiInfo() {
-    
-
     audioEngine.onPlayerStateChanged.listen((d) {
+
       setState(() {
         if (audioEngine.state == AudioPlayerState.PLAYING) {
+          setnoti();
           ppx = Icon(Icons.pause);
         } else if (audioEngine.state == AudioPlayerState.PAUSED) {
           ppx = Icon(Icons.play_arrow);
+
         } else if (audioEngine.state == AudioPlayerState.COMPLETED) {
           nowindex += 1;
           nowplayingtitle = musicList[nowindex].title;
           nowplaying = musicPathList[nowindex];
           audioEngine.play(musicPathList[nowindex]);
 
-          
           setTitle(musicList[curentIndex].title);
           setCurrentArt(musicArtList[nowindex]);
         }
@@ -89,6 +104,13 @@ class _HomeState extends State<Home> {
     super.initState();
     getMusic(sorting);
     audiInfo();
+
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    noti.initialize(initializationSettings);
   }
 
   @override
@@ -110,7 +132,6 @@ class _HomeState extends State<Home> {
                   height: h * 0.8,
                   width: w,
                   child: ListView.builder(
-                  
                       itemCount: musicCount,
                       itemBuilder: (context, index) {
                         if (index == nowindex) {
@@ -164,7 +185,6 @@ class _HomeState extends State<Home> {
                             margin: EdgeInsets.only(
                                 left: 16, right: 16, top: 4, bottom: 4),
                             child: ListTile(
-                              
                               title: Text(
                                 musicList[index].title,
                                 overflow: TextOverflow.clip,
@@ -187,9 +207,12 @@ class _HomeState extends State<Home> {
               child: ClipRRect(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context)=> PlayScreen(pathtoart: musicArtList[nowindex],))
-                    );
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PlayScreen(
+                                  pathtoart: musicArtList[nowindex],
+                                )));
                   },
                   child: Container(
                     color: Colors.grey[900].withOpacity(0.7),
@@ -225,6 +248,7 @@ class _HomeState extends State<Home> {
                                 child: ppx,
                                 shape: rounded(128.0),
                                 onPressed: () {
+                                  //setnoti();
                                   playpause(double.parse(possition.toString()));
                                 }),
                             RaisedButton(
