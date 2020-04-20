@@ -4,8 +4,10 @@ import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:umusic/AudioEngines/DataService.dart';
 import 'package:umusic/AudioEngines/MainEngine.dart';
 import 'package:umusic/Styles/Styles.dart';
+import 'package:umusic/UI/PlayScreen.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _HomeState extends State<Home> {
   final FlutterAudioQuery audioList = FlutterAudioQuery();
   var musicList;
   var musicPathList = [];
+  var musicArtList = [];
   int musicCount = 0;
   var progress = 0.0;
   var nowplaying;
@@ -36,6 +39,11 @@ class _HomeState extends State<Home> {
       var stringobj =
           obj.toString().split('_data:').last.split(',').first.trim();
       musicPathList.add(stringobj);
+
+       var stringobjalbumart =
+          obj.toString().split('album_artwork:').last.split(',').first.trim();
+      musicArtList.add(stringobjalbumart);
+      //print(musicArtList);
     });
     setState(() {
       musicCount = musicList.length;
@@ -43,6 +51,8 @@ class _HomeState extends State<Home> {
   }
 
   void audiInfo() {
+    
+
     audioEngine.onPlayerStateChanged.listen((d) {
       setState(() {
         if (audioEngine.state == AudioPlayerState.PLAYING) {
@@ -54,6 +64,10 @@ class _HomeState extends State<Home> {
           nowplayingtitle = musicList[nowindex].title;
           nowplaying = musicPathList[nowindex];
           audioEngine.play(musicPathList[nowindex]);
+
+          
+          setTitle(musicList[curentIndex].title);
+          setCurrentArt(musicArtList[nowindex]);
         }
       });
     });
@@ -64,6 +78,7 @@ class _HomeState extends State<Home> {
         progressinmillies = dx.inMilliseconds;
         var dura = audioEngine.duration;
         progress = dx.inMilliseconds / dura.inMilliseconds;
+        setPosi(progress);
       });
     });
   }
@@ -78,8 +93,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.purple,
-        statusBarColor: Colors.purple));
+        systemNavigationBarColor: Colors.transparent,
+        statusBarColor: Colors.transparent));
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -107,6 +122,11 @@ class _HomeState extends State<Home> {
                               nowplaying = musicPathList[index];
                               nowindex = index;
                               play(musicPathList[index]);
+
+                              setCurrentIndex(index);
+                              setTitle(musicList[index].title);
+
+                              setCurrentArt(musicArtList[nowindex]);
                             },
                             child: Card(
                               margin: EdgeInsets.only(
@@ -134,6 +154,10 @@ class _HomeState extends State<Home> {
                             nowplaying = musicPathList[index];
                             nowindex = index;
                             play(musicPathList[index]);
+
+                            setCurrentIndex(index);
+                            setTitle(musicList[index].title);
+                            //setCurrentArt(musicArtList[curentIndex]);
                           },
                           child: Card(
                             margin: EdgeInsets.only(
@@ -161,7 +185,11 @@ class _HomeState extends State<Home> {
               height: h * 0.2,
               child: ClipRRect(
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context)=> PlayScreen(pathtoart: musicArtList[nowindex],))
+                    );
+                  },
                   child: Container(
                     color: Colors.grey[900].withOpacity(0.7),
                     child: Column(
@@ -196,7 +224,7 @@ class _HomeState extends State<Home> {
                                 child: ppx,
                                 shape: rounded(128.0),
                                 onPressed: () {
-                                  playpause(possition);
+                                  playpause(double.parse(possition.toString()));
                                 }),
                             RaisedButton(
                                 child: Icon(Icons.skip_next),

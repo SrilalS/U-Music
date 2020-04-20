@@ -1,6 +1,5 @@
 import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:umusic/UI/Home.dart';
 
 AudioPlayer audioEngine = AudioPlayer();
 var nowplaying;
@@ -28,7 +27,7 @@ void seeker(val) {
   }
 }
 
-void playpause(possition){
+void playpause(double possition){
   if (audioEngine.state == AudioPlayerState.PLAYING) {
     audioEngine.pause();
   } else if (audioEngine.state == AudioPlayerState.PAUSED){
