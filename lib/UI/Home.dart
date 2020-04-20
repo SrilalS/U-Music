@@ -22,17 +22,15 @@ class _HomeState extends State<Home> {
   int possition = 0;
   int nowindex = 0;
   String nowplayingtitle = '';
-  int progressinmillies =0;
+  int progressinmillies = 0;
+
+  var sorting = SongSortType.DISPLAY_NAME;
 
   //iconfor play pause
   Icon ppx = Icon(Icons.play_arrow);
 
-  //ui gimix
-  var caliber = 0.2;
-  var listcaliber = 0.8;
-
-  void getMusic() async {
-    musicList = await audioList.getSongs(sortType: SongSortType.DISPLAY_NAME);
+  void getMusic(sortmode) async {
+    musicList = await audioList.getSongs(sortType: sortmode);
     musicPathList.clear();
     musicList.forEach((obj) {
       var stringobj =
@@ -52,8 +50,6 @@ class _HomeState extends State<Home> {
         } else if (audioEngine.state == AudioPlayerState.PAUSED) {
           ppx = Icon(Icons.play_arrow);
         }
-
-        
       });
     });
 
@@ -63,7 +59,6 @@ class _HomeState extends State<Home> {
         progressinmillies = dx.inMilliseconds;
         var dura = audioEngine.duration;
         progress = dx.inMilliseconds / dura.inMilliseconds;
-        //print(progress);
       });
     });
   }
@@ -71,7 +66,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    getMusic();
+    getMusic(sorting);
     audiInfo();
   }
 
@@ -88,23 +83,19 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Stack(
+              alignment: AlignmentDirectional.topEnd,
               children: <Widget>[
                 Container(
-                  height: h * listcaliber,
+                  height: h * 0.8,
                   width: w,
                   child: ListView.builder(
                       itemCount: musicCount,
                       itemBuilder: (context, index) {
-                        if (musicCount < 1) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
                         if (index == nowindex) {
                           return InkWell(
+                            
                             splashColor: Colors.purple,
-                            borderRadius: BorderRadius.circular(8),
+                            
                             onTap: () {
                               setState(() {
                                 nowplayingtitle = musicList[index].title;
@@ -157,23 +148,16 @@ class _HomeState extends State<Home> {
                         );
                       }),
                 ),
+                mainappbar(),
               ],
             ),
             AnimatedContainer(
               duration: Duration(milliseconds: 250),
-              height: h * caliber,
+              height: h * 0.2,
               child: ClipRRect(
                 child: InkWell(
                   onTap: () {
-                    setState(() {
-                      if (caliber == 1) {
-                        caliber = 0.2;
-                        listcaliber = 0.8;
-                      } else {
-                        caliber = 1;
-                        listcaliber = 0.0;
-                      }
-                    });
+                    
                   },
                   child: Container(
                     color: Colors.grey[900].withOpacity(0.7),
@@ -181,7 +165,10 @@ class _HomeState extends State<Home> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Text(nowplayingtitle),
-                        Text(millitomini(progressinmillies).toString()+' / '+millitomini(audioEngine.duration.inMilliseconds).toString()),
+                        Text(millitomini(progressinmillies).toString() +
+                            ' / ' +
+                            millitomini(audioEngine.duration.inMilliseconds)
+                                .toString()),
                         Container(
                           child: Slider(
                               value: progress,
@@ -199,7 +186,7 @@ class _HomeState extends State<Home> {
                                   audioEngine.stop();
                                   audioEngine.play(musicPathList[nowindex - 1]);
                                   setState(() {
-                                    nowplaying = musicPathList[nowindex-1];
+                                    nowplaying = musicPathList[nowindex - 1];
                                     nowindex -= 1;
                                   });
                                 }),
@@ -230,12 +217,33 @@ class _HomeState extends State<Home> {
     );
   }
 
-  double millitomini(int milli) {
+  String millitomini(int milli) {
     var min = Duration(milliseconds: milli);
-    var mini = int.parse(min.inSeconds.toString());
-    var minit = mini % 60;
-    var miex = ((mini - minit) / 60).toString().split('.')[0];
-    var finx = miex + '.' + minit.toString();
-    return double.parse(finx);
+    var timeslices = min.toString().split('.').first.split(':');
+    var time = (timeslices[1].toString() + ':' + timeslices[2].toString());
+    
+    return time;
+  }
+
+  Widget mainappbar() {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 32,),
+        PopupMenuButton<String>(
+          onSelected: (item) {
+            getMusic(sort(item));
+          },
+          itemBuilder: (BuildContext context) {
+            return {'Sort by Name', 'Sort by Artist', 'Sort by Default'}
+                .map((String choice) {
+              return PopupMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+              );
+            }).toList();
+          },
+        ),
+      ],
+    );
   }
 }

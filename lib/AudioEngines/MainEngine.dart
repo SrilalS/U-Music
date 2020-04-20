@@ -1,4 +1,5 @@
 import 'package:audioplayer/audioplayer.dart';
+import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:umusic/UI/Home.dart';
 
 AudioPlayer audioEngine = AudioPlayer();
@@ -12,6 +13,7 @@ void play(path) async {
 
 void pause() {
   audioEngine.pause();
+  
 }
 
 void stop() {
@@ -32,5 +34,15 @@ void playpause(possition){
   } else if (audioEngine.state == AudioPlayerState.PAUSED){
     audioEngine.play(nowplaying);
     audioEngine.seek(possition);
+  }
+}
+
+SongSortType sort(String opt){
+  switch (opt) {
+    case 'Sort by Name': return SongSortType.DISPLAY_NAME;
+      break;
+    case 'Sort by Artist': return SongSortType.ALPHABETIC_ARTIST;
+      break;
+    case 'Sort by Default': return SongSortType.DEFAULT;
   }
 }
