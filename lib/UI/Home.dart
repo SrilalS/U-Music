@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final FlutterAudioQuery audioList = FlutterAudioQuery();
+  
   var musicList;
   var musicPathList = [];
   var musicArtList = [];
@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
   int progressinmillies = 0;
 
   var sorting = SongSortType.DISPLAY_NAME;
+
 
   //iconfor play pause
   Icon ppx = Icon(Icons.play_arrow);
