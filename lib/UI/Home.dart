@@ -49,6 +49,11 @@ class _HomeState extends State<Home> {
           ppx = Icon(Icons.pause);
         } else if (audioEngine.state == AudioPlayerState.PAUSED) {
           ppx = Icon(Icons.play_arrow);
+        } else if (audioEngine.state == AudioPlayerState.COMPLETED) {
+          nowindex += 1;
+          nowplayingtitle = musicList[nowindex].title;
+          nowplaying = musicPathList[nowindex];
+          audioEngine.play(musicPathList[nowindex]);
         }
       });
     });
@@ -89,13 +94,12 @@ class _HomeState extends State<Home> {
                   height: h * 0.8,
                   width: w,
                   child: ListView.builder(
+                  
                       itemCount: musicCount,
                       itemBuilder: (context, index) {
                         if (index == nowindex) {
                           return InkWell(
-                            
                             splashColor: Colors.purple,
-                            
                             onTap: () {
                               setState(() {
                                 nowplayingtitle = musicList[index].title;
@@ -135,6 +139,7 @@ class _HomeState extends State<Home> {
                             margin: EdgeInsets.only(
                                 left: 16, right: 16, top: 4, bottom: 4),
                             child: ListTile(
+                              
                               title: Text(
                                 musicList[index].title,
                                 overflow: TextOverflow.clip,
@@ -156,9 +161,7 @@ class _HomeState extends State<Home> {
               height: h * 0.2,
               child: ClipRRect(
                 child: InkWell(
-                  onTap: () {
-                    
-                  },
+                  onTap: () {},
                   child: Container(
                     color: Colors.grey[900].withOpacity(0.7),
                     child: Column(
@@ -184,11 +187,10 @@ class _HomeState extends State<Home> {
                                 child: Icon(Icons.skip_previous),
                                 onPressed: () {
                                   audioEngine.stop();
-                                  audioEngine.play(musicPathList[nowindex - 1]);
-                                  setState(() {
-                                    nowplaying = musicPathList[nowindex - 1];
-                                    nowindex -= 1;
-                                  });
+                                  nowindex -= 1;
+                                  nowplayingtitle = musicList[nowindex].title;
+                                  nowplaying = musicPathList[nowindex];
+                                  audioEngine.play(musicPathList[nowindex]);
                                 }),
                             RaisedButton(
                                 child: ppx,
@@ -201,7 +203,10 @@ class _HomeState extends State<Home> {
                                 shape: rounded(128.0),
                                 onPressed: () {
                                   audioEngine.stop();
-                                  audioEngine.play(musicPathList[nowindex + 1]);
+                                  nowindex += 1;
+                                  nowplayingtitle = musicList[nowindex].title;
+                                  nowplaying = musicPathList[nowindex];
+                                  audioEngine.play(musicPathList[nowindex]);
                                 }),
                           ],
                         ),
@@ -221,14 +226,16 @@ class _HomeState extends State<Home> {
     var min = Duration(milliseconds: milli);
     var timeslices = min.toString().split('.').first.split(':');
     var time = (timeslices[1].toString() + ':' + timeslices[2].toString());
-    
+
     return time;
   }
 
   Widget mainappbar() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 32,),
+        SizedBox(
+          height: 32,
+        ),
         PopupMenuButton<String>(
           onSelected: (item) {
             getMusic(sort(item));
