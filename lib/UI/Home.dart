@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
       var stringobjalbumart =
           obj.toString().split('album_artwork:').last.split(',').first.trim();
       musicArtList.add(stringobjalbumart);
-      //print(musicArtList);
+      setCurrentArt(musicArtList[0]);
     });
     setState(() {
       musicCount = musicList.length;
