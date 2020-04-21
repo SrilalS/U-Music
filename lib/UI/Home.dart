@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +20,6 @@ class _HomeState extends State<Home> {
   final FlutterAudioQuery audioList = FlutterAudioQuery();
   final FlutterLocalNotificationsPlugin noti =
       FlutterLocalNotificationsPlugin();
-  
 
   var musicList;
   var musicPathList = [];
@@ -33,15 +35,17 @@ class _HomeState extends State<Home> {
   var sorting = SongSortType.DISPLAY_NAME;
 
   void setnoti() async {
-    
-
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        '0', '0', '0', playSound: false,
-        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+        '0', '0', '0',
+        playSound: false,
+        importance: Importance.Max,
+        priority: Priority.High,
+        ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await noti.show(0, 'Now Playing: '+ nowplayingtitle ,'', platformChannelSpecifics,
+    await noti.show(
+        0, 'Now Playing: ' + nowplayingtitle, '', platformChannelSpecifics,
         payload: 'item x');
   }
 
@@ -68,6 +72,8 @@ class _HomeState extends State<Home> {
 
   void audiInfo() {
     audioEngine.onPlayerStateChanged.listen((d) {
+      setTitle(nowplayingtitle);
+      setCurrentArt(musicArtList[nowindex]);
 
       setState(() {
         if (audioEngine.state == AudioPlayerState.PLAYING) {
@@ -75,20 +81,20 @@ class _HomeState extends State<Home> {
           ppx = Icon(Icons.pause);
         } else if (audioEngine.state == AudioPlayerState.PAUSED) {
           ppx = Icon(Icons.play_arrow);
-
         } else if (audioEngine.state == AudioPlayerState.COMPLETED) {
           nowindex += 1;
           nowplayingtitle = musicList[nowindex].title;
           nowplaying = musicPathList[nowindex];
           audioEngine.play(musicPathList[nowindex]);
 
-          setTitle(musicList[curentIndex].title);
+          setTitle(nowplayingtitle);
           setCurrentArt(musicArtList[nowindex]);
         }
       });
     });
 
     audioEngine.onAudioPositionChanged.listen((dx) {
+      setnpossi(dx.inSeconds);
       setState(() {
         possition = dx.inSeconds;
         progressinmillies = dx.inMilliseconds;
@@ -129,6 +135,17 @@ class _HomeState extends State<Home> {
               alignment: AlignmentDirectional.topEnd,
               children: <Widget>[
                 Container(
+                  height: h*0.8,
+                    child: Image.file(
+                  File(currentArt),
+                  fit: BoxFit.cover,
+                )),
+                BackdropFilter(filter: ImageFilter.blur(
+                  sigmaX: 25.0,
+                  sigmaY: 25.0,
+                  
+                ),
+                child: Container(
                   height: h * 0.8,
                   width: w,
                   child: ListView.builder(
@@ -138,17 +155,7 @@ class _HomeState extends State<Home> {
                           return InkWell(
                             splashColor: Colors.purple,
                             onTap: () {
-                              setState(() {
-                                nowplayingtitle = musicList[index].title;
-                              });
-                              nowplaying = musicPathList[index];
-                              nowindex = index;
-                              play(musicPathList[index]);
-
-                              setCurrentIndex(index);
-                              setTitle(musicList[index].title);
-
-                              setCurrentArt(musicArtList[nowindex]);
+                              
                             },
                             child: Card(
                               margin: EdgeInsets.only(
@@ -198,6 +205,9 @@ class _HomeState extends State<Home> {
                         );
                       }),
                 ),
+                
+                ),
+                
                 mainappbar(),
               ],
             ),
@@ -207,15 +217,17 @@ class _HomeState extends State<Home> {
               child: ClipRRect(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PlayScreen(
-                                  pathtoart: musicArtList[nowindex],
-                                )));
+                    if (nowplaying != null) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PlayScreen(
+                                    pathtoart: musicArtList[nowindex],
+                                  )));
+                    }
                   },
                   child: Container(
-                    color: Colors.grey[900].withOpacity(0.7),
+                    color: Colors.grey[900].withOpacity(0.5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
@@ -249,7 +261,22 @@ class _HomeState extends State<Home> {
                                 shape: rounded(128.0),
                                 onPressed: () {
                                   //setnoti();
-                                  playpause(double.parse(possition.toString()));
+                                  if (nowplaying == null) {
+                                    setState(() {
+                                      nowplayingtitle = musicList[0].title;
+                                    });
+                                    nowplaying = musicPathList[0];
+                                    nowindex = 0;
+                                    play(musicPathList[0]);
+
+                                    setCurrentIndex(0);
+                                    setTitle(musicList[0].title);
+
+                                    setCurrentArt(musicArtList[nowindex]);
+                                  } else {
+                                    playpause(
+                                        double.parse(possition.toString()));
+                                  }
                                 }),
                             RaisedButton(
                                 child: Icon(Icons.skip_next),

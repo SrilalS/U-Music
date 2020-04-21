@@ -6,7 +6,12 @@ var currentposition;
 var curentIndex;
 var currentArt;
 
+var nowpossi;
+
 var currentdata;
+void setnpossi(data){
+  nowpossi = data;
+}
 
 void setTitle(data){
   title = data;
@@ -22,6 +27,7 @@ void setCurrentIndex(data){
 
 void setCurrentArt(data){
   currentArt = data;
+  print(data);
 }
 
 Stream setdata(){
