@@ -14,6 +14,7 @@ ListView mainMusicList(){
     itemBuilder: (context, index){
 
     return Card(
+      
       color: index == nowPlayingSongIndex ? Colors.purple: Colors.grey[800],
           child: ListTile(
         
