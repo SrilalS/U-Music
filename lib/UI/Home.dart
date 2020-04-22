@@ -114,7 +114,7 @@ class _HomeState extends State<Home> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(musicList[nowPlayingSongIndex].title, style: textStyle(16.0),),
+                              Text(musicList[nowPlayingSongIndex].title, textAlign: TextAlign.center, style: textStyle(16.0),),
                               Text(timeEngine(milliseconds) + ' | ' + timeEngine(audioPlayer.duration.inMilliseconds)),
                               Slider(
                                   value: progress,
