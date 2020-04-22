@@ -32,12 +32,21 @@ class _HomeState extends State<Home> {
   String nowplayingtitle = '';
   int progressinmillies = 0;
 
+  File check(path){
+    File(path).exists().then((data){
+      if(data){
+        setCurrentArt(data);
+      }
+    });
+  }
+
   var sorting = SongSortType.DISPLAY_NAME;
 
   void setnoti() async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         '0', '0', '0',
         playSound: false,
+        enableVibration: false,
         importance: Importance.Max,
         priority: Priority.High,
         ticker: 'ticker');
@@ -74,7 +83,7 @@ class _HomeState extends State<Home> {
     audioEngine.onPlayerStateChanged.listen((d) {
       setTitle(nowplayingtitle);
       setCurrentArt(musicArtList[nowindex]);
-
+      check(musicArtList[nowindex]);
       setState(() {
         if (audioEngine.state == AudioPlayerState.PLAYING) {
           setnoti();
@@ -110,7 +119,6 @@ class _HomeState extends State<Home> {
     super.initState();
     getMusic(sorting);
     audiInfo();
-
     var initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     var initializationSettingsIOS = IOSInitializationSettings();
@@ -122,7 +130,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.purple,
         statusBarColor: Colors.transparent));
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;

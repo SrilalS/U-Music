@@ -26,6 +26,8 @@ void setCurrentIndex(data){
 }
 
 void setCurrentArt(data){
+
+  
   currentArt = data;
   print(data);
 }

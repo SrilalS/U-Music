@@ -30,7 +30,7 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.purple,
         statusBarColor: Colors.transparent));
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
