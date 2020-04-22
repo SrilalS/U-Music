@@ -13,7 +13,7 @@ An Experimental Music Player Build using Flutter.
 
 ##Download Arm64 APK
 
-[Download Link](https://raw.githubusercontent.com/SrilalS/U-Music/master/Releases/U Music V2 ARM64.apk?raw=true)
+[Download Link](https://raw.githubusercontent.com/SrilalS/U-Music/master/Releases/U%20Music%20V2%20ARM64.apk?raw=true)
 
 
 ## Installation
