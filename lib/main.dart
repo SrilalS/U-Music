@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:umusic/UI/Home.dart';
+import 'package:umusicv2/UI/Home.dart';
 
 void main() => runApp(MyApp());
 
+
 class MyApp extends StatelessWidget {
+   
+
   @override
   Widget build(BuildContext context) {
-   
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'UMusic',
+      title: 'U Music',
       theme: ThemeData(
+        
         brightness: Brightness.dark,
         primarySwatch: Colors.purple,
       ),

@@ -10,20 +10,17 @@ import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
 import 'package:umusicv2/Widgets/MusicListView.dart';
 
-import 'PlayUi.dart';
-
-class Home extends StatefulWidget {
+class PlayUi extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _PlayUiState createState() => _PlayUiState();
 }
 
-class _HomeState extends State<Home> {
+class _PlayUiState extends State<PlayUi> {
   Timer timer;
 
   @override
   void initState() {
     super.initState();
-    getMusicList();
   }
 
   @override
@@ -41,8 +38,7 @@ class _HomeState extends State<Home> {
           if (state.data == AudioPlayerState.COMPLETED){
             autonext();
           }
-
-
+          
           if (musicList.isEmpty) {
             timer = Timer.periodic(Duration(milliseconds: 50), (dt) {
               if (musicList.isNotEmpty) {
@@ -77,52 +73,59 @@ class _HomeState extends State<Home> {
               }
 
               return Scaffold(
-                body: Center(
-                  child: Column(
-                    children: <Widget>[
-                      Stack(
+                body: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: h,
+                      child: Image.file(
+                        File(musicAlbemArtsList.length == 0
+                            ? null
+                            : musicAlbemArtsList[nowPlayingSongIndex]),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 25.0,
+                        sigmaY: 25.0,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Container(
-                            height: h * 0.7,
-                            child: Image.file(
-                              File(musicAlbemArtsList.length == 0
-                                  ? null
-                                  : musicAlbemArtsList[nowPlayingSongIndex]),
-                              fit: BoxFit.fill,
+                            height: w * 0.5,
+                            width: w * 0.5,
+                            child: Card(
+                              elevation: 16,
+                              shape: roundedRectangleBorder(1024.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(1024),
+                                child: Image.file(
+                                  File(musicAlbemArtsList[nowPlayingSongIndex]),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           ),
-                          BackdropFilter(
-                            filter: ImageFilter.blur(
-                              sigmaX: 25.0,
-                              sigmaY: 25.0,
-                            ),
-                            child: Container(
-                              height: h * 0.7,
-                              child: SafeArea(child: mainMusicList()),
-                            ),
-                          ),
-                        ],
-                      ),
-                      InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PlayUi()));
-                        },
-                                              child: Container(
-                          color: Colors.grey[900].withOpacity(0.5),
-                          width: w,
-                          height: h * 0.3,
-                          child: Column(
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(musicList[nowPlayingSongIndex].title, style: textStyle(16.0),),
-                              Text(timeEngine(milliseconds) + ' | ' + timeEngine(audioPlayer.duration.inMilliseconds)),
+                              Text(
+                                musicList[nowPlayingSongIndex].title,
+                                style: textStyle(16.0),
+                              ),
+                              Text(timeEngine(milliseconds) +
+                                  ' | ' +
+                                  timeEngine(
+                                      audioPlayer.duration.inMilliseconds)),
                               Slider(
                                   value: progress,
                                   onChanged: (dt) {
                                     seek(dt);
                                   }),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Container(
                                     width: h * 0.1,
@@ -130,17 +133,19 @@ class _HomeState extends State<Home> {
                                         child: Icon(Icons.skip_previous),
                                         shape: roundedRectangleBorder(256.0),
                                         onPressed: () {
-                                          nowPlayingSongIndex == 0 ? play(nowPlayingSongIndex) : play(nowPlayingSongIndex - 1);
+                                          nowPlayingSongIndex == 0
+                                              ? play(nowPlayingSongIndex)
+                                              : play(nowPlayingSongIndex - 1);
                                         }),
                                   ),
                                   Container(
                                     height: h * 0.1,
                                     width: h * 0.1,
                                     child: RaisedButton(
-                                        child:
-                                            state.data == AudioPlayerState.PLAYING
-                                                ? Icon(Icons.pause)
-                                                : Icon(Icons.play_arrow),
+                                        child: audioPlayer.state ==
+                                                AudioPlayerState.PLAYING
+                                            ? Icon(Icons.pause)
+                                            : Icon(Icons.play_arrow),
                                         shape: roundedRectangleBorder(256.0),
                                         onPressed: () {
                                           playpause(milliseconds);
@@ -152,17 +157,20 @@ class _HomeState extends State<Home> {
                                         child: Icon(Icons.skip_next),
                                         shape: roundedRectangleBorder(256.0),
                                         onPressed: () {
-                                            nowPlayingSongIndex == (musicList.length - 1) ? play(0) : play(nowPlayingSongIndex + 1);
+                                          nowPlayingSongIndex ==
+                                                  (musicList.length - 1)
+                                              ? play(0)
+                                              : play(nowPlayingSongIndex + 1);
                                         }),
                                   ),
                                 ],
                               )
                             ],
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               );
             },
