@@ -3,7 +3,8 @@
 ![Build Status](https://img.shields.io/badge/V-2.0-brightgreen)
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
-![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/ScreenShots/S1.png?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S1.png?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S2.png?raw=true)
 
 
 An Experimental Music Player Build using Flutter.

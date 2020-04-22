@@ -27,7 +27,7 @@ class _PlayUiState extends State<PlayUi> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent));
+        systemNavigationBarColor: Colors.purple));
 
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.height;
