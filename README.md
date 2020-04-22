@@ -1,14 +1,14 @@
 # U Music
 
 ![Build Version](https://img.shields.io/badge/V-2.0-brightgreen)
-
+![Build](https://img.shields.io/badge/Status-Stable-brightgreen)
+![BuildX](https://img.shields.io/badge/Flutter Channel-Stable-blue)
 
 
 ![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S1.png?raw=true)
 ![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S2.png?raw=true)
 
-![Build](https://img.shields.io/badge/Status-2.0-brightgreen)
-![BuildX](https://img.shields.io/badge/Status-2.0-brightgreen)
+
 An Experimental Music Player Build using Flutter.
 
 
