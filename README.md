@@ -7,6 +7,7 @@
 
 ![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S1.png?raw=true)
 ![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S2.png?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S3.png?raw=true)
 
 
 An Experimental Music Player Build using Flutter.
