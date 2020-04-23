@@ -27,6 +27,18 @@ flutter build apk
 ```
 ## Building
 You will need Latest Flutter SDK.
+This Project Uses Gradle 5.6.2 for Android Build.
+
+## Plugins Used
+This Projects Uses Following Plugins.
+
+Path Provider : [Link To Plugin Page](https://pub.dev/packages/path_provider)
+
+Flutter Audio Query : [Link To Plugin Page](https://pub.dev/packages/flutter_audio_query)
+
+Audio Player : [Link To Plugin Page](https://pub.dev/packages/audioplayer)
+
+Flutter Local Notifications : [Link To Plugin Page](https://pub.dev/packages/flutter_local_notifications)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
