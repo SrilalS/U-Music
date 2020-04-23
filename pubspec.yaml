@@ -1,5 +1,5 @@
 name: umusicv2
-description: An Experimental Music Player Build using Flutter.
+description: An Experimental Music Player Build using Flutter. Srilal S. Siriwardhane
 
 version: 2.0.0+1
 
@@ -15,6 +15,7 @@ dependencies:
   path_provider: ^1.6.5
   flutter_audio_query: ^0.3.4+2
   audioplayer: ^0.8.1
+  flutter_local_notifications: ^1.4.1
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
+import 'package:umusicv2/ServiceModules/Notifications.dart';
 
 final AudioPlayer audioPlayer = AudioPlayer();
 final FlutterAudioQuery audioQuery = FlutterAudioQuery();
@@ -18,7 +19,7 @@ double progress = 0.0;
 void setProgress(){
   progress = nowPossition/audioPlayer.duration.inMilliseconds;
   progress = ((progress.isNaN) || (progress.isInfinite) || (progress > 1)) ? 0: progress;
-  
+  shownotification(musicList[nowPlayingSongIndex].title, timeEngine(nowPossition)+' | '+timeEngine(audioPlayer.duration.inMilliseconds));
 }
 
 List musicList = [];
@@ -71,6 +72,10 @@ void playpause(int possition){
   } else if (audioPlayer.state == AudioPlayerState.PAUSED){
     audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
     audioPlayer.seek(playpauseposition);
+  } else if (audioPlayer.state == AudioPlayerState.STOPPED){
+    audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
+  } else if (audioPlayer.state == AudioPlayerState.COMPLETED){
+    audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
   }
 }
 

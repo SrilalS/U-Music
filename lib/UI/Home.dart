@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:umusicv2/ServiceModules/AESupport.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
+import 'package:umusicv2/ServiceModules/Notifications.dart';
 import 'package:umusicv2/Styles/Styles.dart';
 import 'package:umusicv2/Widgets/MusicListView.dart';
 
@@ -24,6 +25,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     getMusicList();
+    initNotifications();
   }
 
   @override

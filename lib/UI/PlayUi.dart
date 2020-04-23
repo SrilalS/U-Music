@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:umusicv2/ServiceModules/AESupport.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
-import 'package:umusicv2/Widgets/MusicListView.dart';
 
 class PlayUi extends StatefulWidget {
   @override
@@ -93,8 +92,8 @@ class _PlayUiState extends State<PlayUi> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Container(
-                            height: w * 0.5,
-                            width: w * 0.5,
+                            height: w * 0.4,
+                            width: w * 0.4,
                             child: Card(
                               elevation: 16,
                               shape: roundedRectangleBorder(1024.0),
