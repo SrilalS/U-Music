@@ -107,65 +107,65 @@ class _PlayUiState extends State<PlayUi> {
                             ),
                           ),
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                musicList[nowPlayingSongIndex].title, textAlign: TextAlign.center,
-                                style: textStyle(16.0),
-                              ),
-                              Text(timeEngine(milliseconds) +
-                                  ' | ' +
-                                  timeEngine(
-                                      audioPlayer.duration.inMilliseconds)),
-                              Slider(
-                                  value: progress,
-                                  onChanged: (dt) {
-                                    seek(dt);
-                                  }),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  Container(
-                                    width: h * 0.1,
-                                    child: RaisedButton(
-                                        child: Icon(Icons.skip_previous),
-                                        shape: roundedRectangleBorder(256.0),
-                                        onPressed: () {
-                                          nowPlayingSongIndex == 0
-                                              ? play(nowPlayingSongIndex)
-                                              : play(nowPlayingSongIndex - 1);
-                                        }),
-                                  ),
-                                  Container(
-                                    height: h * 0.1,
-                                    width: h * 0.1,
-                                    child: RaisedButton(
-                                        child: audioPlayer.state ==
-                                                AudioPlayerState.PLAYING
-                                            ? Icon(Icons.pause)
-                                            : Icon(Icons.play_arrow),
-                                        shape: roundedRectangleBorder(256.0),
-                                        onPressed: () {
-                                          playpause(milliseconds);
-                                        }),
-                                  ),
-                                  Container(
-                                    width: h * 0.1,
-                                    child: RaisedButton(
-                                        child: Icon(Icons.skip_next),
-                                        shape: roundedRectangleBorder(256.0),
-                                        onPressed: () {
-                                          nowPlayingSongIndex ==
-                                                  (musicList.length - 1)
-                                              ? play(0)
-                                              : play(nowPlayingSongIndex + 1);
-                                        }),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  musicList[nowPlayingSongIndex].title, textAlign: TextAlign.center,
+                                  style: textStyle(16.0),
+                                ),
+                                Text(timeEngine(milliseconds) +
+                                    ' | ' +
+                                    timeEngine(
+                                        audioPlayer.duration.inMilliseconds)),
+                                Slider(
+                                    value: progress,
+                                    onChanged: (dt) {
+                                      seek(dt);
+                                    }),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Container(
+                                      width: h * 0.1,
+                                      child: RaisedButton(
+                                          child: Icon(Icons.skip_previous),
+                                          shape: roundedRectangleBorder(256.0),
+                                          onPressed: () {
+                                            nowPlayingSongIndex == 0
+                                                ? play(nowPlayingSongIndex)
+                                                : play(nowPlayingSongIndex - 1);
+                                          }),
+                                    ),
+                                    Container(
+                                      height: h * 0.1,
+                                      width: h * 0.1,
+                                      child: RaisedButton(
+                                          child: audioPlayer.state ==
+                                                  AudioPlayerState.PLAYING
+                                              ? Icon(Icons.pause)
+                                              : Icon(Icons.play_arrow),
+                                          shape: roundedRectangleBorder(256.0),
+                                          onPressed: () {
+                                            playpause(milliseconds);
+                                          }),
+                                    ),
+                                    Container(
+                                      width: h * 0.1,
+                                      child: RaisedButton(
+                                          child: Icon(Icons.skip_next),
+                                          shape: roundedRectangleBorder(256.0),
+                                          onPressed: () {
+                                            nowPlayingSongIndex ==
+                                                    (musicList.length - 1)
+                                                ? play(0)
+                                                : play(nowPlayingSongIndex + 1);
+                                          }),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                         ],
                       ),
                     ),
