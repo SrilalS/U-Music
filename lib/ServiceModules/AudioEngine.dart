@@ -19,7 +19,8 @@ double progress = 0.0;
 void setProgress(){
   progress = nowPossition/audioPlayer.duration.inMilliseconds;
   progress = ((progress.isNaN) || (progress.isInfinite) || (progress > 1)) ? 0: progress;
-  shownotification(musicList[nowPlayingSongIndex].title, timeEngine(nowPossition)+' | '+timeEngine(audioPlayer.duration.inMilliseconds));
+  //shownotification(musicList[nowPlayingSongIndex].title, timeEngine(nowPossition)+' | '+timeEngine(audioPlayer.duration.inMilliseconds));
+  
 }
 
 List musicList = [];
@@ -77,6 +78,16 @@ void playpause(int possition){
   } else if (audioPlayer.state == AudioPlayerState.COMPLETED){
     audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
   }
+}
+
+void listener(){
+  audioPlayer.onAudioPositionChanged.listen((event) {
+    shownotification(musicList[nowPlayingSongIndex].title, timeEngine(event.inMilliseconds)+' | '+timeEngine(audioPlayer.duration.inMilliseconds));
+  }).onError((e){
+    print(e);
+  });
+
+  
 }
 
 

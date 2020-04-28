@@ -20,12 +20,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Timer timer;
-
   @override
   void initState() {
     super.initState();
+    listener();
     getMusicList();
     initNotifications();
+    
   }
 
   @override
