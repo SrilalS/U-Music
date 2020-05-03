@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:umusicv2/Secrets/APIKEYS.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/ServiceModules/Lyrics.dart';
@@ -59,6 +60,9 @@ class _LyricsUIState extends State<LyricsUI>
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.purple,
+        systemNavigationBarColor: Colors.purple));
     //artistnamecontroller.text = musicList[nowPlayingSongIndex].title;
     return Stack(
       children: <Widget>[

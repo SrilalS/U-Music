@@ -17,6 +17,6 @@ void setLyricedIndex(int data) {
 
 void emptylyrics() {
   isLyriced = false;
-  lyrics = '';
+  lyrics = 'Lyrics Not Found';
   lyricedindex = -1;
 }
