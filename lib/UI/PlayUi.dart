@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:umusicv2/ServiceModules/AESupport.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
+import 'package:umusicv2/ServiceModules/Lyrics.dart';
 import 'package:umusicv2/Styles/Styles.dart';
 import 'package:umusicv2/UI/LyricsUI.dart';
 
@@ -138,6 +139,9 @@ class _PlayUiState extends State<PlayUi> {
                                                 nowPlayingSongIndex == 0
                                                     ? play(nowPlayingSongIndex)
                                                     : play(nowPlayingSongIndex - 1);
+                                                setState(() {
+                                                  emptylyrics();
+                                                });
                                               }),
                                         ),
                                         Container(
@@ -163,6 +167,9 @@ class _PlayUiState extends State<PlayUi> {
                                                         (musicList.length - 1)
                                                     ? play(0)
                                                     : play(nowPlayingSongIndex + 1);
+                                                    setState(() {
+                                                  emptylyrics();
+                                                });
                                               }),
                                         ),
                                       ],

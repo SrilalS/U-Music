@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:umusicv2/ServiceModules/AESupport.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
+import 'package:umusicv2/ServiceModules/Lyrics.dart';
 import 'package:umusicv2/ServiceModules/Notifications.dart';
 import 'package:umusicv2/Styles/Styles.dart';
 import 'package:umusicv2/Widgets/MusicListView.dart';
@@ -134,6 +135,9 @@ class _HomeState extends State<Home> {
                                         shape: roundedRectangleBorder(256.0),
                                         onPressed: () {
                                           nowPlayingSongIndex == 0 ? play(nowPlayingSongIndex) : play(nowPlayingSongIndex - 1);
+                                          setState(() {
+                                                  emptylyrics();
+                                                });
                                         }),
                                   ),
                                   Container(
@@ -156,6 +160,9 @@ class _HomeState extends State<Home> {
                                         shape: roundedRectangleBorder(256.0),
                                         onPressed: () {
                                             nowPlayingSongIndex == (musicList.length - 1) ? play(0) : play(nowPlayingSongIndex + 1);
+                                            setState(() {
+                                                  emptylyrics();
+                                                });
                                         }),
                                   ),
                                 ],

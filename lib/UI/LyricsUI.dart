@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:umusicv2/Secrets/APIKEYS.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
+import 'package:umusicv2/ServiceModules/Lyrics.dart';
 import 'package:umusicv2/Styles/Styles.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,36 +14,43 @@ class LyricsUI extends StatefulWidget {
 
 class _LyricsUIState extends State<LyricsUI>
     with AutomaticKeepAliveClientMixin {
+      
   final artistnamecontroller =
       TextEditingController(text: musicList[nowPlayingSongIndex].artist);
   final songnamecontroller =
       TextEditingController(text: musicList[nowPlayingSongIndex].title);
 
-  bool isLyriced = false;
+  
   bool progress = false;
-  String lyrics = '';
 
   void getLyrics() async {
+    var apikey = musixmatchapikey;
     await http
         .get(
             'https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?format=json&callback=callback&q_track=' +
                 songnamecontroller.text +
                 '&q_artist=' +
                 artistnamecontroller.text +
-                '&apikey=10a5203434a5da28b44c557afd1b11cc')
+                '&apikey=$apikey')
         .then((response) {
       if (response.statusCode == 200) {
         
         var datapack = jsonDecode(response.body);
         if (datapack['message']['header']['status_code'] != 200) {
           setState(() {
-            lyrics = 'Lyrics Not Found';
-            isLyriced = true;
+            
+            setLyrics('Lyrics Not Found');
+            setisLyriced(true);
+            setLyricedIndex(nowPlayingSongIndex);
+            progress = false;
+
           });
         } else {
           setState(() {
-            lyrics = (datapack['message']['body']['lyrics']['lyrics_body']);
-            isLyriced = true;
+            setLyrics(datapack['message']['body']['lyrics']['lyrics_body']);
+            setisLyriced(true);
+            setLyricedIndex(nowPlayingSongIndex);
+            progress = false;
           });
         }
       }
@@ -50,13 +59,13 @@ class _LyricsUIState extends State<LyricsUI>
 
   @override
   Widget build(BuildContext context) {
-    artistnamecontroller.text = musicList[nowPlayingSongIndex].title;
+    //artistnamecontroller.text = musicList[nowPlayingSongIndex].title;
     return Stack(
       children: <Widget>[
         Scaffold(
           backgroundColor: Colors.purple,
           body: Center(
-            child: isLyriced
+            child: (isLyriced && (nowPlayingSongIndex == lyricedindex))
                 ? lyScreen()
                 : Container(
                     padding: EdgeInsets.all(16),
@@ -67,6 +76,7 @@ class _LyricsUIState extends State<LyricsUI>
                           'Lyrics',
                           style: textStyle(24.0),
                         ),
+                        Text('Lyrics Provided by MusixMatch. ❤'),
                         SizedBox(height: 8),
                         TextField(
                           decoration: InputDecoration(
@@ -93,13 +103,24 @@ class _LyricsUIState extends State<LyricsUI>
                             ),
                             shape: roundedRectangleBorder(64.0),
                             onPressed: () {
-                              getLyrics();
+                              setState(() {
+                                progress = true;
+                                getLyrics();
+                              });
                             })
                       ],
                     ),
                   ),
           ),
         ),
+        progress ? Container(
+          color: Colors.purple.withOpacity(0.5),
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)
+            ),
+          ),
+        ) : Container()
       ],
     );
   }
