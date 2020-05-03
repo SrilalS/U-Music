@@ -26,11 +26,13 @@ void setProgress(){
 List musicList = [];
 List musicPathsList = [];
 List musicAlbemArtsList = [];
+List musicartistNameList = [];
 
 void getMusicList() async{
   musicList.clear();
   musicPathsList.clear();
   musicList =  await audioQuery.getSongs();
+  print(musicList);
   musicList.forEach((song){
     musicPathsList.add(song.toString().split('_data:').last.split(',').first.trim());
     musicAlbemArtsList.add(song.toString().split('album_artwork:').last.split(',').first.trim());

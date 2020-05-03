@@ -16,6 +16,7 @@ dependencies:
   flutter_audio_query: ^0.3.4+2
   audioplayer: ^0.8.1
   flutter_local_notifications: ^1.4.1
+  http: ^0.12.1
 
 dev_dependencies:
   flutter_test:
