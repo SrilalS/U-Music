@@ -1,6 +1,6 @@
 # U Music
 
-![Build Version](https://img.shields.io/badge/V-2.0-brightgreen)
+![Build Version](https://img.shields.io/badge/V-2.5-brightgreen)
 ![Build](https://img.shields.io/badge/Status-Stable-brightgreen)
 ![BuildX](https://img.shields.io/badge/FlutterChannel-Stable-blue)
 
