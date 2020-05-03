@@ -34,9 +34,12 @@ This Project Uses Gradle 5.6.2 for Android Build.
 
 ### API KEYS
 APIKEYS.dart is gitIgnored for obvious Reasons.
+
 When Building This Project,
+
 Create the "APIKEYS.dart" file in "lib/Secrets" and add,
-String musixmatchapikey = 'YOUR KEY HERE';
+
+"String musixmatchapikey = 'YOUR KEY HERE';"
 
 ## Plugins Used
 This Projects Uses Following Plugins.
