@@ -37,6 +37,28 @@ class _HomeState extends State<Home> {
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.purple));
 
+    Widget drawer() {
+      getSaved();
+      return Column(
+        children: <Widget>[
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width *0.6,
+            child: ListView.builder(
+                itemCount: playLists.length,
+                itemBuilder: (context, index) {
+                  
+                  return Card(
+                    child: InkWell(
+                      onTap: (){},
+                      child: ListTile(title: Text(playLists[index]),)),
+                  );
+                }),
+          )
+        ],
+      );
+    }
+
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.height;
     return WillPopScope(
@@ -110,13 +132,14 @@ class _HomeState extends State<Home> {
                 }
 
                 return Scaffold(
+                  drawer: drawer(),
                   body: Center(
                     child: Column(
                       children: <Widget>[
                         Stack(
                           children: <Widget>[
                             Container(
-                              height: h*0.7,
+                              height: h * 0.7,
                               child: Image.file(
                                 File(musicAlbemArtsList.length == 0
                                     ? null
@@ -134,22 +157,29 @@ class _HomeState extends State<Home> {
                                 child: SafeArea(child: mainMusicList()),
                               ),
                             ),
-                            playListTemp.isEmpty ? Container():AppBar(
-                              backgroundColor: Colors.red,
-                              title: Text(playListTemp.length.toString() + ' Selected'),
-                              actions: <Widget>[
-                                FlatButton(onPressed: (){
-                                  //clearList();
-                                  showDialog(context: context,
-                                  child: makePlayList(context)
-                                  );
-                                }, child: Text('Create a Play List')),
-
-                                FlatButton(onPressed: (){
-                                  clearList();
-                                }, child: Text('Clear'))
-                              ],
-                            )
+                            playListTemp.isEmpty
+                                ? Container()
+                                : AppBar(
+                                    backgroundColor: Colors.red,
+                                    
+                                    title: Text(playListTemp.length.toString() +
+                                        ' Selected'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                          onPressed: () {
+                                            //clearList();
+                                            showDialog(
+                                                context: context,
+                                                child: makePlayList(context));
+                                          },
+                                          child: Text('Create a Play List')),
+                                      FlatButton(
+                                          onPressed: () {
+                                            clearList();
+                                          },
+                                          child: Text('Clear'))
+                                    ],
+                                  )
                           ],
                         ),
                         InkWell(
@@ -217,11 +247,13 @@ class _HomeState extends State<Home> {
                                           child: Icon(Icons.skip_next),
                                           shape: roundedRectangleBorder(256.0),
                                           onPressed: () {
-                                            
-                                            nowPlayingSongIndex == (musicList.length - 1) ? play(0) : play(nowPlayingSongIndex + 1);
+                                            nowPlayingSongIndex ==
+                                                    (musicList.length - 1)
+                                                ? play(0)
+                                                : play(nowPlayingSongIndex + 1);
                                             setState(() {
-                                            emptylyrics();
-                                              });
+                                              emptylyrics();
+                                            });
                                           }),
                                     ),
                                   ],

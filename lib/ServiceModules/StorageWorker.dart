@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 
-
+List playLists = [];
+List preProcessedlists = [];
 
 void saveMusicList(String name , List mList) async{
   List tempolist = [];
@@ -12,14 +11,25 @@ void saveMusicList(String name , List mList) async{
   });
 
   SharedPreferences shworker = await SharedPreferences.getInstance();
-  await shworker.setString('MusicList', tempolist.toString());
+  await shworker.setString(name, tempolist.toString());
+  String plist = await shworker.getString('PlayLists')??'';
+  plist = plist + '||' + name;
+  await shworker.setString('PlayLists',plist);
 }
 
-Future<List> getSaved() async{
+void getSaved() async{
+  playLists.clear();
+  preProcessedlists.clear();
   SharedPreferences shworker = await SharedPreferences.getInstance();
-  String mListTMP =  await shworker.getString('MusicList');
-  print(mListTMP);
- 
-  //return mListTMP;
+  String mListTMP =  await shworker.getString('PlayLists');
+  var processor = mListTMP.trim().split('||');
+  processor.remove('');
+  processor.forEach((element) async{
+    playLists.add(element);
+    SharedPreferences shworker = await SharedPreferences.getInstance();
+    preProcessedlists.add(shworker.getString(element));
+    //print(preProcessedlists);
+  });
+  //print(preProcessedlists);
 }
 

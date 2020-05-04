@@ -28,14 +28,28 @@ List musicPathsList = [];
 List musicAlbemArtsList = [];
 List musicartistNameList = [];
 
+
+List bmusicList = [];
+List bmusicPathsList = [];
+List bmusicAlbemArtsList = [];
+List bmusicartistNameList = [];
+
 void getMusicList() async{
   musicList.clear();
   musicPathsList.clear();
+
+  bmusicList.clear();
+  bmusicPathsList.clear();
+
   musicList =  await audioQuery.getSongs();
+  bmusicList = musicList;
   //print(musicList);
   musicList.forEach((song){
     musicPathsList.add(song.toString().split('_data:').last.split(',').first.trim());
     musicAlbemArtsList.add(song.toString().split('album_artwork:').last.split(',').first.trim());
+
+    bmusicPathsList = musicPathsList;
+    bmusicAlbemArtsList = musicAlbemArtsList;
   });
 }
 
