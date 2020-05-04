@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:umusicv2/ServiceModules/StorageWorker.dart';
 
 List playListTemp = [];
 
@@ -26,8 +27,13 @@ Widget makePlayList(context){
       
       ),
       actions: <Widget>[
-        FlatButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel')),
-        FlatButton(onPressed: (){}, child: Text('Add'))
+        FlatButton(onPressed: (){
+          getSaved();
+          //Navigator.pop(context);
+          }, child: Text('Cancel')),
+        FlatButton(onPressed: (){
+          saveMusicList(playlistname.text, playListTemp);
+        }, child: Text('Add'))
       ],
     ),
   );
