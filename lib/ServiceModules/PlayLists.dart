@@ -28,7 +28,7 @@ Widget makePlayList(context){
       ),
       actions: <Widget>[
         FlatButton(onPressed: (){
-          getSaved();
+          //getSaved();
           //Navigator.pop(context);
           }, child: Text('Cancel')),
         FlatButton(onPressed: (){

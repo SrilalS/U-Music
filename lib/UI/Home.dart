@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
         systemNavigationBarColor: Colors.purple));
 
     Widget drawer() {
-      getSaved();
+      //getSaved();
       return Column(
         children: <Widget>[
           Container(

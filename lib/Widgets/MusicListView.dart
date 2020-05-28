@@ -30,7 +30,7 @@ ListView mainMusicList() {
               }
             },
             onLongPress: (){
-              playListTemp.contains(index) ? playListTemp.remove(index) : addtoTmpList(index);
+             // playListTemp.contains(index) ? playListTemp.remove(index) : addtoTmpList(index);
             },
             child: ListTile(
               title: Text(musicList[index].title),
