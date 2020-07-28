@@ -114,7 +114,7 @@ class _PlayUiState extends State<PlayUi> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Text(
-                                      musicList[nowPlayingSongIndex].title, textAlign: TextAlign.center,
+                                      musicTitles[nowPlayingSongIndex], textAlign: TextAlign.center,
                                       style: textStyle(16.0),
                                     ),
                                     Text(timeEngine(milliseconds) +

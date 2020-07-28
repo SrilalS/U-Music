@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:umusicv2/ServiceModules/AESupport.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/ServiceModules/Lyrics.dart';
@@ -23,11 +24,20 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Timer timer;
+
+  void isthisfirst() async{
+    SharedPreferences hdriver = await SharedPreferences.getInstance();
+    bool isthisfirstrun = await hdriver.getBool('ITFR')?? true ;
+    print(isthisfirstrun);
+    getMusicList(isthisfirstrun);
+  }
+
   @override
   void initState() {
     super.initState();
     listener();
-    getMusicList();
+    isthisfirst();
+    //getMusicList();
     initNotifications();
   }
 
@@ -35,7 +45,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.purple));
+        systemNavigationBarColor: Colors.transparent));
 
     Widget drawer() {
       //getSaved();
@@ -179,6 +189,13 @@ class _HomeState extends State<Home> {
                                           },
                                           child: Text('Clear'))
                                     ],
+                                  ),
+
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: IconButton(icon: Icon(Icons.refresh), onPressed: () async{
+                                      getMusicList(true);
+                                    }),
                                   )
                           ],
                         ),
@@ -197,7 +214,7 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  musicList[nowPlayingSongIndex].title,
+                                  musicTitles[nowPlayingSongIndex],
                                   textAlign: TextAlign.center,
                                   style: textStyle(16.0),
                                 ),

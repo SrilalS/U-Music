@@ -17,9 +17,9 @@ class _LyricsUIState extends State<LyricsUI>
     with AutomaticKeepAliveClientMixin {
       
   final artistnamecontroller =
-      TextEditingController(text: musicList[nowPlayingSongIndex].artist);
+      TextEditingController(text: musicArtists[nowPlayingSongIndex]);
   final songnamecontroller =
-      TextEditingController(text: musicList[nowPlayingSongIndex].title);
+      TextEditingController(text: musicTitles[nowPlayingSongIndex]);
 
   
   bool progress = false;
