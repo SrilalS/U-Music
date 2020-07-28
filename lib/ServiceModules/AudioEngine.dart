@@ -68,6 +68,7 @@ void getMusicList(bool needtoupdate) async {
     await mdriver.setStringList('MLIST', listStrings);
 
     mdriver.setBool("ITFR", false);
+     print("Scanning...");
   } else {
     print("Did not Scan");
   }
@@ -90,6 +91,7 @@ void getMusicList(bool needtoupdate) async {
     bmusicPathsList = musicPathsList;
     bmusicAlbemArtsList = musicAlbemArtsList;
   });
+
 }
 
 Stream audioplayerstatestream() {

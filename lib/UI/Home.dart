@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
     super.initState();
     listener();
     isthisfirst();
-    //getMusicList();
+    getMusicList(true);
     initNotifications();
   }
 
@@ -191,11 +191,26 @@ class _HomeState extends State<Home> {
                                     ],
                                   ),
 
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: IconButton(icon: Icon(Icons.refresh), onPressed: () async{
-                                      getMusicList(true);
-                                    }),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: PopupMenuButton(
+                                          itemBuilder: (context) {
+                                          return <PopupMenuEntry>[
+                                            PopupMenuItem(
+                                              value: "Scan",
+                                              child: Text("Scan For New Songs"))
+                                          ];
+                                        },
+                                        onSelected: (value){
+                                          getMusicList(true);
+                                        },
+                                        )
+                                      ),
+                                    ],
                                   )
                           ],
                         ),
