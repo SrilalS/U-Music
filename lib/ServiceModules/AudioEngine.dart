@@ -43,7 +43,7 @@ List bmusicartistNameList = [];
 List musicTitles = [];
 List musicArtists = [];
 
-void getMusicList(bool needtoupdate) async {
+Future<bool> getMusicList(bool needtoupdate) async {
   SharedPreferences mdriver = await SharedPreferences.getInstance();
   musicList.clear();
   musicPathsList.clear();
@@ -91,7 +91,7 @@ void getMusicList(bool needtoupdate) async {
     bmusicPathsList = musicPathsList;
     bmusicAlbemArtsList = musicAlbemArtsList;
   });
-
+  return true;
 }
 
 Stream audioplayerstatestream() {

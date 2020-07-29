@@ -37,7 +37,11 @@ class _HomeState extends State<Home> {
     super.initState();
     listener();
     isthisfirst();
-    getMusicList(true);
+    getMusicList(true).then((value){
+      setState(() {
+        var x = 0;
+      });
+    });
     initNotifications();
   }
 
@@ -206,7 +210,11 @@ class _HomeState extends State<Home> {
                                           ];
                                         },
                                         onSelected: (value){
-                                          getMusicList(true);
+                                          getMusicList(true).then((value){
+                                            setState(() {
+                                              var x = 0;
+                                            });
+                                          });
                                         },
                                         )
                                       ),
