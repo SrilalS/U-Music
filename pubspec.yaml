@@ -1,7 +1,7 @@
 name: umusicv2
 description: An Experimental Music Player Build using Flutter. Srilal S. Siriwardhane
 
-version: 2.5.0+1
+version: 2.7.5+1
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -31,9 +31,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  #assets:
+  #  - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -25,6 +25,22 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Timer timer;
 
+  void showdlog(){
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Learn the Ropes"),
+          content: Row(
+            children: [
+              
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void isthisfirst() async{
     SharedPreferences hdriver = await SharedPreferences.getInstance();
     bool isthisfirstrun =  hdriver.getBool('ITFR')?? true ;
@@ -47,7 +63,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent));
+        systemNavigationBarColor: Colors.purple));
 
     Widget drawer() {
       //getSaved();
