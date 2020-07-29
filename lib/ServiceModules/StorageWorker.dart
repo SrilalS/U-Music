@@ -12,7 +12,7 @@ void saveMusicList(String name, List mList) async {
 
   SharedPreferences shworker = await SharedPreferences.getInstance();
   await shworker.setString(name, tempolist.toString());
-  String plist = await shworker.getString('PlayLists') ?? '';
+  String plist =  shworker.getString('PlayLists') ?? '';
   plist = plist + '||' + name;
   await shworker.setString('PlayLists', plist);
 }
@@ -21,7 +21,7 @@ void getSaved() async {
   playLists.clear();
   preProcessedlists.clear();
   SharedPreferences shworker = await SharedPreferences.getInstance();
-  String mListTMP = await shworker.getString('PlayLists') ?? '-999';
+  String mListTMP =  shworker.getString('PlayLists') ?? '-999';
   if (mListTMP != '-999') {
     var processor = mListTMP.trim().split('||');
     processor.remove('');

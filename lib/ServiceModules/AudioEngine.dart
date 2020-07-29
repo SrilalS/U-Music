@@ -1,12 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:audioplayer/audioplayer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:umusicv2/ServiceModules/Notifications.dart';
-import 'package:umusicv2/main.dart';
 
 final AudioPlayer audioPlayer = AudioPlayer();
 final FlutterAudioQuery audioQuery = FlutterAudioQuery();

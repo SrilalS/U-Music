@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
 
   void isthisfirst() async{
     SharedPreferences hdriver = await SharedPreferences.getInstance();
-    bool isthisfirstrun = await hdriver.getBool('ITFR')?? true ;
+    bool isthisfirstrun =  hdriver.getBool('ITFR')?? true ;
     print(isthisfirstrun);
     getMusicList(isthisfirstrun);
   }
@@ -38,9 +38,7 @@ class _HomeState extends State<Home> {
     listener();
     isthisfirst();
     getMusicList(true).then((value){
-      setState(() {
-        var x = 0;
-      });
+      setState(() {});
     });
     initNotifications();
   }
@@ -211,9 +209,7 @@ class _HomeState extends State<Home> {
                                         },
                                         onSelected: (value){
                                           getMusicList(true).then((value){
-                                            setState(() {
-                                              var x = 0;
-                                            });
+                                            setState(() {});
                                           });
                                         },
                                         )
