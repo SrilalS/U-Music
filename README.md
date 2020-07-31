@@ -26,8 +26,8 @@ Build the APK Using following Command.
 flutter build apk
 ```
 ## Building
-You will need Latest Flutter SDK.
-This Project Uses Gradle 5.6.2 for Android Build.
+You will need Latest Flutter SDK (Preffered Latest Beta).
+This Project is Build for SDK 29 Android.
 
 ## APIs USED
 [MusixMatch](https://developer.musixmatch.com/) API (Free Plan) Used to Search for Lyrics.
