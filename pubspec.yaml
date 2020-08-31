@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  
+  get: ^3.6.2
   cupertino_icons: ^0.1.2
   path_provider: ^1.6.5
   flutter_audio_query: ^0.3.4+2
