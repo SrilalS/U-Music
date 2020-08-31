@@ -12,7 +12,7 @@ ListView mainMusicList() {
       itemBuilder: (context, index) {
         return Card(
           color:
-              playListTemp.contains(index) ? Colors.blue : (index == nowPlayingSongIndex ? Colors.purple : Colors.grey[800]),
+              playListTemp.contains(index) ? Colors.blue : (index == nowPlayingSongIndex ? Colors.blue : Colors.grey[800]),
           child: InkWell(
             onTap: () {
               if (audioPlayer.state == AudioPlayerState.PLAYING) {
@@ -34,7 +34,7 @@ ListView mainMusicList() {
               
             },
             child: ListTile(
-              title: Text(musicTitles[index]),
+              title: Text(musicTitles[index], style: TextStyle(color: Colors.white),),
             ),
           ),
         );

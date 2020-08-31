@@ -19,3 +19,7 @@ Color primarycolor = Colors.purple;
 void setPrimaryColor(Color data){
   primarycolor = data;
 }
+
+TextStyle textStylebold(){
+  return TextStyle(fontWeight: FontWeight.bold);
+}

@@ -10,12 +10,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return GetMaterialApp(
-      //debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,
       title: 'U Music',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: primarycolor,
-      ),
       home: Home(),
     );
   }
