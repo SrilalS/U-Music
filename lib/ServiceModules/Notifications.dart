@@ -18,6 +18,10 @@ void initNotifications() async {
   });
 }
 
+void removeNotifications(){
+  notifications.cancelAll();
+}
+
 void shownotification(title, playbackinfo) async {
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'Main', 'Main Channel', 'Main Notifications Channel',
@@ -28,6 +32,7 @@ void shownotification(title, playbackinfo) async {
       maxProgress: 100,
       playSound: false,
       enableVibration: false,
+      timeoutAfter: 500,
       
       visibility: NotificationVisibility.Public,
       progress: (progress*100).round(),
