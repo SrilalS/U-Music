@@ -61,9 +61,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.purple));
 
     Widget drawer() {
       //getSaved();
@@ -137,8 +134,14 @@ class _HomeState extends State<Home> {
               });
               return Scaffold(
                 body: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Getting Music..."),
+                      CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -214,8 +217,9 @@ class _HomeState extends State<Home> {
                                     children: [
 
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 8),
+                                        padding: const EdgeInsets.only(top: 16),
                                         child: PopupMenuButton(
+                                          icon: Icon(Icons.more_vert, color: Colors.white),
                                           itemBuilder: (context) {
                                           return <PopupMenuEntry>[
                                             PopupMenuItem(
@@ -251,12 +255,15 @@ class _HomeState extends State<Home> {
                                 Text(
                                   musicTitles[nowPlayingSongIndex],
                                   textAlign: TextAlign.center,
-                                  style: textStyle(16.0),
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold
+                                  ),
                                 ),
                                 Text(timeEngine(milliseconds) +
                                     ' | ' +
                                     timeEngine(
-                                        audioPlayer.duration.inMilliseconds)),
+                                        audioPlayer.duration.inMilliseconds), style: textStylebold(),),
                                 Slider(
                                     value: progress,
                                     onChanged: (dt) {
@@ -269,7 +276,8 @@ class _HomeState extends State<Home> {
                                     Container(
                                       width: h * 0.1,
                                       child: RaisedButton(
-                                          child: Icon(Icons.skip_previous),
+                                        color: Colors.blue,
+                                          child: Icon(Icons.skip_previous,color: Colors.white,),
                                           shape: roundedRectangleBorder(256.0),
                                           onPressed: () {
                                             nowPlayingSongIndex == 0
@@ -284,10 +292,11 @@ class _HomeState extends State<Home> {
                                       height: h * 0.1,
                                       width: h * 0.1,
                                       child: RaisedButton(
+                                        color: Colors.blue,
                                           child: state.data ==
                                                   AudioPlayerState.PLAYING
-                                              ? Icon(Icons.pause)
-                                              : Icon(Icons.play_arrow),
+                                              ? Icon(Icons.pause, color: Colors.white,)
+                                              : Icon(Icons.play_arrow , color : Colors.white,),
                                           shape: roundedRectangleBorder(256.0),
                                           onPressed: () {
                                             playpause(milliseconds);
@@ -296,7 +305,8 @@ class _HomeState extends State<Home> {
                                     Container(
                                       width: h * 0.1,
                                       child: RaisedButton(
-                                          child: Icon(Icons.skip_next),
+                                        color: Colors.blue,
+                                          child: Icon(Icons.skip_next, color: Colors.white,),
                                           shape: roundedRectangleBorder(256.0),
                                           onPressed: () {
                                             nowPlayingSongIndex ==

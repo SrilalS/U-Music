@@ -59,7 +59,9 @@ Future<bool> getMusicList(bool needtoupdate) async {
     bmusicList = musicListS;
 
     musicListS.forEach((element) {
-      listStrings.add(element.toString());
+      if((element.isMusic) && (int.parse(element.duration) > 45000)){
+        listStrings.add(element.toString());
+      }
     });
 
     await mdriver.setStringList('MLIST', listStrings);
@@ -76,6 +78,7 @@ Future<bool> getMusicList(bool needtoupdate) async {
   print(musicList[0]);
 
   musicList.forEach((song) {
+
     musicPathsList
         .add(song.toString().split('_data:').last.split(',').first.trim());
     musicAlbemArtsList.add(

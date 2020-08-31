@@ -11,11 +11,15 @@ TextStyle textStyle(size){
 
 InputBorder txtfieldborwhite() {
   return OutlineInputBorder(
-      borderSide: const BorderSide(color: Colors.white, width: 2.0),
+      borderSide: const BorderSide(color: Colors.blue, width: 2.0),
       borderRadius: BorderRadius.circular(4.0));
 }
 Color primarycolor = Colors.purple;
 
 void setPrimaryColor(Color data){
   primarycolor = data;
+}
+
+TextStyle textStylebold(){
+  return TextStyle(fontWeight: FontWeight.bold);
 }

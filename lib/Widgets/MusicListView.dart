@@ -11,30 +11,41 @@ ListView mainMusicList() {
       itemCount: musicList.length,
       itemBuilder: (context, index) {
         return Card(
-          color:
-              playListTemp.contains(index) ? Colors.blue : (index == nowPlayingSongIndex ? Colors.purple : Colors.grey[800]),
+          color: playListTemp.contains(index)
+              ? Colors.blue
+              : (index == nowPlayingSongIndex ? Colors.blue : Colors.grey[800]),
           child: InkWell(
             onTap: () {
               if (audioPlayer.state == AudioPlayerState.PLAYING) {
-                nowPlayingSongIndex == index
-                    ? Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PlayUi()))
-                    : play(index);
+                if (nowPlayingSongIndex == index) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PlayUi()));
+                } else {
+                  play(index);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PlayUi()));
+                }
               } else if (audioPlayer.state == AudioPlayerState.PAUSED) {
-                nowPlayingSongIndex == index
-                    ? Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PlayUi()))
-                    : play(index);
+                if (nowPlayingSongIndex == index) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PlayUi()));
+                } else {
+                  play(index);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PlayUi()));
+                }
               } else {
                 nowPossition == 0 ? play(index) : playpause(nowPossition);
               }
             },
-            onLongPress: (){
-             // playListTemp.contains(index) ? playListTemp.remove(index) : addtoTmpList(index);
-              
+            onLongPress: () {
+              // playListTemp.contains(index) ? playListTemp.remove(index) : addtoTmpList(index);
             },
             child: ListTile(
-              title: Text(musicTitles[index]),
+              title: Text(
+                musicTitles[index],
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         );
