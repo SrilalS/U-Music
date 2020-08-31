@@ -26,73 +26,69 @@ class _PlayUiState extends State<PlayUi> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.blue));
-
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.height;
-    return PageView(
-      children: <Widget>[
-        StreamBuilder(
-            stream: audioplayerstatestream(),
-            builder: (context, state) {
-              if (state.data == AudioPlayerState.COMPLETED) {
-                autonext();
-              }
+    return StreamBuilder(
+        stream: audioplayerstatestream(),
+        builder: (context, state) {
+          if (state.data == AudioPlayerState.COMPLETED) {
+            autonext();
+          }
 
-              if (musicList.isEmpty) {
-                timer = Timer.periodic(Duration(milliseconds: 50), (dt) {
-                  if (musicList.isNotEmpty) {
-                    setState(() {
-                      timer.cancel();
-                      print('Getting Music is Complete');
-                    });
-                  }
+          if (musicList.isEmpty) {
+            timer = Timer.periodic(Duration(milliseconds: 50), (dt) {
+              if (musicList.isNotEmpty) {
+                setState(() {
+                  timer.cancel();
+                  print('Getting Music is Complete');
                 });
-                return Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                    ),
-                  ),
-                );
+              }
+            });
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ),
+            );
+          }
+
+          return StreamBuilder(
+            stream: audioplayerpositionstream(),
+            builder: (context, possition) {
+              int milliseconds;
+
+              if (possition.data == null) {
+                milliseconds = 00;
+                setnowPossition(0);
+                setProgress();
+              } else {
+                milliseconds = possition.data.inMilliseconds;
+                setnowPossition(possition.data.inMilliseconds);
+                setProgress();
               }
 
-              return StreamBuilder(
-                stream: audioplayerpositionstream(),
-                builder: (context, possition) {
-                  int milliseconds;
-
-                  if (possition.data == null) {
-                    milliseconds = 00;
-                    setnowPossition(0);
-                    setProgress();
-                  } else {
-                    milliseconds = possition.data.inMilliseconds;
-                    setnowPossition(possition.data.inMilliseconds);
-                    setProgress();
-                  }
-
-                  return Scaffold(
-                    body: Stack(
-                      children: <Widget>[
-                        Container(
-                          height: h,
-                          child: Image.file(
-                            File(musicAlbemArtsList.length == 0
-                                ? null
-                                : musicAlbemArtsList[nowPlayingSongIndex]),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        BackdropFilter(
-                          filter: ImageFilter.blur(
-                            sigmaX: 25.0,
-                            sigmaY: 25.0,
-                          ),
-                          child: Column(
+              return Scaffold(
+                body: Stack(
+                  children: <Widget>[
+                    Container(
+                      height: h,
+                      child: Image.file(
+                        File(musicAlbemArtsList.length == 0
+                            ? null
+                            : musicAlbemArtsList[nowPlayingSongIndex]),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 25.0,
+                        sigmaY: 25.0,
+                      ),
+                      child: PageView(
+                        children: [
+                          
+                          Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             verticalDirection: VerticalDirection.up,
                             children: <Widget>[
@@ -210,15 +206,15 @@ class _PlayUiState extends State<PlayUi> {
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          LyricsUI(),
+                        ],
+                      ),
                     ),
-                  );
-                },
+                  ],
+                ),
               );
-            }),
-        LyricsUI()
-      ],
-    );
+            },
+          );
+        });
   }
 }

@@ -60,14 +60,10 @@ class _LyricsUIState extends State<LyricsUI>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.purple,
-        systemNavigationBarColor: Colors.purple));
     //artistnamecontroller.text = musicList[nowPlayingSongIndex].title;
     return Stack(
       children: <Widget>[
         Scaffold(
-          backgroundColor: Colors.purple,
           body: Center(
             child: (isLyriced && (nowPlayingSongIndex == lyricedindex))
                 ? lyScreen()
@@ -99,11 +95,11 @@ class _LyricsUIState extends State<LyricsUI>
                         ),
                         SizedBox(height: 8),
                         RaisedButton(
-                            color: Colors.white,
-                            splashColor: Colors.purple,
+                            color: Colors.blue,
+                            splashColor: Colors.blueAccent,
                             child: Text(
                               'Search',
-                              style: TextStyle(color: Colors.purple),
+                              style: TextStyle(color: Colors.white),
                             ),
                             shape: roundedRectangleBorder(64.0),
                             onPressed: () {
@@ -118,10 +114,10 @@ class _LyricsUIState extends State<LyricsUI>
           ),
         ),
         progress ? Container(
-          color: Colors.purple.withOpacity(0.5),
+          color: Colors.blue.withOpacity(0.5),
           child: Center(
             child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue)
             ),
           ),
         ) : Container()
