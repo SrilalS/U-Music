@@ -53,4 +53,4 @@ Audio Player : [Link To Plugin Page](https://pub.dev/packages/audioplayer)
 Flutter Local Notifications : [Link To Plugin Page](https://pub.dev/packages/flutter_local_notifications)
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.This Project is a community project which is depending on the community to grow.
