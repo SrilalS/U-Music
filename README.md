@@ -33,13 +33,13 @@ This Project is Build for SDK 29 Android.
 [MusixMatch](https://developer.musixmatch.com/) API (Free Plan) Used to Search for Lyrics.
 
 ### API KEYS
-APIKEYS.dart is gitIgnored for obvious Reasons.
+- APIKEYS.dart is gitIgnored for obvious Reasons.
 
-When Building This Project,
+- When Building This Project,
 
-Create the "APIKEYS.dart" file in "lib/Secrets" and add,
+- Create the "APIKEYS.dart" file in "lib/Secrets" and add,
 
-"String musixmatchapikey = 'YOUR KEY HERE';"
+- "String musixmatchapikey = 'YOUR KEY HERE';"
 
 ## Plugins Used
 This Projects Uses Following Plugins.
