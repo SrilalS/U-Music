@@ -11,6 +11,7 @@ class PlayerEngine{
   PlayerEngine(){
     position();
     getState();
+    getPlayerState();
   }
 
   play(int index) async{
@@ -75,9 +76,6 @@ class PlayerEngine{
   position(){
     ap.currentPosition.asBroadcastStream().forEach((element) {
       songPosition.value = element.inMilliseconds;
-      if(element.inMilliseconds == currentSong.value.length){
-        print('FINISHSED');
-      }
     });
   }
 
@@ -85,5 +83,9 @@ class PlayerEngine{
     ap.isPlaying.asBroadcastStream().forEach((element) {
       isPlaying.value = element;
     });
+  }
+
+  getPlayerState(){
+
   }
 }
