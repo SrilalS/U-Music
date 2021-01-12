@@ -8,8 +8,7 @@ void initNotifications() async {
   var initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   var initializationSettingsIOS = IOSInitializationSettings();
-  var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, initializationSettingsIOS);
+  var initializationSettings = InitializationSettings();
   await notifications.initialize(initializationSettings,
       onSelectNotification: (dt) {
     var data;
@@ -25,8 +24,8 @@ void removeNotifications(){
 void shownotification(title, playbackinfo) async {
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'Main', 'Main Channel', 'Main Notifications Channel',
-      importance: Importance.Default, 
-      priority: Priority.Default, 
+      importance: Importance.defaultImportance,
+      priority: Priority.defaultPriority,
       ongoing: true,
       showProgress: true,
       maxProgress: 100,
@@ -34,12 +33,11 @@ void shownotification(title, playbackinfo) async {
       enableVibration: false,
       timeoutAfter: 500,
       
-      visibility: NotificationVisibility.Public,
+      visibility: NotificationVisibility.public,
       progress: (progress*100).round(),
       ticker: 'ticker');
   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-  var platformChannelSpecifics = NotificationDetails(
-      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  var platformChannelSpecifics = NotificationDetails();
   await notifications.show(
       0, title.toString(), playbackinfo.toString(), platformChannelSpecifics,
       payload: 'U Music');
