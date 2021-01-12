@@ -35,14 +35,85 @@ class _MainHomeState extends State<MainHome> {
       body: Column(
         children: [
           Container(
-            height: Get.height-128,
+            height: Get.height-180,
             child: SongsListUi(pE: pEngine)
           ),
-          Container(
-            color: Colors.white,
-            height: 128,
-            //child: Image.file(File('/storage/emulated/0/Android/data/com.android.providers.media/albumthumbs/1587310922735')),
-          )
+          Obx((){
+            return Container(
+              padding: EdgeInsets.all(8),
+              //color: Colors.white,
+              height: 180,
+              child: Column(
+                children: [
+                  Text(currentSong.value.title),
+                  SizedBox(height: 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(Duration(milliseconds: songPosition.value).toString().split('.')[0]),
+                      Text(' | '),
+                      Text(Duration(milliseconds: currentSong.value.length).toString().split('.')[0])
+                    ],
+                  ),
+                  Slider(
+                    value: songPosition.value.toDouble(),
+                    min: 0,
+                    max: currentSong.value.length.toDouble(),
+                    onChanged: (value){
+                      songPosition.value = value.toInt();
+                      pEngine.seek(value.milliseconds);
+                    },
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 32,
+                        width: 64,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2048)
+                          ),
+                          child: Icon(Icons.skip_previous_rounded),
+                          onPressed: (){
+                            pEngine.pause();
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 72,
+                        width: 72,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2048)
+                          ),
+                          child: isPlaying.value ? Icon(Icons.pause) : Icon(Icons.play_arrow_rounded),
+                          onPressed: (){
+                            pEngine.pause();
+                          },
+                        ),
+                      ),
+                      Container(
+                        height: 32,
+                        width: 72,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2048)
+                          ),
+                          child: Icon(Icons.skip_next_rounded),
+                          onPressed: (){
+                            pEngine.pause();
+                          },
+                        ),
+                      )
+                    ],
+                  )
+
+                ],
+              ),
+            );
+          })
         ],
       )
     );

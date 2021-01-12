@@ -9,15 +9,32 @@ class PlayerEngine{
 
   PlayerEngine(){
     position();
+    getState();
   }
 
   play(int index) async{
-
     await ap.stop();
-    await ap.open(Audio.file(songs[index].uri));
+    await ap.open(
+        Audio.file(
+          songs[index].uri,
+
+          metas: Metas(
+            title:  songs[index].title,
+            //artist: songs[index].album,
+            album: songs[index].album,
+            image: MetasImage.file(songs[index].albumArt),
+          )
+        ),
+        headPhoneStrategy: HeadPhoneStrategy.pauseOnUnplug,
+        showNotification: true,
+        notificationSettings: NotificationSettings(
+          prevEnabled: true,
+          nextEnabled: true,
+          seekBarEnabled: true,
+        )
+    );
+    currentSong.value = songs[index];
     await ap.play();
-    songName.value = songs[index].title;
-    songLength.value = songs[index].length;
   }
 
   stop(){
@@ -28,9 +45,19 @@ class PlayerEngine{
     ap.playOrPause();
   }
 
+  seek(Duration seekpoint){
+    ap.seek(seekpoint);
+  }
+
   position(){
     ap.currentPosition.asBroadcastStream().forEach((element) {
       songPosition.value = element.inMilliseconds;
+    });
+  }
+
+  getState(){
+    ap.isPlaying.asBroadcastStream().forEach((element) {
+      isPlaying.value = element;
     });
   }
 }

@@ -8,6 +8,16 @@ class Song{
   String albumArt;
   int length;
 
+  Song(){
+    this.id = '0';
+    this.title = 'Loading...';
+    this.album = 'Loading...';
+    this.artist = 'Loading...';
+    this.uri = 'Loading...';
+    this.albumArt = 'Loading...';
+    this.length = 0;
+  }
+
 
   Song.name(this.id, this.title, this.album, this.artist, this.uri, this.albumArt, this.length);
 

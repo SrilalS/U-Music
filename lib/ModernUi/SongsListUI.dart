@@ -18,14 +18,18 @@ class _SongsListUiState extends State<SongsListUi> {
       body: ListView.builder(
         itemCount: songs == null ? 0:songs.length,
         itemBuilder: (context,index){
-          return Padding(
-            padding: EdgeInsets.all(2),
+          return Container(
+            height: 64,
             child: Card(
-              color: ,
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(songs[index].title),
-              )
+                child: InkWell(
+                  onTap: (){
+                    pEngine.play(index);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text(songs[index].title),
+                  ),
+                )
             ),
           );
         },

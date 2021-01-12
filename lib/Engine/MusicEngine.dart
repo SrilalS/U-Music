@@ -11,10 +11,8 @@ class MusicEngine{
 
   Future<bool> getSongs() async{
     List<SongInfo> songinfo = await audioQuery.getSongs(sortType: SongSortType.DEFAULT);
-    print(songinfo[150].toString());
     songinfo.removeWhere((element) => element.isMusic == false);
     songinfo.removeWhere((element) => element.filePath.contains('sound_recorder'));
-    print(songinfo[11].toString());
     songs = RxList.generate(songinfo.length, (index)=> Song.name(
         songinfo[index].id,
         songinfo[index].title,
