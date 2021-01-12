@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/Engine/MusicEngine.dart';
 import 'package:umusicv2/Engine/PlayerEngine.dart';
+import 'package:umusicv2/ModernUi/PlayUi.dart';
 import 'package:umusicv2/ModernUi/SongsListUI.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 
@@ -24,10 +25,14 @@ class _MainHomeState extends State<MainHome> {
     );
   }
 
+  void stateSetter(){
+    setState(() {});
+  }
+
   @override
   void initState() {
-    sEngine.getSongs();
     super.initState();
+    sEngine.getSongs().then((value) => stateSetter());
   }
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,12 @@ class _MainHomeState extends State<MainHome> {
         children: [
           Container(
             height: Get.height-190,
-            child: SongsListUi(pE: pEngine)
+            child: PageView(
+              children: [
+                SongsListUi(pE: pEngine),
+                PlayUi()
+              ],
+            )
           ),
           Obx((){
             return Container(

@@ -22,6 +22,8 @@ class MusicEngine{
         songinfo[index].albumArtwork,
         int.parse(songinfo[index].duration))
     );
+
+
     print(songs.length);
     localStorage();
     return true;

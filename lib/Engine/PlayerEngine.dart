@@ -15,7 +15,7 @@ class PlayerEngine{
   }
 
   play(int index) async{
-    await ap.stop();
+    await ap.pause();
     await ap.open(
         Audio.file(
           songs[index].uri,
@@ -38,16 +38,12 @@ class PlayerEngine{
     await ap.play();
   }
 
-  onfinished(){
-
-  }
-
   stop(){
     ap.stop();
   }
 
   next(){
-    if(currentIndex.value == songsList.length){
+    if(currentIndex.value >= songsList.length-1){
       play(0);
     } else {
       play(currentIndex.value+1);
@@ -56,6 +52,7 @@ class PlayerEngine{
 
   back(){
     if(currentIndex.value == 0){
+
       play(0);
     } else {
       play(currentIndex.value-1);
@@ -86,6 +83,11 @@ class PlayerEngine{
   }
 
   getPlayerState(){
-
+    ap.playerState.distinct().asBroadcastStream().forEach((element) {
+      print(element);
+      if (element == PlayerState.stop && currentSong.value.uri != 'Loading...'){
+        next();
+      }
+    });
   }
 }
