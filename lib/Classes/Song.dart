@@ -15,7 +15,7 @@ class Song{
     this.artist = 'Loading...';
     this.uri = 'Loading...';
     this.albumArt = 'Loading...';
-    this.length = 0;
+    this.length = 620;
   }
 
 

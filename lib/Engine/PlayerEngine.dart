@@ -38,7 +38,7 @@ class PlayerEngine{
   }
 
   onfinished(){
-    
+
   }
 
   stop(){
@@ -72,13 +72,11 @@ class PlayerEngine{
     ap.seek(seekpoint);
   }
 
-
-
   position(){
     ap.currentPosition.asBroadcastStream().forEach((element) {
       songPosition.value = element.inMilliseconds;
-      if (element.inMilliseconds + 1000 > currentSong.value.length && currentSong.value.uri != 'Loading...'){
-        next();
+      if(element.inMilliseconds == currentSong.value.length){
+        print('FINISHSED');
       }
     });
   }
