@@ -1,12 +1,17 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audioplayer/audioplayer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:umusicv2/ServiceModules/Notifications.dart';
 
-final AudioPlayer audioPlayer = AudioPlayer();
+//final AudioPlayer audioPlayer = AudioPlayer();
 final FlutterAudioQuery audioQuery = FlutterAudioQuery();
+
+final AssetsAudioPlayer assetsAudioPlayer = AssetsAudioPlayer();
 
 int nowPlayingSongIndex = 0;
 void setnowPlayingSongIndex(int data) {
@@ -20,7 +25,8 @@ void setnowPossition(int data) {
 
 double progress = 0.0;
 void setProgress() {
-  progress = nowPossition / audioPlayer.duration.inMilliseconds;
+  //progress = nowPossition / audioPlayer.duration.inMilliseconds;
+  progress = assetsAudioPlayer.currentPosition.value.inMilliseconds / assetsAudioPlayer.current.value.audio.duration.inMilliseconds;
   progress = ((progress.isNaN) || (progress.isInfinite) || (progress > 1))
       ? 0
       : progress;
@@ -40,6 +46,17 @@ List bmusicartistNameList = [];
 List musicTitles = [];
 List musicArtists = [];
 
+void teststore(SongInfo sn){
+  print("Test Phase");
+  FutureBuilder<Uint8List>(
+    future: audioQuery.getArtwork(type: ResourceType.SONG, id: sn.id),
+    builder: (_ , snap){
+      print(snap.data);
+      
+    },
+  );
+}
+
 Future<bool> getMusicList(bool needtoupdate) async {
   SharedPreferences mdriver = await SharedPreferences.getInstance();
   musicList.clear();
@@ -58,7 +75,10 @@ Future<bool> getMusicList(bool needtoupdate) async {
     var musicListS = await audioQuery.getSongs();
     bmusicList = musicListS;
 
+    
+
     musicListS.forEach((element) {
+     // teststore(element);
       if((element.isMusic) && (int.parse(element.duration) > 45000)){
         listStrings.add(element.toString());
       }
@@ -80,7 +100,8 @@ Future<bool> getMusicList(bool needtoupdate) async {
   musicList.forEach((song) {
 
     musicPathsList
-        .add(song.toString().split('_data:').last.split(',').first.trim());
+        .add(song.toString().split('uri:').last.split(',').first.trim());
+    //print(song.toString().split('uri:').last.split(',').first.trim());
     musicAlbemArtsList.add(
         song.toString().split('album_artwork:').last.split(',').first.trim());
     musicTitles.add(
@@ -95,11 +116,12 @@ Future<bool> getMusicList(bool needtoupdate) async {
 }
 
 Stream audioplayerstatestream() {
-  return audioPlayer.onPlayerStateChanged.asBroadcastStream();
+  //return audioPlayer.onPlayerStateChanged.asBroadcastStream();
+return assetsAudioPlayer.isPlaying.asBroadcastStream();
 }
 
 Stream audioplayerpositionstream() {
-  return audioPlayer.onAudioPositionChanged.asBroadcastStream();
+  return assetsAudioPlayer.currentPosition.asBroadcastStream();
 }
 
 String timeEngine(int inMilliseconds) {
@@ -111,24 +133,34 @@ String timeEngine(int inMilliseconds) {
 }
 
 void play(int songindex) async {
-  await audioPlayer.stop();
+  await assetsAudioPlayer.stop();
   nowPlayingSongIndex = songindex;
-  audioPlayer.play(musicPathsList[songindex]);
+  assetsAudioPlayer.open(Audio.file(musicPathsList[songindex]));
+  assetsAudioPlayer.play();
+  //audioPlayer.play(musicPathsList[songindex]);
 }
 
 void seek(double seconds) {
-  seconds = seconds * audioPlayer.duration.inSeconds;
-  audioPlayer.seek(double.parse(seconds.toString()));
+  seconds = seconds * assetsAudioPlayer.current.value.audio.duration.inSeconds;
+  //audioPlayer.seek(double.parse(seconds.toString()));
+  assetsAudioPlayer.seek(Duration(seconds: int.parse(seconds.toString())));
 }
 
 void playpause(int possition) {
   double playpauseposition =
       double.parse(Duration(milliseconds: possition).inSeconds.toString());
 
-  if (audioPlayer.state == AudioPlayerState.PLAYING) {
-    audioPlayer.pause();
+  if (assetsAudioPlayer.isPlaying.value) {
+    assetsAudioPlayer.pause();
     removeNotifications();
-  } else if (audioPlayer.state == AudioPlayerState.PAUSED) {
+  } else {
+    assetsAudioPlayer.play();
+    removeNotifications();
+  }
+
+  /**
+   * 
+    else if (audioPlayer.state == AudioPlayerState.PAUSED) {
     audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
     audioPlayer.seek(playpauseposition);
   } else if (audioPlayer.state == AudioPlayerState.STOPPED) {
@@ -137,9 +169,11 @@ void playpause(int possition) {
     audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
     removeNotifications();
   }
+   */
 }
 
 void listener() {
+ /**
   audioPlayer.onAudioPositionChanged.listen((event) {
     shownotification(
         musicTitles[nowPlayingSongIndex],
@@ -150,6 +184,8 @@ void listener() {
   }).onError((e) {
     print(e);
   });
+
+  **/
 }
 
 void dullfunction() {}

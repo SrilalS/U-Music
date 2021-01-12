@@ -112,8 +112,7 @@ class _PlayUiState extends State<PlayUi> {
                                       Text(
                                         timeEngine(milliseconds) +
                                             ' | ' +
-                                            timeEngine(audioPlayer
-                                                .duration.inMilliseconds),
+                                            timeEngine(assetsAudioPlayer.current.value.audio.duration.inMilliseconds),
                                         style: textStylebold(),
                                       ),
                                       Slider(
@@ -150,8 +149,7 @@ class _PlayUiState extends State<PlayUi> {
                                             width: h * 0.1,
                                             child: RaisedButton(
                                               color: Colors.blue,
-                                                child: audioPlayer.state ==
-                                                        AudioPlayerState.PLAYING
+                                                child: assetsAudioPlayer.isPlaying.value
                                                     ? Icon(Icons.pause, color: Colors.white,)
                                                     : Icon(Icons.play_arrow , color: Colors.white,),
                                                 shape: roundedRectangleBorder(

@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                       child: Text('No')),
                   FlatButton(
                       onPressed: () {
-                        audioPlayer.stop();
+                        assetsAudioPlayer.stop();
                         notifications.cancelAll();
                         SystemChannels.platform
                             .invokeMethod('SystemNavigator.pop');
@@ -153,13 +153,13 @@ class _HomeState extends State<Home> {
                 int milliseconds;
 
                 if (possition.data == null) {
-                  milliseconds = 00;
-                  setnowPossition(0);
-                  setProgress();
+                  //milliseconds = 00;
+                 // setnowPossition(0);
+                //  setProgress();
                 } else {
-                  milliseconds = possition.data.inMilliseconds;
-                  setnowPossition(possition.data.inMilliseconds);
-                  setProgress();
+               //   milliseconds = possition.data.inMilliseconds;
+               //   setnowPossition(possition.data.inMilliseconds);
+              //    setProgress();
                 }
 
                 return Scaffold(
@@ -263,7 +263,7 @@ class _HomeState extends State<Home> {
                                 Text(timeEngine(milliseconds) +
                                     ' | ' +
                                     timeEngine(
-                                        audioPlayer.duration.inMilliseconds), style: textStylebold(),),
+                                        assetsAudioPlayer.current.value.audio.duration.inMilliseconds), style: textStylebold(),),
                                 Slider(
                                     value: progress,
                                     onChanged: (dt) {

@@ -16,7 +16,7 @@ ListView mainMusicList() {
               : (index == nowPlayingSongIndex ? Colors.blue : Colors.grey[800]),
           child: InkWell(
             onTap: () {
-              if (audioPlayer.state == AudioPlayerState.PLAYING) {
+              if (assetsAudioPlayer.isPlaying.value) {
                 if (nowPlayingSongIndex == index) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PlayUi()));
@@ -25,7 +25,7 @@ ListView mainMusicList() {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PlayUi()));
                 }
-              } else if (audioPlayer.state == AudioPlayerState.PAUSED) {
+              } else if (!assetsAudioPlayer.isPlaying.value) {
                 if (nowPlayingSongIndex == index) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PlayUi()));
