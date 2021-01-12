@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:umusicv2/UI/MainHome.dart';
 import 'package:umusicv2/UI/NewHome.dart';
 void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
@@ -10,7 +11,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'U Music',
-      home: NXHome(),
+      themeMode: ThemeMode.dark,
+      theme: ThemeData.dark(),
+      home: MainHome(),
     );
   }
 }
