@@ -35,17 +35,26 @@ class _MainHomeState extends State<MainHome> {
       body: Column(
         children: [
           Container(
-            height: Get.height-180,
+            height: Get.height-190,
             child: SongsListUi(pE: pEngine)
           ),
           Obx((){
             return Container(
               padding: EdgeInsets.all(8),
               //color: Colors.white,
-              height: 180,
+              height: 190,
               child: Column(
                 children: [
-                  Text(currentSong.value.title),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Container(
+                          child: Text(currentSong.value.title, maxLines: 1,),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +65,7 @@ class _MainHomeState extends State<MainHome> {
                     ],
                   ),
                   Slider(
-                    value: songPosition.value.toDouble(),
+                    value: songPosition.value.toDouble() > currentSong.value.length.toDouble() ? 0: songPosition.value.toDouble(),
                     min: 0,
                     max: currentSong.value.length.toDouble(),
                     onChanged: (value){
@@ -77,7 +86,7 @@ class _MainHomeState extends State<MainHome> {
                           ),
                           child: Icon(Icons.skip_previous_rounded),
                           onPressed: (){
-                            pEngine.pause();
+                            pEngine.back();
                           },
                         ),
                       ),
@@ -103,7 +112,7 @@ class _MainHomeState extends State<MainHome> {
                           ),
                           child: Icon(Icons.skip_next_rounded),
                           onPressed: (){
-                            pEngine.pause();
+                            pEngine.next();
                           },
                         ),
                       )

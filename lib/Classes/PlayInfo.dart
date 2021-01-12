@@ -9,6 +9,7 @@ MusicEngine sEngine = new MusicEngine();
 PlayerEngine pEngine = new PlayerEngine();
 
 RxBool isPlaying = false.obs;
+RxInt currentIndex = 0.obs;
 RxInt songPosition = 0.obs;
 Rx<Song> currentSong = Song().obs;
 RxList<Song> songs = List<Song>.empty().obs;
