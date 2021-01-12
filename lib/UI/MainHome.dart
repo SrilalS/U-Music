@@ -66,7 +66,7 @@ class _MainHomeState extends State<MainHome> {
                   ),
 
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
                         height: 32,
