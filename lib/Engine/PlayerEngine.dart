@@ -1,9 +1,10 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
-import 'package:umusicv2/ServiceModules/NewEngine.dart';
+
+final AssetsAudioPlayer ap = AssetsAudioPlayer();
 
 class PlayerEngine{
-  AssetsAudioPlayer ap = new AssetsAudioPlayer();
+
 
 
   Stream stream;
@@ -15,6 +16,7 @@ class PlayerEngine{
   }
 
   play(int index) async{
+
     await ap.pause();
     await ap.open(
         Audio.file(
@@ -27,6 +29,7 @@ class PlayerEngine{
         ),
         headPhoneStrategy: HeadPhoneStrategy.pauseOnUnplug,
         showNotification: true,
+        //playInBackground: PlayInBackground.enabled,
         notificationSettings: NotificationSettings(
           prevEnabled: true,
           nextEnabled: true,
@@ -60,9 +63,10 @@ class PlayerEngine{
   }
 
   pause(){
-    ap.playOrPause();
-    if (currentSong.value.uri == 'Loading...'){
+    if (ap.current.value == null){
       play(0);
+    } else {
+      ap.playOrPause();
     }
   }
 
