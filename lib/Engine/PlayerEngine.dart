@@ -43,7 +43,7 @@ class PlayerEngine{
   }
 
   next(){
-    if(currentIndex.value >= songsList.length-1){
+    if(currentIndex.value == songs.length-1){
       play(0);
     } else {
       play(currentIndex.value+1);

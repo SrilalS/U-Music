@@ -15,9 +15,11 @@ class _PlayUiState extends State<PlayUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black.withOpacity(0.5),
       body: currentSong.value.uri == 'Loading...'
           ? Container()
-          : Container(
+          : Obx((){
+            return Container(
               child: Stack(
                 children: [
                   FutureBuilder(
@@ -27,11 +29,54 @@ class _PlayUiState extends State<PlayUi> {
                     ),
                     builder: (context, snap) {
                       if (snap.connectionState == ConnectionState.done) {
-                        return Container(
-                          height: Get.height - 190,
-                          width: Get.width,
-                          child: Image.memory(snap.data, fit: BoxFit.fitWidth),
-                        );
+                        if (snap.data.toString() == '[]'){
+                          return ClipRRect(
+                            child: Container(
+                              height: Get.height - 190,
+                              width: Get.width,
+                              child: Stack(
+                                alignment: AlignmentDirectional.center,
+                                children: [
+                                  BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10,
+                                        sigmaY: 10
+                                    ),
+                                    child: Container(
+                                      width: Get.width*0.8,
+                                      height: Get.width*0.8,
+                                      child: Image.asset('assets/MainArt.png', fit: BoxFit.fitWidth),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return ClipRRect(
+                            child: Container(
+                              height: Get.height - 190,
+                              width: Get.width,
+                              child: Stack(
+                                alignment: AlignmentDirectional.center,
+                                children: [
+                                  BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10,
+                                        sigmaY: 10
+                                    ),
+                                    child: Container(
+                                      width: Get.width*0.8,
+                                      height: Get.width*0.8,
+                                      child: Image.memory(snap.data, fit: BoxFit.cover),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+
                       } else {
                         return Center(
                           child: CircularProgressIndicator(),
@@ -41,7 +86,8 @@ class _PlayUiState extends State<PlayUi> {
                   ),
                 ],
               ),
-            ),
+            );
+      })
     );
   }
 }

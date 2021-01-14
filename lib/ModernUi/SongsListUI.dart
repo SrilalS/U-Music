@@ -14,10 +14,12 @@ class _SongsListUiState extends State<SongsListUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black.withOpacity(0.8),
       body: GetX(
         tag: 'MusicList',
         builder: (context){
           return ListView.builder(
+
               itemCount: songs.length,
               itemBuilder: (context,index){
                 return Container(
