@@ -18,7 +18,7 @@ class MusicEngine{
   Future<bool> getSongs() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool first = prefs.getBool('First') ?? false;
-    if (first){
+    if (!first){
       List<SongInfo> songinfo = await audioQuery.getSongs(sortType: SongSortType.DEFAULT);
       songinfo.removeWhere((element) => element.isMusic == false);
       songinfo.removeWhere((element) => element.filePath.contains('sound_recorder'));
