@@ -17,6 +17,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   assets_audio_player: ^2.0.13+1
   move_to_background: ^1.0.1
+  permission_handler: ^5.0.1+1
 
 
 

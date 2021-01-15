@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/Engine/PlayerEngine.dart';
 import 'package:get/get.dart';
@@ -10,11 +11,11 @@ class SongsListUi extends StatefulWidget {
   _SongsListUiState createState() => _SongsListUiState();
 }
 
-class _SongsListUiState extends State<SongsListUi> {
+class _SongsListUiState extends State<SongsListUi> with AutomaticKeepAliveClientMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black.withOpacity(0.8),
+      backgroundColor: Colors.black.withOpacity(0.75),
       body: GetX(
         tag: 'MusicList',
         builder: (context){
@@ -52,4 +53,8 @@ class _SongsListUiState extends State<SongsListUi> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool wantKeepAlive = true;
 }

@@ -17,11 +17,13 @@ class MusicEngine{
 
   Future<bool> getSongs() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool first = prefs.getBool('First') ?? false;
-    if (!first){
+    bool first = prefs.getBool('First') ?? true;
+    if (first){
+      print('Getting Music From MediaStore');
       List<SongInfo> songinfo = await audioQuery.getSongs(sortType: SongSortType.DEFAULT);
       songinfo.removeWhere((element) => element.isMusic == false);
       songinfo.removeWhere((element) => element.filePath.contains('sound_recorder'));
+      songinfo.removeWhere((element) => int.parse(element.duration) < 30000);
       songs = RxList.generate(songinfo.length, (index)=> Song.name(
           songinfo[index].id,
           songinfo[index].title,
@@ -31,11 +33,11 @@ class MusicEngine{
           songinfo[index].albumArtwork,
           int.parse(songinfo[index].duration))
       );
-      //print(songs.length);
       currentSong.value = songs[0];
       saveSongsList(songs);
       return true;
     } else {
+      print('Getting Music From Storage');
       var jsonfile = jsonDecode(prefs.getString('Songs'));
       print(jsonfile);
       songs = RxList.generate(jsonfile.length, (index)=> Song.fromJSON(
@@ -48,9 +50,11 @@ class MusicEngine{
   }
 
   void updateSongs() async{
+    print('Updating Music From MediaStore');
     List<SongInfo> songinfo = await audioQuery.getSongs(sortType: SongSortType.DEFAULT);
     songinfo.removeWhere((element) => element.isMusic == false);
     songinfo.removeWhere((element) => element.filePath.contains('sound_recorder'));
+
     songs = RxList.generate(songinfo.length, (index)=> Song.name(
         songinfo[index].id,
         songinfo[index].title,
@@ -60,8 +64,11 @@ class MusicEngine{
         songinfo[index].albumArtwork,
         int.parse(songinfo[index].duration))
     );
-    //print(songs.length);
-    currentSong.value = songs[0];
+
+    int updatedSongIndex = songs.indexOf(currentSong);
+    if (updatedSongIndex > -1){
+      currentSong.value = songs[updatedSongIndex];
+    }
     saveSongsList(songs);
   }
 
