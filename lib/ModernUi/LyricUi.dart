@@ -75,10 +75,6 @@ class _LyricsUIState extends State<LyricsUI>{
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'Lyrics',
-                      //style: textStyle(24.0),
-                    ),
                     Text('Lyrics Provided by MusixMatch. ❤'),
                     SizedBox(height: 8),
                     TextField(

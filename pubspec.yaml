@@ -18,6 +18,7 @@ dependencies:
   assets_audio_player: ^2.0.13+1
   move_to_background: ^1.0.1
   permission_handler: ^5.0.1+1
+  string_similarity: ^1.1.0
 
 
 
