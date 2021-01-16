@@ -34,8 +34,21 @@ class PlayerEngine{
           prevEnabled: true,
           nextEnabled: true,
           seekBarEnabled: true,
-          //customNextAction: next(),
-          //customPrevAction: back(),
+          customNextAction: (apx){
+            if(currentIndex.value == songs.length-1){
+              play(0);
+            } else {
+              play(currentIndex.value+1);
+            }
+          },
+          customPrevAction: (apx){
+            if(currentIndex.value == 0){
+
+              play(0);
+            } else {
+              play(currentIndex.value-1);
+            }
+          },
         )
     );
     currentSong.value = songs[index];
