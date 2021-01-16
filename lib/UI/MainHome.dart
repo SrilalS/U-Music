@@ -76,7 +76,7 @@ class _MainHomeState extends State<MainHome> {
                               Container(
                                 height: Get.height,
                                 width: Get.width,
-                                child: Image.asset('assets/MainArt.png', fit: BoxFit.cover),
+                                child: Image.asset('assets/Art.png', fit: BoxFit.cover),
                               ),
                               Container(
                                 height: Get.height,
@@ -133,7 +133,7 @@ class _MainHomeState extends State<MainHome> {
                                 Container(
                                   height: Get.height,
                                   width: Get.width,
-                                  child: Image.asset('assets/MainArt.png', fit: BoxFit.cover),
+                                  child: Image.asset('assets/Art.png', fit: BoxFit.cover),
                                 ),
                                 Container(
                                   height: Get.height,

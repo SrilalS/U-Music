@@ -42,7 +42,9 @@ class _SongsListUiState extends State<SongsListUi>
                   hintText: 'Search...',
                   suffixIcon: IconButton(
                       onPressed: () {
-                        searchText.clear();
+                        setState(() {
+                          searchText.clear();
+                        });
                       },
                       color: Colors.white,
                       icon: Icon(Icons.highlight_remove))),
@@ -53,13 +55,6 @@ class _SongsListUiState extends State<SongsListUi>
           );
         }),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.sort,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
           Obx(() {
             return Visibility(
               visible: !search.value,
@@ -84,6 +79,9 @@ class _SongsListUiState extends State<SongsListUi>
                 ),
                 onPressed: () {
                   search.value = !search.value;
+                  setState(() {
+                    searchText.clear();
+                  });
                 },
               ),
             );
@@ -109,30 +107,28 @@ class _SongsListUiState extends State<SongsListUi>
                 }
 
                 return Container(
-                  height: 64,
+                  //height: 64,
                   child: Obx(() {
                     return Card(
                         color: index == currentIndex.value
                             ? Colors.blue
                             : Colors.grey.shade800,
-                        child: InkWell(
+                        child: ListTile(
+                          dense: true,
                           onTap: () {
                             pEngine.play(index);
                           },
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Row(
-                              children: [
-                                Flexible(
-                                  child: Container(
-                                    child: Text(
-                                      songs[index].title,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
+                          title: Text(
+                            songs[index].title,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            songs[index].artist,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: Text(
+                            Duration(milliseconds: songs[index].length).toString().split('.')[0],
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ));
                   }),

@@ -48,7 +48,7 @@ class _PlayUiState extends State<PlayUi> {
                                     child: Container(
                                       width: Get.width*0.8,
                                       height: Get.width*0.8,
-                                      child: Image.asset('assets/MainArt.png', fit: BoxFit.fitWidth),
+                                      child: Image.asset('assets/Art.png', fit: BoxFit.fitWidth),
                                     ),
                                   )
                                 ],
@@ -118,7 +118,7 @@ class _PlayUiState extends State<PlayUi> {
                                       child: Container(
                                         width: Get.width*0.8,
                                         height: Get.width*0.8,
-                                        child: Image.asset('assets/MainArt.png', fit: BoxFit.fitWidth),
+                                        child: Image.asset('assets/Art.png', fit: BoxFit.fitWidth),
                                       ),
                                     )
                                   ],
