@@ -23,6 +23,7 @@ class _SongsListUiState extends State<SongsListUi>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         backgroundColor: Colors.transparent,
         title: Obx(() {
           return Visibility(
@@ -140,6 +141,5 @@ class _SongsListUiState extends State<SongsListUi>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool wantKeepAlive = true;
 }

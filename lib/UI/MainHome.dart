@@ -242,6 +242,7 @@ class _MainHomeState extends State<MainHome> {
                                   height: 32,
                                   width: 64,
                                   child: RaisedButton(
+
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(2048)
                                     ),
