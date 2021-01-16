@@ -43,7 +43,6 @@ class PlayerEngine{
           },
           customPrevAction: (apx){
             if(currentIndex.value == 0){
-
               play(0);
             } else {
               play(currentIndex.value-1);
