@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:get/get.dart';
@@ -24,6 +24,7 @@ class _PlayUiState extends State<PlayUi> {
             return Container(
               child: Stack(
                 children: [
+
                   FutureBuilder(
                     future: audioQuery.getArtwork(
                       type: ResourceType.SONG,
@@ -54,7 +55,7 @@ class _PlayUiState extends State<PlayUi> {
                               ),
                             ),
                           );
-                        } else {
+                        } else if (snap.data != null) {
                           return ClipRRect(
                             child: Container(
                               height: Get.height - 190,
@@ -77,6 +78,54 @@ class _PlayUiState extends State<PlayUi> {
                               ),
                             ),
                           );
+                        } else {
+                          if (currentSong.value.albumArt != null){
+                            return ClipRRect(
+                              child: Container(
+                                height: Get.height - 190,
+                                width: Get.width,
+                                child: Stack(
+                                  alignment: AlignmentDirectional.center,
+                                  children: [
+                                    BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 10,
+                                          sigmaY: 10
+                                      ),
+                                      child: Container(
+                                        width: Get.width*0.8,
+                                        height: Get.width*0.8,
+                                        child: Image.file(File(currentSong.value.albumArt), fit: BoxFit.cover),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return ClipRRect(
+                              child: Container(
+                                height: Get.height - 190,
+                                width: Get.width,
+                                child: Stack(
+                                  alignment: AlignmentDirectional.center,
+                                  children: [
+                                    BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 10,
+                                          sigmaY: 10
+                                      ),
+                                      child: Container(
+                                        width: Get.width*0.8,
+                                        height: Get.width*0.8,
+                                        child: Image.asset('assets/MainArt.png', fit: BoxFit.fitWidth),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
                         }
 
                       } else {

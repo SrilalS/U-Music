@@ -57,6 +57,7 @@ class _MainHomeState extends State<MainHome> {
           alignment: AlignmentDirectional.topCenter,
           children: [
             Obx((){
+
               return FutureBuilder(
                 future: audioQuery.getArtwork(
                   type: ResourceType.SONG,
@@ -86,7 +87,7 @@ class _MainHomeState extends State<MainHome> {
                           ),
                         ),
                       );
-                    } else {
+                    } else if(snap.data != null){
                       return ClipRRect(
                         child: Container(
                           height: Get.height,
@@ -103,6 +104,47 @@ class _MainHomeState extends State<MainHome> {
                           ),
                         ),
                       );
+                    } else {
+                      if (currentSong.value.albumArt != null){
+                        return ClipRRect(
+                          child: Container(
+                            height: Get.height,
+                            width: Get.width,
+                            child: Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                Container(
+                                  height: Get.height,
+                                  width: Get.width,
+                                  child: Image.file(File(currentSong.value.albumArt), fit: BoxFit.cover),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return ClipRRect(
+                          child: Container(
+                            height: Get.height,
+                            width: Get.width,
+                            child: Stack(
+                              alignment: AlignmentDirectional.center,
+                              children: [
+                                Container(
+                                  height: Get.height,
+                                  width: Get.width,
+                                  child: Image.asset('assets/MainArt.png', fit: BoxFit.cover),
+                                ),
+                                Container(
+                                  height: Get.height,
+                                  width: Get.width,
+                                  color: Colors.grey.shade800.withOpacity(0.6),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
                     }
 
                   } else {
@@ -112,6 +154,7 @@ class _MainHomeState extends State<MainHome> {
                   }
                 },
               );
+
             }),
             ClipRRect(
               child: BackdropFilter(

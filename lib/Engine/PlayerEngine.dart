@@ -34,6 +34,8 @@ class PlayerEngine{
           prevEnabled: true,
           nextEnabled: true,
           seekBarEnabled: true,
+          //customNextAction: next(),
+          //customPrevAction: back(),
         )
     );
     currentSong.value = songs[index];
