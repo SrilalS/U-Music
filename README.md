@@ -1,16 +1,18 @@
 # <ins>U Music</ins>
 
-![Build Version](https://img.shields.io/badge/V-3.7.5-brightgreen)
+![Build Version](https://img.shields.io/badge/V-5.0.1-brightgreen)
 ![Build](https://img.shields.io/badge/Status-Stable-brightgreen)
 ![BuildX](https://img.shields.io/badge/FlutterChannel-Stable-blue)
 
 
-![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S1.png?raw=true)
-![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S2.png?raw=true)
-![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/master/Screenshots/S4.png?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/V3/Screenshots/1.jpg?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/V3/Screenshots/2.jpg?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music//V3/Screenshots/3.jpg?raw=true)
 
 
 An Experimental Music Player Build using Flutter.
+
+### Current Active-Main Branch is V3
 
 ## <ins>Download Arm64 APK</ins>
 
@@ -26,8 +28,8 @@ Build the APK Using following Command.
 flutter build apk
 ```
 ## <ins>Building</ins>
-You will need Latest Flutter SDK (Preffered Latest Beta).
-This Project is Build for SDK 29 Android.
+You will need Latest Flutter SDK (Preferred Latest Beta).
+This Project is Build for SDK 30 Android.
 
 ## <ins>APIs USED</ins>
 [MusixMatch](https://developer.musixmatch.com/) API (Free Plan) Used to Search for Lyrics.
@@ -53,5 +55,5 @@ This Project is Build for SDK 29 Android.
 Flutter Local Notifications : [Link To Plugin Page](https://pub.dev/packages/flutter_local_notifications)
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.This Project is a community project which is depending on the community to grow.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. This Project is a community project which is depending on the community to grow.
 
