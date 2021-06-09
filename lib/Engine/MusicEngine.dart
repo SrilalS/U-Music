@@ -1,11 +1,6 @@
-
 import 'dart:convert';
-
-
-
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/Classes/Song.dart';
@@ -13,8 +8,6 @@ import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/ServiceModules/StorageWorker.dart';
 
 class MusicEngine{
-
-
   Future<bool> getSongs() async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool first = prefs.getBool('First') ?? true;
@@ -33,7 +26,8 @@ class MusicEngine{
           songinfo[index].albumArtwork,
           int.parse(songinfo[index].duration))
       );
-      currentSong.value = songs[0];
+      print('Total Songs: '+songinfo.length.toString());
+      currentSong.value = songs.first;
       saveSongsList(songs);
       return true;
     } else {
@@ -48,7 +42,6 @@ class MusicEngine{
       return true;
     }
   }
-
   void updateSongs() async{
     print('Updating Music From MediaStore');
     List<SongInfo> songinfo = await audioQuery.getSongs(sortType: SongSortType.DEFAULT);
@@ -71,5 +64,4 @@ class MusicEngine{
     }
     saveSongsList(songs);
   }
-
 }

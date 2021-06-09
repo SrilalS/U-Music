@@ -27,12 +27,12 @@ class _LyricsUIState extends State<LyricsUI>{
   void getLyrics() async {
     var apikey = musixmatchapikey;
     await http
-        .get(
+        .get(Uri.parse(
         'https://api.musixmatch.com/ws/1.1/matcher.lyrics.get?format=json&callback=callback&q_track=' +
             songnamecontroller.text +
             '&q_artist=' +
             artistnamecontroller.text +
-            '&apikey=$apikey')
+            '&apikey=$apikey'))
         .then((response) {
       setState(() {
         progress = false;

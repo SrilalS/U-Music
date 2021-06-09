@@ -4,6 +4,8 @@ import 'package:umusicv2/UI/MainHome.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:umusicv2/UI/PermissionReq.dart';
 
+import 'UI/Home.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   var status = await Permission.storage.status;
@@ -22,8 +24,10 @@ class UMusic extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'U Music',
-      theme: ThemeData.dark(),
-      home: isGranted ? MainHome(): PermissionsReq(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+      ),
+      home: isGranted ? Home(): PermissionsReq(),
     );
   }
 }

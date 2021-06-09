@@ -24,6 +24,7 @@ class _SongsListUiState extends State<SongsListUi>
     return Scaffold(
       appBar: AppBar(
 
+
         backgroundColor: Colors.transparent,
         title: Obx(() {
           return Visibility(

@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+Color mainColor(){
+  return Color(0xffe42c3f);
+}
+
 RoundedRectangleBorder roundedRectangleBorder(size){
   return RoundedRectangleBorder(borderRadius: BorderRadius.circular(size));
 }

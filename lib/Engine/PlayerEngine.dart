@@ -1,11 +1,13 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:get/get.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 
 final AssetsAudioPlayer ap = AssetsAudioPlayer();
 
 class PlayerEngine{
 
-
+  RxBool loopMode = false.obs;
+  RxBool isMute = false.obs;
 
   Stream stream;
 
@@ -77,11 +79,16 @@ class PlayerEngine{
   }
 
   pause(){
-    if (ap.current.value == null){
+    if (ap.current == null){
       play(0);
     } else {
       ap.playOrPause();
     }
+  }
+
+  loopSong(){
+    ap.toggleLoop();
+    loopMode.value = !loopMode.value;
   }
 
   seek(Duration seekpoint){
@@ -107,5 +114,14 @@ class PlayerEngine{
         next();
       }
     });
+  }
+
+  mute(){
+    if(isMute.value == true){
+      ap.setVolume(1);
+    } else {
+      ap.setVolume(0);
+    }
+    isMute.value = !isMute.value;
   }
 }
