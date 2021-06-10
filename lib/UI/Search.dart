@@ -20,6 +20,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xff381e58),
         title: TextField(
           controller: searchText,
           onChanged: (val){

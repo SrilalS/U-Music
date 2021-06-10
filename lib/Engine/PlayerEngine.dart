@@ -37,6 +37,12 @@ class PlayerEngine{
           prevEnabled: true,
           nextEnabled: true,
           seekBarEnabled: true,
+          customStopAction: (apx){
+            stop();
+          },
+          customPlayPauseAction: (apx){
+            pause();
+          },
           customNextAction: (apx){
             if(songs.indexOf(currentSong.value) == songs.length-1){
               play(songs.first);

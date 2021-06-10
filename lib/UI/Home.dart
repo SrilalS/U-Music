@@ -47,26 +47,26 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: 16),
-              Card(
-                margin: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(8, 8, 8, 4),
-                  child: TextField(
-                    onTap: (){
-                      Get.to(()=>Search());
-                    },
-                    cursorColor: mainColor(),
-                    cursorHeight: 24,
-
-                    decoration: InputDecoration(
-                        hintText: 'Search Your Song Library',
-                        border: InputBorder.none,
-                      prefixIcon: Icon(Icons.search, color: mainColor(),),
-
+              Container(
+                height: 48,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xff381e58),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)
                     ),
+                  ),
+                  onPressed: (){
+                    Get.to(()=>Search());
+                  },
+                  child: Row(
+                    children: [
+                      Icon(Icons.search, color: mainColor(),),
+                      Text('Search Your Music Library', style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(0.5)
+                      ),)
+                    ],
                   ),
                 ),
               ),
@@ -106,8 +106,8 @@ class _HomeState extends State<Home> {
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -116,9 +116,11 @@ class _HomeState extends State<Home> {
                                 ],
                               ),
                               Text('All Songs', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                              /**
                               Obx((){
-                                return Text(songs.toList().length.toString() +' Songs');
+                                return Text(songs.length.toString() +' Songs');
                               })
+                                  **/
                             ],
                           ),
                         ),
@@ -134,6 +136,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
               SizedBox(height: 16),
+              /**
               Expanded(
                 child: ListView(
                   children: hEngine.fBox == null ? []: hEngine.fBox.values.map((element){
@@ -143,6 +146,7 @@ class _HomeState extends State<Home> {
                   }).toList(),
                 ),
               ),
+             **/
             ],
         ),
         ),

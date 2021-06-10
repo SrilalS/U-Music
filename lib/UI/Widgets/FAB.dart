@@ -142,7 +142,8 @@ Widget mainFAB() {
                   child: CircularProgressIndicator(
                     value: songPosition.value / currentSong.value.length,
                     strokeWidth: 4,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    backgroundColor: Colors.white,
+                    valueColor: AlwaysStoppedAnimation<Color>(mainColor()),
                   ),
                 ),
               ));

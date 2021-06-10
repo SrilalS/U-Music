@@ -25,15 +25,6 @@ class _SettingsState extends State<Settings> {
                   Text('Theme', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
                 ],
               ),
-              Row(
-                children: [
-                  ElevatedButton(onPressed: (){
-                    Get.changeTheme(ThemeData(
-                        scaffoldBackgroundColor: Colors.green
-                    ));
-                  }, child: Text('Change Theme'))
-                ],
-              ),
             ],
           ),
         ),
