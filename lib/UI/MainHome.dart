@@ -7,11 +7,8 @@ import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:get/get.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
-import 'package:umusicv2/Engine/MusicEngine.dart';
-import 'package:umusicv2/Engine/PlayerEngine.dart';
 import 'package:umusicv2/ModernUi/LyricUi.dart';
 import 'package:umusicv2/ModernUi/PlayUi.dart';
-import 'package:umusicv2/ModernUi/SongsListUI.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 
 
@@ -24,7 +21,7 @@ class _MainHomeState extends State<MainHome> {
 
 
   void getImage(String songID) async{
-    Future frp = audioQuery.getArtwork(
+    audioQuery.getArtwork(
         type: ResourceType.SONG, id: songID
     );
   }
@@ -171,7 +168,7 @@ class _MainHomeState extends State<MainHome> {
                             page.value = val;
                           },
                           children: [
-                            SongsListUi(pE: pEngine),
+                            //SongsListUi(pE: pEngine),
                             PlayUi(),
                             LyricsUI(),
                           ],
@@ -241,11 +238,8 @@ class _MainHomeState extends State<MainHome> {
                                 Container(
                                   height: 32,
                                   width: 64,
-                                  child: RaisedButton(
+                                  child: ElevatedButton(
 
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(2048)
-                                    ),
                                     child: Icon(Icons.skip_previous_rounded),
                                     onPressed: (){
                                       pEngine.back();
@@ -255,10 +249,7 @@ class _MainHomeState extends State<MainHome> {
                                 Container(
                                   height: 64,
                                   width: 64,
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(2048)
-                                    ),
+                                  child: ElevatedButton(
                                     child: isPlaying.value ? Icon(Icons.pause) : Icon(Icons.play_arrow_rounded),
                                     onPressed: (){
                                       pEngine.pause();
@@ -268,10 +259,8 @@ class _MainHomeState extends State<MainHome> {
                                 Container(
                                   height: 32,
                                   width: 72,
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(2048)
-                                    ),
+                                  child: ElevatedButton(
+
                                     child: Icon(Icons.skip_next_rounded),
                                     onPressed: (){
                                       pEngine.next();

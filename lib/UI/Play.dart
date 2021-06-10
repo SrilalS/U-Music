@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:get/get.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
-import 'package:umusicv2/Engine/PlayerEngine.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
 
@@ -44,42 +43,61 @@ class _PlayState extends State<Play> {
                     ),
                     builder: (context, snap) {
                       if (snap.connectionState == ConnectionState.done) {
-                        if (snap.data.toString() == '[]'){
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              height: Get.height,
-                              width: Get.width,
-                              child: Image.asset('assets/Art.png', fit: BoxFit.cover),
+                        if (snap.data.toString() == '[]') {
+                          return Hero(
+                            tag: 'AlbumArt',
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                height: Get.height,
+                                width: Get.width,
+                                child: Image.asset('assets/Art.png',
+                                    fit: BoxFit.cover),
+                              ),
                             ),
                           );
-                        } else if(snap.data != null){
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              height: Get.height,
-                              width: Get.width,
-                              child: Image.memory(snap.data, fit: BoxFit.cover),
+                        } else if (snap.data != null) {
+                          return Hero(
+                            tag: 'AlbumArt',
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                height: Get.height,
+                                width: Get.width,
+                                child:
+                                Image.memory(snap.data, fit: BoxFit.cover),
+                              ),
                             ),
                           );
                         } else {
-                          if (currentSong.value.albumArt != null){
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(File(currentSong.value.albumArt), fit: BoxFit.cover),
-                            );
+                          if (currentSong.value.albumArt != null) {
+                            return Hero(
+                                tag: 'AlbumArt',
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                      File(currentSong.value.albumArt),
+                                      fit: BoxFit.cover),
+                                ));
                           } else {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.asset('assets/Art.png', fit: BoxFit.cover),
+                            return Hero(
+                              tag: 'AlbumArt',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.asset('assets/Art.png',
+                                    fit: BoxFit.cover),
+                              ),
                             );
                           }
                         }
-
                       } else {
-                        return Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(mainColor()),
+                        return Hero(
+                          tag: 'AlbumArt',
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              valueColor:
+                              AlwaysStoppedAnimation<Color>(mainColor()),
+                            ),
                           ),
                         );
                       }
@@ -217,6 +235,16 @@ class _PlayState extends State<Play> {
                     );
                   })
               ),
+            ],
+          ),
+          SizedBox(height: 32),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(onPressed: (){
+                //hEngine.toggleFavorite(currentSong.value);
+              }, icon: Icon(Icons.favorite))
             ],
           )
 

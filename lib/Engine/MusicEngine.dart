@@ -33,7 +33,7 @@ class MusicEngine{
     } else {
       print('Getting Music From Storage');
       var jsonfile = jsonDecode(prefs.getString('Songs'));
-      print(jsonfile);
+      //print(jsonfile);
       songs = RxList.generate(jsonfile.length, (index)=> Song.fromJSON(
         jsonfile[index]
       ));

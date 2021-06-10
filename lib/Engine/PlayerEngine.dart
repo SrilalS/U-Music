@@ -1,6 +1,7 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:get/get.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
+import 'package:umusicv2/Classes/Song.dart';
 
 final AssetsAudioPlayer ap = AssetsAudioPlayer();
 
@@ -17,16 +18,16 @@ class PlayerEngine{
     getPlayerState();
   }
 
-  play(int index) async{
+  play(Song song) async{
 
     await ap.pause();
     await ap.open(
         Audio.file(
-          songs[index].uri,
+          song.uri,
           metas: Metas(
-            title:  songs[index].title,
-            album: songs[index].album,
-            image: MetasImage.file(songs[index].albumArt),
+            title:  song.title,
+            album: song.album,
+            image: MetasImage.file(song.albumArt),
           )
         ),
         headPhoneStrategy: HeadPhoneStrategy.pauseOnUnplug,
@@ -37,23 +38,23 @@ class PlayerEngine{
           nextEnabled: true,
           seekBarEnabled: true,
           customNextAction: (apx){
-            if(currentIndex.value == songs.length-1){
-              play(0);
+            if(songs.indexOf(currentSong.value) == songs.length-1){
+              play(songs.first);
             } else {
-              play(currentIndex.value+1);
+              play(songs[songs.indexOf(currentSong.value)+1]);
             }
           },
           customPrevAction: (apx){
-            if(currentIndex.value == 0){
-              play(0);
+            if(currentIndex.value == '0'){
+              play(songs.first);
             } else {
-              play(currentIndex.value-1);
+              play(songs[songs.indexOf(currentSong.value)-1]);
             }
           },
         )
     );
-    currentSong.value = songs[index];
-    currentIndex.value = index;
+    currentSong.value = song;
+    currentIndex.value = song.id;
     await ap.play();
   }
 
@@ -62,25 +63,24 @@ class PlayerEngine{
   }
 
   next(){
-    if(currentIndex.value == songs.length-1){
-      play(0);
+    if(songs.indexOf(currentSong.value) == songs.length-1){
+      play(songs.first);
     } else {
-      play(currentIndex.value+1);
+      play(songs[songs.indexOf(currentSong.value)+1]);
     }
   }
 
   back(){
-    if(currentIndex.value == 0){
-
-      play(0);
+    if(currentIndex.value == '0'){
+      play(songs.first);
     } else {
-      play(currentIndex.value-1);
+      play(songs[songs.indexOf(currentSong.value)-1]);
     }
   }
 
   pause(){
     if (ap.current == null){
-      play(0);
+      play(songs.first);
     } else {
       ap.playOrPause();
     }

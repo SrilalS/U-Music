@@ -12,3 +12,10 @@ void saveSongsList(RxList<Song> songslist) async{
   await prefs.setString('Songs', jsonEncode(songslist));
   await prefs.setBool('First', false);
 }
+
+void saveFavoriteSongsList(RxList<Song> songslist) async{
+  print('Using Storage');
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString('Favorites', jsonEncode(songslist));
+  await prefs.setBool('First', false);
+}

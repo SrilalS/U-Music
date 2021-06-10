@@ -1,11 +1,28 @@
+import 'package:hive/hive.dart';
+
+part 'Song.g.dart';
+
+@HiveType(typeId : 1)
 class Song{
+  @HiveField(0)
   String id;
+
+  @HiveField(1)
   String title;
+
+  @HiveField(2)
   String album;
+
+  @HiveField(3)
   String artist;
 
+  @HiveField(4)
   String uri;
+
+  @HiveField(5)
   String albumArt;
+
+  @HiveField(6)
   int length;
 
   Song(){

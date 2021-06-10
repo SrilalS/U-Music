@@ -18,10 +18,7 @@ class _AllSongsState extends State<AllSongs> {
       floatingActionButton: mainFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
         title: Text('All Songs'),
-        backgroundColor: Colors.transparent,
       ),
       body: SafeArea(
         child: Padding(
@@ -32,13 +29,13 @@ class _AllSongsState extends State<AllSongs> {
               return Obx((){
                 return ListTile(
                   onTap: (){
-                    pEngine.play(index);
+                    pEngine.play(songs[index]);
                     Get.to(()=>Play());
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)
                   ),
-                  tileColor: index == currentIndex.value
+                  tileColor: songs[index].id == currentIndex.value
                       ? Color(0xffe42c3f)
                       : Colors.transparent,
                   title: Text(

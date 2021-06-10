@@ -103,9 +103,8 @@ class _LyricsUIState extends State<LyricsUI>{
                       controller: songnamecontroller,
                     ),
                     SizedBox(height: 8),
-                    RaisedButton(
-                        color: Colors.blue,
-                        splashColor: Colors.blueAccent,
+                    ElevatedButton(
+
                         child: Text(
                           'Search',
                           style: TextStyle(color: Colors.white),

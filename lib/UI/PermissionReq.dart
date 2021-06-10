@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:umusicv2/UI/MainHome.dart';
+import 'package:umusicv2/Styles/Styles.dart';
+import 'package:umusicv2/UI/Home.dart';
 
 class PermissionsReq extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _PermissionsReqState extends State<PermissionsReq> {
 
   void getPermissions() async{
     if (await Permission.storage.request().isGranted) {
-      Get.offAll(MainHome());
+      Get.offAll(Home());
     }
   }
 
@@ -29,7 +30,7 @@ class _PermissionsReqState extends State<PermissionsReq> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
 
-            Icon(Icons.storage, size: 128, color: Colors.blue),
+            Icon(Icons.storage, size: 180, color: mainColor()),
             Container(
               width: Get.width/2,
               child: Text('We need Storage Access to read Your Music Library',
@@ -38,16 +39,16 @@ class _PermissionsReqState extends State<PermissionsReq> {
             ),
             SizedBox(height: 16),
             Container(
-              width: Get.width/3,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)
+              width: Get.width/2.5,
+              height: 48,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: mainColor()
                 ),
                 onPressed: (){
                   getPermissions();
                 },
-                color: Colors.blue,
-                child: Text('Grant'),
+                child: Text('Grant', style: TextStyle(fontSize: 18),),
               ),
             )
           ],
