@@ -13,9 +13,10 @@ PlayerEngine pEngine = new PlayerEngine();
 FavoritesEngine fEngine = new FavoritesEngine();
 HiveEngine hEngine = new HiveEngine();
 
+RxInt settingsChanged = 0.obs;
 
 RxBool isPlaying = false.obs;
-RxString currentIndex = '0'.obs;
+RxInt currentIndex = 0.obs;
 RxInt songPosition = 0.obs;
 Rx<Song> currentSong = Song().obs;
 RxList<Song> songs = List<Song>.empty().obs;

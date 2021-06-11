@@ -44,60 +44,64 @@ class _PlayState extends State<Play> {
                     builder: (context, snap) {
                       if (snap.connectionState == ConnectionState.done) {
                         if (snap.data.toString() == '[]') {
-                          return Hero(
-                            tag: 'AlbumArt',
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Container(
-                                height: Get.height,
-                                width: Get.width,
-                                child: Image.asset('assets/Art.png',
-                                    fit: BoxFit.cover),
+                          return  ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              height: Get.height,
+                              width: Get.width,
+                              child: Card(
+                                margin: const EdgeInsets.all(0),
+                                color: mainColor(),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(32),
+                                  child: Image.asset('assets/Art.png',
+                                      fit: BoxFit.contain),
+                                ),
                               ),
                             ),
                           );
                         } else if (snap.data != null) {
-                          return Hero(
-                            tag: 'AlbumArt',
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Container(
-                                height: Get.height,
-                                width: Get.width,
-                                child:
-                                Image.memory(snap.data, fit: BoxFit.cover),
-                              ),
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              height: Get.height,
+                              width: Get.width,
+                              child:
+                              Image.memory(snap.data, fit: BoxFit.cover),
                             ),
                           );
                         } else {
                           if (currentSong.value.albumArt != null) {
-                            return Hero(
-                                tag: 'AlbumArt',
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.file(
-                                      File(currentSong.value.albumArt),
-                                      fit: BoxFit.cover),
-                                ));
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                  File(currentSong.value.albumArt),
+                                  fit: BoxFit.cover),
+                            );
                           } else {
-                            return Hero(
-                              tag: 'AlbumArt',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.asset('assets/Art.png',
-                                    fit: BoxFit.cover),
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Container(
+                                height: Get.height,
+                                width: Get.width,
+                                child: Card(
+                                  margin: const EdgeInsets.all(0),
+                                  color: mainColor(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(32),
+                                    child: Image.asset('assets/Art.png',
+                                        fit: BoxFit.contain),
+                                  ),
+                                ),
                               ),
                             );
                           }
                         }
                       } else {
-                        return Hero(
-                          tag: 'AlbumArt',
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              valueColor:
-                              AlwaysStoppedAnimation<Color>(mainColor()),
-                            ),
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>(mainColor()),
                           ),
                         );
                       }
@@ -105,7 +109,7 @@ class _PlayState extends State<Play> {
                   );
 
                 }),
-              )
+              ),
             ],
           ),
 
@@ -119,7 +123,7 @@ class _PlayState extends State<Play> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(currentSong.value.title,style: TextStyle(
-                    fontSize: 18
+                      fontSize: 18
                   ), overflow: TextOverflow.ellipsis),
                   Text(Duration(milliseconds: songPosition.value).toString().split('.')[0]+' | '+Duration(milliseconds: currentSong.value.length).toString().split('.')[0]),
                 ],
@@ -147,6 +151,7 @@ class _PlayState extends State<Play> {
                 return Slider(
                   value: songPosition.value.toDouble() > currentSong.value.length.toDouble() ? 0: songPosition.value.toDouble(),
                   min: 0,
+                  inactiveColor: mainColor().withOpacity(0.25),
                   max: currentSong.value.length.toDouble(),
                   onChanged: (value){
                     songPosition.value = value.toInt();
@@ -193,16 +198,19 @@ class _PlayState extends State<Play> {
                 return Container(
                   width: 64,
                   height: 64,
-                  child: ElevatedButton(
-                    child: isPlaying.value ? Icon(Icons.pause) : Icon(Icons.play_arrow_rounded),
-                    onPressed: (){
-                      pEngine.pause();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: mainColor(),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(256)
-                        )
+                  child: Hero(
+                    tag: 'AlbumArt',
+                    child: ElevatedButton(
+                      child: isPlaying.value ? Icon(Icons.pause) : Icon(Icons.play_arrow_rounded),
+                      onPressed: (){
+                        pEngine.pause();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: mainColor(),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(256)
+                          )
+                      ),
                     ),
                   ),
                 );

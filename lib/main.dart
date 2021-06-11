@@ -12,7 +12,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(SongAdapter());
-  hEngine.init();
+  await hEngine.init();
   var status = await Permission.storage.status;
   if (status.isGranted){
     isGranted = true;

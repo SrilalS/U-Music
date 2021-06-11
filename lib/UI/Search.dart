@@ -34,43 +34,46 @@ class _SearchState extends State<Search> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: songs.length,
-        itemBuilder: (context,index){
-          if (searchText.text.length > 0 &&
-              songs[index]
-                  .title
-                  .toLowerCase()
-                  .similarityTo(searchText.text.toLowerCase()) <
-                  0.05) {
-            print(songs[index].title.similarityTo(searchText.text));
-            return Container();
-          }
-          return Obx((){
-            return ListTile(
-              onTap: (){
-                pEngine.play(songs[index]);
-                Get.to(()=>Play());
-              },
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)
-              ),
-              tileColor: songs[index].id == currentIndex.value
-                  ? Color(0xffe42c3f)
-                  : Colors.transparent,
-              title: Text(
-                  songs[index].title,
-                  overflow: TextOverflow.ellipsis
-              ),
-              trailing: IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.favorite_border),
-              ),
-              leading: Icon(Icons.music_note,size: 32),
-            );
-          });
-        },
-      ),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+        child: ListView.builder(
+          itemCount: hEngine.asBox.length,
+          itemBuilder: (context,index){
+            if (searchText.text.length > 0 &&
+                hEngine.asBox.getAt(index)
+                    .title
+                    .toLowerCase()
+                    .similarityTo(searchText.text.toLowerCase()) <
+                    0.05) {
+              //print(songs[index].title.similarityTo(searchText.text));
+              return Container();
+            }
+            return Obx((){
+              return ListTile(
+                onTap: (){
+                  pEngine.play(hEngine.asBox.getAt(index),index);
+                  Get.to(()=>Play());
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)
+                ),
+                tileColor: index == currentIndex.value
+                    ? mainColor()
+                    : Colors.transparent,
+                title: Text(
+                    hEngine.asBox.getAt(index).title,
+                    overflow: TextOverflow.ellipsis
+                ),
+                trailing: IconButton(
+                  onPressed: (){},
+                  icon: Icon(Icons.favorite_border),
+                ),
+                leading: Icon(Icons.music_note,size: 32),
+              );
+            });
+          },
+        ),
+      )
     );
   }
 }

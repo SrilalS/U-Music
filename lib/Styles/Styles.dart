@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:umusicv2/Classes/PlayInfo.dart';
 
 Color mainColor(){
-  return Color(0xffe42c3f);
+  return Color(hEngine.sBox.get('ThemeColor', defaultValue: 0xffe42c3f));
 }
 
 RoundedRectangleBorder roundedRectangleBorder(size){

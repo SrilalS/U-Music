@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
+import 'package:umusicv2/Styles/Styles.dart';
 import 'package:umusicv2/UI/Play.dart';
 import 'package:umusicv2/UI/Widgets/FAB.dart';
 
@@ -24,22 +25,23 @@ class _AllSongsState extends State<AllSongs> {
         child: Padding(
           padding: const EdgeInsets.only(left: 16,right: 16,bottom: 100),
           child: ListView.builder(
-            itemCount: songs.length,
+            itemCount: hEngine.asBox.length,
             itemBuilder: (context,index){
+              //print(hEngine.asBox.values.toList());
               return Obx((){
                 return ListTile(
                   onTap: (){
-                    pEngine.play(songs[index]);
+                    pEngine.play(hEngine.asBox.getAt(index),index);
                     Get.to(()=>Play());
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)
                   ),
-                  tileColor: songs[index].id == currentIndex.value
-                      ? Color(0xffe42c3f)
+                  tileColor: index == currentIndex.value
+                      ? mainColor()
                       : Colors.transparent,
                   title: Text(
-                      songs[index].title,
+                      hEngine.asBox.getAt(index).title,
                       overflow: TextOverflow.ellipsis
                   ),
                   trailing: IconButton(

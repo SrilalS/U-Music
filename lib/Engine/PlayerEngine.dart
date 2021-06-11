@@ -18,7 +18,7 @@ class PlayerEngine{
     getPlayerState();
   }
 
-  play(Song song) async{
+  play(Song song, int index) async{
 
     await ap.pause();
     await ap.open(
@@ -44,23 +44,15 @@ class PlayerEngine{
             pause();
           },
           customNextAction: (apx){
-            if(songs.indexOf(currentSong.value) == songs.length-1){
-              play(songs.first);
-            } else {
-              play(songs[songs.indexOf(currentSong.value)+1]);
-            }
+            next();
           },
           customPrevAction: (apx){
-            if(currentIndex.value == '0'){
-              play(songs.first);
-            } else {
-              play(songs[songs.indexOf(currentSong.value)-1]);
-            }
+            back();
           },
         )
     );
     currentSong.value = song;
-    currentIndex.value = song.id;
+    currentIndex.value = index;
     await ap.play();
   }
 
@@ -69,24 +61,24 @@ class PlayerEngine{
   }
 
   next(){
-    if(songs.indexOf(currentSong.value) == songs.length-1){
-      play(songs.first);
+    if(currentIndex.value == hEngine.asBox.length-1){
+      play(hEngine.asBox.getAt(0),0);
     } else {
-      play(songs[songs.indexOf(currentSong.value)+1]);
+      play(hEngine.asBox.getAt(currentIndex.value+1),currentIndex.value+1);
     }
   }
 
   back(){
-    if(currentIndex.value == '0'){
-      play(songs.first);
+    if(currentIndex.value == 0){
+      play(hEngine.asBox.getAt(0),0);
     } else {
-      play(songs[songs.indexOf(currentSong.value)-1]);
+      play(hEngine.asBox.getAt(currentIndex.value-1),currentIndex.value-1);
     }
   }
 
   pause(){
     if (ap.current == null){
-      play(songs.first);
+      play(hEngine.asBox.getAt(0),0);
     } else {
       ap.playOrPause();
     }
