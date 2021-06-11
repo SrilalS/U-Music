@@ -112,37 +112,40 @@ class _HomeState extends State<Home> {
                       Container(
                         height: 180,
                         width: 180,
-                        child: ElevatedButton(
-                          onPressed: (){
-                            Get.to(
-                                  ()=>AllSongs(),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: mainColor(),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)
+                        child: Hero(
+                          tag: 'NowPlaying',
+                          child: ElevatedButton(
+                            onPressed: (){
+                              Get.to(
+                                    ()=>AllSongs(),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: mainColor(),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)
+                              ),
                             ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.music_note, size: 72),
-                                  ],
-                                ),
-                                Text('All Songs', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                                /**
-                                    Obx((){
-                                    return Text(songs.length.toString() +' Songs');
-                                    })
-                                 **/
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.music_note, size: 72),
+                                    ],
+                                  ),
+                                  Text('All Songs', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                                  /**
+                                      Obx((){
+                                      return Text(songs.length.toString() +' Songs');
+                                      })
+                                   **/
+                                ],
+                              ),
                             ),
                           ),
                         ),
