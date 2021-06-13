@@ -206,7 +206,7 @@ class _SettingsState extends State<Settings> {
               SizedBox(height: 8),
               Row(
                 children: [
-                  Text('GitHub : SrilalS9X@Gmail.com',
+                  Text('GitHub : Github.com/SrilalS/U-Music',
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500),),

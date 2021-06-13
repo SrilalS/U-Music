@@ -41,7 +41,7 @@ class _AllSongsState extends State<AllSongs> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 112),
           child: ListView.builder(
             itemCount: hEngine.asBox.length,
             itemBuilder: (context,index){
