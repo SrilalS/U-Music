@@ -190,7 +190,7 @@ class _SettingsState extends State<Settings> {
                 ],
               ),
               SizedBox(height: 8),
-              Text('An Ad-Free and Open-Source Music Player Made using Flutter. I Made this in my free time as a way to practice flutter. never thought this will ever get downloaded this many times or even get this much feedback. I Will make improvements continuously',
+              Text('An Ad-Free and Open-Source Music Player Made using Flutter. I Made this in my free time as a way to practice Flutter. never thought this will ever get downloaded this many times or even get this much feedback. I Will make improvements continuously',
                 style: TextStyle(
                     fontSize: 16,
                 )),
