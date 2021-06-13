@@ -19,9 +19,11 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor(),
       appBar: AppBar(
-        backgroundColor: Color(0xff381e58),
+        backgroundColor: backShadeColor(),
         title: TextField(
+          autofocus: true,
           controller: searchText,
           onChanged: (val){
             setState(() {});

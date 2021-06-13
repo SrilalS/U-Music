@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:umusicv2/Classes/Song.dart';
 
@@ -30,5 +29,13 @@ class HiveEngine{
 
   saveThemeColor(int colorInt){
     sBox.put('ThemeColor', colorInt);
+  }
+
+  saveBackColor(int colorInt){
+    sBox.put('BackColor', colorInt);
+  }
+
+  saveBackShadeColor(int colorInt){
+    sBox.put('BackShadeColor', colorInt);
   }
 }

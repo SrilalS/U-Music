@@ -14,6 +14,7 @@ FavoritesEngine fEngine = new FavoritesEngine();
 HiveEngine hEngine = new HiveEngine();
 
 RxInt settingsChanged = 0.obs;
+RxInt songsListChanged = 0.obs;
 
 RxBool isPlaying = false.obs;
 RxInt currentIndex = 0.obs;

@@ -13,17 +13,35 @@ class AllSongs extends StatefulWidget {
 }
 
 class _AllSongsState extends State<AllSongs> {
+
+  void stateSetter(){
+    songsListChanged.listen((value) {
+      setState(() {
+        print(value);
+      });
+    });
+  }
+
+
+  @override
+  void initState() {
+    stateSetter();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor(),
       floatingActionButton: mainFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
+        backgroundColor: backColor(),
         title: Text('All Songs'),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 16,right: 16,bottom: 100),
+          padding: const EdgeInsets.all(16),
           child: ListView.builder(
             itemCount: hEngine.asBox.length,
             itemBuilder: (context,index){

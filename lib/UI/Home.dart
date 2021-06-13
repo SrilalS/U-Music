@@ -8,6 +8,7 @@ import 'package:umusicv2/Styles/Styles.dart';
 import 'package:umusicv2/UI/Search.dart';
 import 'package:umusicv2/UI/Settings.dart';
 import 'package:umusicv2/UI/SongLibrary/AllSongs.dart';
+import 'package:umusicv2/UI/Widgets/Drawer.dart';
 import 'package:umusicv2/UI/Widgets/FAB.dart';
 
 
@@ -38,8 +39,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor(),
+      //drawer: drawer(),
+
       floatingActionButton: mainFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       body: WillPopScope(
         onWillPop: () async{
           if(isPlaying.value){
@@ -72,7 +77,7 @@ class _HomeState extends State<Home> {
                   height: 48,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xff381e58),
+                      primary: backShadeColor(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)
                       ),

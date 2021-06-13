@@ -21,6 +21,7 @@ Widget mainFAB() {
           height: 116,
           padding: const EdgeInsets.all(16),
           child: Card(
+            color: backShadeColor(),
             margin: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(256)),
@@ -52,6 +53,7 @@ Widget mainFAB() {
               height: 128,
               padding: const EdgeInsets.all(32),
               child: Card(
+
                 margin: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(256)),

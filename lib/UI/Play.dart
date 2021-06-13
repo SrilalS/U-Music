@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
+import 'package:umusicv2/UI/Widgets/Drawer.dart';
 
 class Play extends StatefulWidget {
   const Play({Key key}) : super(key: key);
@@ -19,12 +20,14 @@ class _PlayState extends State<Play> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor(),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         title: Text('Now Playing'),
         backgroundColor: Colors.transparent,
       ),
+      //endDrawer: drawer(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
