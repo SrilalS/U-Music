@@ -20,7 +20,6 @@ class MusicEngine{
       songInfo.sort((a, b) {
         return a.title.toLowerCase().compareTo(b.title.toLowerCase());
       });
-      await hEngine.asBox.clear();
       await hEngine.pBox.put('AllSongs', List.generate(songInfo.length, (index){
           return Song.name(
               songInfo[index].id,

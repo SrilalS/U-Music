@@ -4,23 +4,17 @@ import 'package:umusicv2/Classes/Song.dart';
 class HiveEngine{
   Box<Song> fBox;
   Box sBox;
-  Box<Song> asBox;
 
   Box<List> pBox;
 
   init() async{
     fBox = await Hive.openBox('fBox');
     sBox = await Hive.openBox('sBox');
-    asBox = await Hive.openBox('asBox');
     pBox = await Hive.openBox('pBox');
   }
 
   devOPS() async{
     print(pBox.keys);
-  }
-
-  saveSongToBox(Song song) async{
-    await asBox.put(song.id, song);
   }
 
   saveToPlayList(String playList, Song song) async{
