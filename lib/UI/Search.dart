@@ -82,7 +82,7 @@ class _SearchState extends State<Search> {
                   ),
                   trailing: IconButton(
                     onPressed: () async{
-                      if(hEngine.pBox.get('Favorites').contains(hEngine.pBox.get(widget.playList)[index])){
+                      if(hEngine.pBox.get('Favorites', defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index])){
                         await hEngine.removeFromPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
                         setState(() {});
                       } else {
@@ -90,7 +90,7 @@ class _SearchState extends State<Search> {
                         setState(() {});
                       }
                     },
-                    icon: hEngine.pBox.get('Favorites').contains(hEngine.pBox.get(widget.playList)[index]) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                    icon: hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index]) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
                   ),
                   leading: Icon(Icons.music_note,size: 32),
                 );
