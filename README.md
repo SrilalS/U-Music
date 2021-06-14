@@ -1,6 +1,6 @@
 # <ins>U Music</ins>
 
-![Build Version](https://img.shields.io/badge/V-5.0.1-brightgreen)
+![Build Version](https://img.shields.io/badge/V-10.0.0-brightgreen)
 ![Build](https://img.shields.io/badge/Status-Stable-brightgreen)
 ![BuildX](https://img.shields.io/badge/FlutterChannel-Stable-blue)
 
