@@ -44,7 +44,7 @@ class MusicEngine{
             int.parse(element.duration)));
       });
           **/
-      currentSong.value = hEngine.pBox.get('AllSongs')[0];
+      currentSong.value = hEngine.pBox.get('AllSongs').first;
       settingsChanged.value = settingsChanged.value++;
       return true;
   }

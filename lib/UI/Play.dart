@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
-import 'package:umusicv2/UI/Widgets/Drawer.dart';
 
 class Play extends StatefulWidget {
   const Play({Key key}) : super(key: key);
@@ -17,6 +16,24 @@ class Play extends StatefulWidget {
 }
 
 class _PlayState extends State<Play> {
+
+  RxBool isFavorite = false.obs;
+
+  void checkIfFavorite(){
+    if(hEngine.pBox.get('Favorites').contains(currentSong.value)){
+      isFavorite.value = true;
+      print(hEngine.pBox.get('Favorites'));
+    } else {
+      isFavorite.value = false;
+    }
+  }
+
+  @override
+  void initState() {
+    checkIfFavorite();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,21 +270,23 @@ class _PlayState extends State<Play> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                onPressed: () async{
-                  //print(hEngine.pBox.get('Favorites',defaultValue: []));
-                  if(hEngine.pBox.get('Favorites',defaultValue: []).contains(currentSong.value)){
-                    await hEngine.removeFromPlayList('Favorites', currentSong.value);
-                    setState(() {});
-                  } else {
-                    await hEngine.saveToPlayList('Favorites', currentSong.value);
-                    setState(() {});
-                  }
-                  songsListChanged.value++;
-                },
-                //icon: Icon(Icons.favorite)
-                icon: hEngine.pBox.get('Favorites',defaultValue: []).contains(currentSong.value) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
-              )
+              Obx((){
+                return IconButton(
+                  onPressed: () async{
+                    //print(hEngine.pBox.get('Favorites',defaultValue: []));
+                    if(hEngine.pBox.get('Favorites',defaultValue: []).contains(currentSong.value)){
+                      await hEngine.removeFromPlayList('Favorites', currentSong.value);
+                      checkIfFavorite();
+                    } else {
+                      await hEngine.saveToPlayList('Favorites', currentSong.value);
+                      checkIfFavorite();
+                    }
+                    //songsListChanged.value++;
+                  },
+                  //icon: Icon(Icons.favorite)
+                  icon: isFavorite.value ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                );
+              })
             ],
           )
 

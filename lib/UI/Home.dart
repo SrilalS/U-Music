@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/Engine/MusicEngine.dart';
@@ -30,6 +31,58 @@ class _HomeState extends State<Home> {
         print(value);
       });
     });
+  }
+
+  IconData getIcon(String key){
+    if(key =='AllSongs'){
+      return Icons.music_note;
+    } else if(key =='Favorites'){
+      return Icons.favorite;
+    } else {
+      return Icons.playlist_play_rounded;
+    }
+  }
+
+  String getName(String key){
+    if(key =='AllSongs'){
+      return 'All Songs';
+    } else {
+      return key;
+    }
+  }
+
+  bool shouldBeDeletable(String key){
+    if(key =='AllSongs' || key =='Favorites'){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  void deletePlayList(String playList){
+    Get.defaultDialog(
+        radius: 8,
+        backgroundColor: backShadeColor(),
+        title: 'Delete Playlist',
+        content: Text('Are You Sure?'),
+        actions: [
+          TextButton(
+              style: TextButton.styleFrom(
+                  primary: mainColor()
+              ),
+              onPressed: (){
+                Get.back();
+              }, child: Text('Cancel')),
+          TextButton(
+              style: TextButton.styleFrom(
+                  primary: mainColor()
+              ),
+              onPressed: (){
+                  hEngine.pBox.delete(playList);
+                  Get.back();
+              }, child: Text('Delete'))
+        ]
+    );
   }
 
   void newPlayList(){
@@ -67,6 +120,8 @@ class _HomeState extends State<Home> {
                 );
               } else {
                 hEngine.pBox.put(playlistName.text, []);
+                playlistName.clear();
+                Get.back();
               }
         }, child: Text('Create'))
       ]
@@ -83,8 +138,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backColor(),
-      //drawer: drawer(),
-
       floatingActionButton: mainFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
@@ -147,7 +200,7 @@ class _HomeState extends State<Home> {
                     IconButton(
                       icon: Icon(Icons.add),
                       onPressed: (){
-                        //newPlayList();
+                        newPlayList();
                       },
                     )
                   ],
@@ -155,80 +208,82 @@ class _HomeState extends State<Home> {
                 SizedBox(height: 16),
                 Expanded(
 
-                  child: ListView(
-                    //scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        height: 128,
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: (){
-                            Get.to(
-                                  ()=>AllSongs(
-                                    playList: 'AllSongs',
-                                  ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: mainColor(),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)
-                            ),
+                  child: StreamBuilder(
+                    stream: hEngine.pBox.watch(),
+                    builder: (context, AsyncSnapshot<BoxEvent> snapshot){
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>(mainColor()),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: hEngine.pBox.length,
+                        itemBuilder: (context,index){
+                          return Container(
+                            height: 128,
+                            margin: const EdgeInsets.all(8),
+                            child: ElevatedButton(
+                              onPressed: (){
+                                Get.to(
+                                      ()=>AllSongs(
+                                    playList: hEngine.pBox.keys.toList()[index],
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: mainColor(),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)
+                                ),
+                              ),
+                              child: shouldBeDeletable(hEngine.pBox.keys.toList()[index])? Stack(
                                 children: [
-                                  Icon(Icons.music_note, size: 72),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
+                                        ],
+                                      ),
+                                      Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                                      Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
+                                    ],
+                                  ),
+                                  Positioned(
+                                    right: 0,
+                                      top: 42,
+                                      child: IconButton(
+                                    icon: Icon(Icons.highlight_remove_rounded),
+                                    onPressed: (){
+                                      deletePlayList(hEngine.pBox.keys.toList()[index]);
+                                    },
+                                  ))
+                                ],
+                              ) : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
+                                    ],
+                                  ),
+                                  Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                                  Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
                                 ],
                               ),
-                              Text('All Songs', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                              /**
-                                  Obx((){
-                                  return Text(songs.length.toString() +' Songs');
-                                  })
-                               **/
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 128,
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: (){
-                            //hEngine.devOPS();
-                            Get.to(
-                                 ()=>AllSongs(
-                                    playList: 'Favorites',
-                                  ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: mainColor(),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)
                             ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.favorite, size: 72),
-                                ],
-                              ),
-                              Text('Favorites', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                          );
+                        },
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: 100),
