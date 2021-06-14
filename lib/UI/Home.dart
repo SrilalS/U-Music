@@ -118,6 +118,11 @@ class _HomeState extends State<Home> {
                   'You Already has a playlist with the same name. please use a different name',
                   backgroundColor: backShadeColor(),
                 );
+              } else if(playlistName.text.length < 1 || playlistName.text.length > 16){
+                Get.snackbar('Playlist is Too long or Too Short!',
+                  'Playlist name must be shorter than 16 characters and longer than 1 character. please use a proper playlist',
+                  backgroundColor: backShadeColor(),
+                );
               } else {
                 hEngine.pBox.put(playlistName.text, []);
                 playlistName.clear();
@@ -207,7 +212,6 @@ class _HomeState extends State<Home> {
                 ),
                 SizedBox(height: 16),
                 Expanded(
-
                   child: StreamBuilder(
                     stream: hEngine.pBox.watch(),
                     builder: (context, AsyncSnapshot<BoxEvent> snapshot){
@@ -219,69 +223,73 @@ class _HomeState extends State<Home> {
                           ),
                         );
                       }
-                      return ListView.builder(
-                        itemCount: hEngine.pBox.length,
-                        itemBuilder: (context,index){
-                          return Container(
-                            height: 128,
-                            margin: const EdgeInsets.all(8),
-                            child: ElevatedButton(
-                              onPressed: (){
-                                Get.to(
-                                      ()=>AllSongs(
-                                    playList: hEngine.pBox.keys.toList()[index],
+                      return GlowingOverscrollIndicator(
+                        color: mainColor(),
+                        axisDirection: AxisDirection.down,
+                        child: ListView.builder(
+                          itemCount: hEngine.pBox.length,
+                          itemBuilder: (context,index){
+                            return Container(
+                              height: 128,
+                              margin: const EdgeInsets.all(8),
+                              child: ElevatedButton(
+                                onPressed: (){
+                                  Get.to(
+                                        ()=>AllSongs(
+                                      playList: hEngine.pBox.keys.toList()[index],
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: mainColor(),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)
                                   ),
-                                );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: mainColor(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8)
+                                ),
+                                child: shouldBeDeletable(hEngine.pBox.keys.toList()[index])? Stack(
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
+                                          ],
+                                        ),
+                                        Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                                        Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
+                                      ],
+                                    ),
+                                    Positioned(
+                                        right: 0,
+                                        top: 42,
+                                        child: IconButton(
+                                          icon: Icon(Icons.highlight_remove_rounded),
+                                          onPressed: (){
+                                            deletePlayList(hEngine.pBox.keys.toList()[index]);
+                                          },
+                                        ))
+                                  ],
+                                ) : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
+                                      ],
+                                    ),
+                                    Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                                    Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
+                                  ],
                                 ),
                               ),
-                              child: shouldBeDeletable(hEngine.pBox.keys.toList()[index])? Stack(
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
-                                        ],
-                                      ),
-                                      Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                                      Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
-                                    ],
-                                  ),
-                                  Positioned(
-                                    right: 0,
-                                      top: 42,
-                                      child: IconButton(
-                                    icon: Icon(Icons.highlight_remove_rounded),
-                                    onPressed: (){
-                                      deletePlayList(hEngine.pBox.keys.toList()[index]);
-                                    },
-                                  ))
-                                ],
-                              ) : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
-                                    ],
-                                  ),
-                                  Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                                  Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       );
                     },
                   ),

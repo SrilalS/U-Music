@@ -1,7 +1,7 @@
 name: umusicv2
 description: An Experimental Music Player Build using Flutter. Srilal S. Siriwardhane
 
-version: 5.0.1+6
+version: 10.0.0+1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"

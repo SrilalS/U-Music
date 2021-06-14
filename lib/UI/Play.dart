@@ -18,6 +18,69 @@ class Play extends StatefulWidget {
 class _PlayState extends State<Play> {
 
   RxBool isFavorite = false.obs;
+  List<String> playLists = [];
+
+  RxString selectedValue = ''.obs;
+  RxString holder = 'Select Your Playlist'.obs;
+
+  void processPlayLists(){
+    hEngine.pBox.keys.forEach((element) {
+      print(element);
+      if(element !='AllSongs' && element !='Favorites'){
+        playLists.add(element);
+      }
+    });
+  }
+
+  void addToPlayList(){
+    Get.defaultDialog(
+        radius: 8,
+        backgroundColor: backShadeColor(),
+        title: 'Add to Playlist',
+        content: Obx((){
+          return DropdownButton(
+            underline: Container(),
+            dropdownColor: backColor(),
+            hint: Text(holder.value),
+            value: selectedValue.value == '' ? null : selectedValue.value,
+            items: playLists.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: new Text(value),
+              );
+            }).toList(),
+            onChanged: (val) {
+              selectedValue.value = val;
+            },
+          );
+        }),
+        actions: [
+          TextButton(
+              style: TextButton.styleFrom(
+                  primary: mainColor()
+              ),
+              onPressed: (){
+                Get.back();
+              }, child: Text('Cancel')),
+          TextButton(
+              style: TextButton.styleFrom(
+                  primary: mainColor()
+              ),
+              onPressed: (){
+                if(selectedValue.value == ''){
+                  Get.snackbar('Please Select a Playlist!',
+                    'You need to select a playlist to add. please select a playlist',
+                    backgroundColor: backShadeColor(),
+                  );
+                } else {
+                  hEngine.saveToPlayList(selectedValue.value, currentSong.value);
+                  Get.back();
+                }
+
+              }, child: Text('Add'))
+        ]
+    );
+  }
 
   void checkIfFavorite(){
     if(hEngine.pBox.get('Favorites').contains(currentSong.value)){
@@ -31,6 +94,7 @@ class _PlayState extends State<Play> {
   @override
   void initState() {
     checkIfFavorite();
+    processPlayLists();
     super.initState();
   }
 
@@ -286,7 +350,11 @@ class _PlayState extends State<Play> {
                   //icon: Icon(Icons.favorite)
                   icon: isFavorite.value ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
                 );
-              })
+              }),
+              SizedBox(width: 32),
+              IconButton(onPressed: (){
+                addToPlayList();
+              }, icon: Icon(Icons.playlist_add))
             ],
           )
 

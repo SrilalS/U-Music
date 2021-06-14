@@ -45,44 +45,48 @@ class _AllSongsState extends State<AllSongs> {
           child: StreamBuilder(
             stream: hEngine.pBox.watch(key: 'Favorites'),
             builder: (context,snapshot){
-              return ListView.builder(
-                itemCount: hEngine.pBox.get(widget.playList, defaultValue: []).length,
-                itemBuilder: (context,index){
-                  //print(hEngine.asBox.values.toList());
-                  return Obx((){
-                    return ListTile(
-                      onTap: (){
-                        pEngine.play(widget.playList,hEngine.pBox.get(widget.playList)[index],index);
-                        Get.to(()=>Play());
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)
-                      ),
-                      tileColor: hEngine.pBox.get(widget.playList)[index].id == currentSong.value.id
-                          ? mainColor()
-                          : Colors.transparent,
-                      title: Text(
-                          hEngine.pBox.get(widget.playList)[index].title,
-                          overflow: TextOverflow.ellipsis
-                      ),
-                      trailing: IconButton(
-                        onPressed: () async{
-                          //print(hEngine.pBox.get('Favorites',defaultValue: []));
-                          if(hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index])){
-                            await hEngine.removeFromPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
-                            setState(() {});
-                          } else {
-                            await hEngine.saveToPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
-                            setState(() {});
-                          }
+              return GlowingOverscrollIndicator(
+                  axisDirection: AxisDirection.down,
+                  color: mainColor(),
+                child: ListView.builder(
+                  itemCount: hEngine.pBox.get(widget.playList, defaultValue: []).length,
+                  itemBuilder: (context,index){
+                    //print(hEngine.asBox.values.toList());
+                    return Obx((){
+                      return ListTile(
+                        onTap: (){
+                          pEngine.play(widget.playList,hEngine.pBox.get(widget.playList)[index],index);
+                          Get.to(()=>Play());
                         },
-                        //icon: Icon(Icons.favorite)
-                        icon: hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index]) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
-                      ),
-                      leading: Icon(Icons.music_note,size: 32),
-                    );
-                  });
-                },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)
+                        ),
+                        tileColor: hEngine.pBox.get(widget.playList)[index].id == currentSong.value.id
+                            ? mainColor()
+                            : Colors.transparent,
+                        title: Text(
+                            hEngine.pBox.get(widget.playList)[index].title,
+                            overflow: TextOverflow.ellipsis
+                        ),
+                        trailing: IconButton(
+                          onPressed: () async{
+                            //print(hEngine.pBox.get('Favorites',defaultValue: []));
+                            if(hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index])){
+                              await hEngine.removeFromPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                              setState(() {});
+                            } else {
+                              await hEngine.saveToPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                              setState(() {});
+                            }
+                          },
+                          //icon: Icon(Icons.favorite)
+                          icon: hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index]) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                        ),
+                        leading: Icon(Icons.music_note,size: 32),
+                      );
+                    });
+                  },
+                ),
               );
             },
           ),
