@@ -17,6 +17,10 @@ class _SearchState extends State<Search> {
 
   TextEditingController searchText = new TextEditingController();
 
+  void getItems(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,14 +50,20 @@ class _SearchState extends State<Search> {
             itemCount: hEngine.pBox.get(widget.playList,defaultValue: []).length,
             itemBuilder: (context,index){
               if (searchText.text.length > 0 &&
-                  hEngine.pBox.get(widget.playList,defaultValue: [])[index]
+                  StringSimilarity.findBestMatch(searchText.text.toLowerCase(), hEngine.pBox.get(widget.playList)[index]
                       .title
                       .toLowerCase()
-                      .similarityTo(searchText.text.toLowerCase()) <
-                      0.05) {
+                      .toString().split(' ')).bestMatch.rating < 0.3) {
                 //print(songs[index].title.similarityTo(searchText.text));
                 return Container();
               }
+
+              /**
+              print(StringSimilarity.findBestMatch(searchText.text.toLowerCase(), hEngine.pBox.get(widget.playList)[index]
+                  .title
+                  .toLowerCase()
+                  .toString().split(' ')));
+                  **/
               return Obx((){
                 return ListTile(
                   onTap: (){
