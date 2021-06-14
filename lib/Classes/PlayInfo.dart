@@ -18,6 +18,7 @@ RxInt songsListChanged = 0.obs;
 
 RxBool isPlaying = false.obs;
 RxInt currentIndex = 0.obs;
+RxString currentPlayList = 'AllSongs'.obs;
 RxInt songPosition = 0.obs;
 Rx<Song> currentSong = Song().obs;
 RxList<Song> songs = List<Song>.empty().obs;

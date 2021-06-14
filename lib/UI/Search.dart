@@ -6,6 +6,7 @@ import 'package:string_similarity/string_similarity.dart';
 import 'Play.dart';
 
 class Search extends StatefulWidget {
+  final String playList = 'AllSongs';
   const Search({Key key}) : super(key: key);
 
   @override
@@ -39,10 +40,10 @@ class _SearchState extends State<Search> {
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         child: ListView.builder(
-          itemCount: hEngine.asBox.length,
+          itemCount: hEngine.pBox.get(widget.playList,defaultValue: []).length,
           itemBuilder: (context,index){
             if (searchText.text.length > 0 &&
-                hEngine.asBox.getAt(index)
+                hEngine.pBox.get(widget.playList,defaultValue: [])[index]
                     .title
                     .toLowerCase()
                     .similarityTo(searchText.text.toLowerCase()) <
@@ -53,22 +54,30 @@ class _SearchState extends State<Search> {
             return Obx((){
               return ListTile(
                 onTap: (){
-                  pEngine.play(hEngine.asBox.getAt(index),index);
+                  pEngine.play(widget.playList,hEngine.pBox.get(widget.playList)[index],index);
                   Get.to(()=>Play());
                 },
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)
                 ),
-                tileColor: index == currentIndex.value
+                tileColor: hEngine.pBox.get(widget.playList)[index].id == currentSong.value.id
                     ? mainColor()
                     : Colors.transparent,
                 title: Text(
-                    hEngine.asBox.getAt(index).title,
+                    hEngine.pBox.get(widget.playList)[index].title,
                     overflow: TextOverflow.ellipsis
                 ),
                 trailing: IconButton(
-                  onPressed: (){},
-                  icon: Icon(Icons.favorite_border),
+                  onPressed: () async{
+                    if(hEngine.pBox.get('Favorites').contains(hEngine.pBox.get(widget.playList)[index])){
+                      await hEngine.removeFromPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                      setState(() {});
+                    } else {
+                      await hEngine.saveToPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                      setState(() {});
+                    }
+                  },
+                  icon: hEngine.pBox.get('Favorites').contains(hEngine.pBox.get(widget.playList)[index]) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
                 ),
                 leading: Icon(Icons.music_note,size: 32),
               );

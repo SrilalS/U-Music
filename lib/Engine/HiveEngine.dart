@@ -6,14 +6,33 @@ class HiveEngine{
   Box sBox;
   Box<Song> asBox;
 
+  Box<List> pBox;
+
   init() async{
     fBox = await Hive.openBox('fBox');
     sBox = await Hive.openBox('sBox');
     asBox = await Hive.openBox('asBox');
+    pBox = await Hive.openBox('pBox');
+  }
+
+  devOPS() async{
+    print(pBox.keys);
   }
 
   saveSongToBox(Song song) async{
     await asBox.put(song.id, song);
+  }
+
+  saveToPlayList(String playList, Song song) async{
+    List temp = pBox.get(playList,defaultValue: []);
+    temp.add(song);
+    await pBox.put(playList,temp);
+  }
+
+  removeFromPlayList(String playList, Song song) async{
+    List temp = pBox.get(playList,defaultValue: []);
+    temp.removeAt(temp.indexOf(song));
+    await pBox.put(playList,temp);
   }
 
   toggleFavorite(Song song){

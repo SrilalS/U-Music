@@ -253,9 +253,21 @@ class _PlayState extends State<Play> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(onPressed: (){
-                //hEngine.toggleFavorite(currentSong.value);
-              }, icon: Icon(Icons.favorite))
+              IconButton(
+                onPressed: () async{
+                  //print(hEngine.pBox.get('Favorites',defaultValue: []));
+                  if(hEngine.pBox.get('Favorites',defaultValue: []).contains(currentSong.value)){
+                    await hEngine.removeFromPlayList('Favorites', currentSong.value);
+                    setState(() {});
+                  } else {
+                    await hEngine.saveToPlayList('Favorites', currentSong.value);
+                    setState(() {});
+                  }
+                  songsListChanged.value++;
+                },
+                //icon: Icon(Icons.favorite)
+                icon: hEngine.pBox.get('Favorites',defaultValue: []).contains(currentSong.value) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+              )
             ],
           )
 

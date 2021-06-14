@@ -22,12 +22,55 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  TextEditingController playlistName = new TextEditingController();
+
   void stateSetter(){
     settingsChanged.listen((value) {
       setState(() {
         print(value);
       });
     });
+  }
+
+  void newPlayList(){
+    Get.defaultDialog(
+      radius: 8,
+      backgroundColor: backShadeColor(),
+      title: 'New Playlist',
+      content: TextField(
+        autofocus: true,
+        controller: playlistName,
+        cursorColor: mainColor(),
+        style: TextStyle(fontSize: 18),
+        decoration: InputDecoration(
+            hintText: 'Playlist Name',
+            border: InputBorder.none
+        ),
+      ),
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(
+            primary: mainColor()
+          ),
+            onPressed: (){
+            Get.back();
+            }, child: Text('Cancel')),
+        TextButton(
+            style: TextButton.styleFrom(
+                primary: mainColor()
+            ),
+        onPressed: (){
+              if(hEngine.pBox.keys.contains(playlistName.text)){
+                Get.snackbar('This Playlist Already Exists!',
+                  'You Already has a playlist with the same name. please use a different name',
+                  backgroundColor: backShadeColor(),
+                );
+              } else {
+                hEngine.pBox.put(playlistName.text, []);
+              }
+        }, child: Text('Create'))
+      ]
+    );
   }
 
   @override
@@ -103,79 +146,92 @@ class _HomeState extends State<Home> {
                     Text('Playlists', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
                     IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: (){},
+                      onPressed: (){
+                        //newPlayList();
+                      },
                     )
                   ],
                 ),
                 SizedBox(height: 16),
-                Container(
-                  width: Get.width,
-                  height: 180,
+                Expanded(
+
                   child: ListView(
-                    scrollDirection: Axis.horizontal,
+                    //scrollDirection: Axis.horizontal,
                     children: [
                       Container(
-                        height: 180,
-                        width: 180,
-                        child: Hero(
-                          tag: 'NowPlaying',
-                          child: ElevatedButton(
-                            onPressed: (){
-                              Get.to(
-                                    ()=>AllSongs(),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: mainColor(),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.music_note, size: 72),
-                                    ],
+                        height: 128,
+                        margin: const EdgeInsets.all(8),
+                        child: ElevatedButton(
+                          onPressed: (){
+                            Get.to(
+                                  ()=>AllSongs(
+                                    playList: 'AllSongs',
                                   ),
-                                  Text('All Songs', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                                  /**
-                                      Obx((){
-                                      return Text(songs.length.toString() +' Songs');
-                                      })
-                                   **/
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: mainColor(),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.music_note, size: 72),
                                 ],
                               ),
+                              Text('All Songs', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                              /**
+                                  Obx((){
+                                  return Text(songs.length.toString() +' Songs');
+                                  })
+                               **/
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 128,
+                        margin: const EdgeInsets.all(8),
+                        child: ElevatedButton(
+                          onPressed: (){
+                            //hEngine.devOPS();
+                            Get.to(
+                                 ()=>AllSongs(
+                                    playList: 'Favorites',
+                                  ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: mainColor(),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)
                             ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.favorite, size: 72),
+                                ],
+                              ),
+                              Text('Favorites', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                            ],
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text('Favorites', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                  ],
-                ),
-                SizedBox(height: 16),
-                /**
-                    Expanded(
-                    child: ListView(
-                    children: hEngine.fBox == null ? []: hEngine.fBox.values.map((element){
-                    return ListTile(
-                    title: Text(element.title),
-                    );
-                    }).toList(),
-                    ),
-                    ),
-                 **/
+                SizedBox(height: 100),
               ],
             ),
           ),

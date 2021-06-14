@@ -18,9 +18,12 @@ class PlayerEngine{
     getPlayerState();
   }
 
-  play(Song song, int index) async{
+  play(String playList ,Song song, int index) async{
 
     await ap.pause();
+    currentSong.value = song;
+    currentIndex.value = index;
+    currentPlayList.value = playList;
     await ap.open(
         Audio.file(
           song.uri,
@@ -51,8 +54,7 @@ class PlayerEngine{
           },
         )
     );
-    currentSong.value = song;
-    currentIndex.value = index;
+
     await ap.play();
   }
 
@@ -61,24 +63,24 @@ class PlayerEngine{
   }
 
   next(){
-    if(currentIndex.value == hEngine.asBox.length-1){
-      play(hEngine.asBox.getAt(0),0);
+    if(hEngine.pBox.get(currentPlayList.value).last.id == currentSong.value.id){
+      play(currentPlayList.value,hEngine.pBox.get(currentPlayList.value)[0],0);
     } else {
-      play(hEngine.asBox.getAt(currentIndex.value+1),currentIndex.value+1);
+      play(currentPlayList.value,hEngine.pBox.get(currentPlayList.value)[currentIndex.value+1],currentIndex.value+1);
     }
   }
 
   back(){
     if(currentIndex.value == 0){
-      play(hEngine.asBox.getAt(0),0);
+      play(currentPlayList.value,hEngine.pBox.get(currentPlayList.value)[0],0);
     } else {
-      play(hEngine.asBox.getAt(currentIndex.value-1),currentIndex.value-1);
+      play(currentPlayList.value,hEngine.pBox.get(currentPlayList.value)[currentIndex.value-1],currentIndex.value-1);
     }
   }
 
   pause(){
     if (ap.current == null){
-      play(hEngine.asBox.getAt(0),0);
+      play(currentPlayList.value,hEngine.pBox.get(currentPlayList.value)[0],0);
     } else {
       ap.playOrPause();
     }
@@ -107,7 +109,7 @@ class PlayerEngine{
 
   getPlayerState(){
     ap.playerState.distinct().asBroadcastStream().forEach((element) {
-      print(element);
+      print('PLAYING NEXT SONG FROM' + currentPlayList.value);
       if (element == PlayerState.stop && currentSong.value.uri != 'Loading...'){
         next();
       }

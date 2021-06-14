@@ -6,7 +6,8 @@ import 'package:umusicv2/UI/Play.dart';
 import 'package:umusicv2/UI/Widgets/FAB.dart';
 
 class AllSongs extends StatefulWidget {
-  const AllSongs({Key key}) : super(key: key);
+  final String playList;
+  const AllSongs({Key key, this.playList}) : super(key: key);
 
   @override
   _AllSongsState createState() => _AllSongsState();
@@ -22,7 +23,6 @@ class _AllSongsState extends State<AllSongs> {
     });
   }
 
-
   @override
   void initState() {
     stateSetter();
@@ -37,34 +37,44 @@ class _AllSongsState extends State<AllSongs> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       appBar: AppBar(
         backgroundColor: backColor(),
-        title: Text('All Songs'),
+        title: Text(widget.playList),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 112),
           child: ListView.builder(
-            itemCount: hEngine.asBox.length,
+            itemCount: hEngine.pBox.get(widget.playList, defaultValue: []).length,
             itemBuilder: (context,index){
               //print(hEngine.asBox.values.toList());
               return Obx((){
                 return ListTile(
                   onTap: (){
-                    pEngine.play(hEngine.asBox.getAt(index),index);
+                    pEngine.play(widget.playList,hEngine.pBox.get(widget.playList)[index],index);
                     Get.to(()=>Play());
                   },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)
                   ),
-                  tileColor: index == currentIndex.value
+                  tileColor: hEngine.pBox.get(widget.playList)[index].id == currentSong.value.id
                       ? mainColor()
                       : Colors.transparent,
                   title: Text(
-                      hEngine.asBox.getAt(index).title,
+                      hEngine.pBox.get(widget.playList)[index].title,
                       overflow: TextOverflow.ellipsis
                   ),
                   trailing: IconButton(
-                    onPressed: (){},
-                    icon: Icon(Icons.favorite_border),
+                    onPressed: () async{
+                      //print(hEngine.pBox.get('Favorites',defaultValue: []));
+                      if(hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index])){
+                        await hEngine.removeFromPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                        setState(() {});
+                      } else {
+                        await hEngine.saveToPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                        setState(() {});
+                      }
+                    },
+                    //icon: Icon(Icons.favorite)
+                    icon: hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index]) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
                   ),
                   leading: Icon(Icons.music_note,size: 32),
                 );

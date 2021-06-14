@@ -21,6 +21,18 @@ class MusicEngine{
         return a.title.toLowerCase().compareTo(b.title.toLowerCase());
       });
       await hEngine.asBox.clear();
+      await hEngine.pBox.put('AllSongs', List.generate(songInfo.length, (index){
+          return Song.name(
+              songInfo[index].id,
+              songInfo[index].title,
+              songInfo[index].album,
+              songInfo[index].artist,
+              songInfo[index].uri,
+              songInfo[index].albumArtwork,
+              int.parse(songInfo[index].duration)
+          );
+      }));
+      /**
       songInfo.forEach((element) async{
         await hEngine.saveSongToBox(Song.name(
             element.id,
@@ -31,7 +43,8 @@ class MusicEngine{
             element.albumArtwork,
             int.parse(element.duration)));
       });
-      currentSong.value = hEngine.asBox.getAt(0);
+          **/
+      currentSong.value = hEngine.pBox.get('AllSongs')[0];
       settingsChanged.value = settingsChanged.value++;
       return true;
   }
