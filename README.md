@@ -5,9 +5,9 @@
 ![BuildX](https://img.shields.io/badge/FlutterChannel-Stable-blue)
 
 
-![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/V3/Screenshots/1.jpg?raw=true)
-![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/V3/Screenshots/2.jpg?raw=true)
-![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music//V3/Screenshots/3.jpg?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/V3/Screenshots/1.png?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music/V3/Screenshots/2.png?raw=true)
+![Screen Shots](https://raw.githubusercontent.com/SrilalS/U-Music//V3/Screenshots/3.png?raw=true)
 
 
 An Experimental Music Player Build using Flutter.
