@@ -91,8 +91,8 @@ class PlayerEngine{
     loopMode.value = !loopMode.value;
   }
 
-  seek(Duration seekpoint){
-    ap.seek(seekpoint);
+  seek(Duration seekPoint){
+    ap.seek(seekPoint);
   }
 
   position(){
