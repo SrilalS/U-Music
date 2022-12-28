@@ -1,9 +1,7 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
@@ -57,14 +55,14 @@ class _PlayState extends State<Play> {
         actions: [
           TextButton(
               style: TextButton.styleFrom(
-                  primary: mainColor()
+                  foregroundColor: mainColor()
               ),
               onPressed: (){
                 Get.back();
               }, child: Text('Cancel')),
           TextButton(
               style: TextButton.styleFrom(
-                  primary: mainColor()
+                  foregroundColor: mainColor()
               ),
               onPressed: (){
                 if(selectedValue.value == ''){
@@ -121,9 +119,9 @@ class _PlayState extends State<Play> {
                 child: Obx((){
 
                   return FutureBuilder(
-                    future: audioQuery.getArtwork(
-                      type: ResourceType.SONG,
-                      id: currentSong.value.id,
+                    future: audioQuery.queryArtwork(
+                      currentSong.value.id,
+                      ArtworkType.AUDIO,
                     ),
                     builder: (context, snap) {
                       if (snap.connectionState == ConnectionState.done) {
@@ -267,7 +265,7 @@ class _PlayState extends State<Play> {
                 width: 64,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: mainColor(),
+                      backgroundColor: mainColor(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(256)
                       )
@@ -290,7 +288,7 @@ class _PlayState extends State<Play> {
                         pEngine.pause();
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: mainColor(),
+                          backgroundColor: mainColor(),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(256)
                           )
@@ -304,7 +302,7 @@ class _PlayState extends State<Play> {
                 width: 72,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: mainColor(),
+                      backgroundColor: mainColor(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(256)
                       )

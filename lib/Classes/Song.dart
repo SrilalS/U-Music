@@ -5,7 +5,7 @@ part 'Song.g.dart';
 @HiveType(typeId : 1)
 class Song{
   @HiveField(0)
-  String id;
+  int id;
 
   @HiveField(1)
   String title;
@@ -26,7 +26,7 @@ class Song{
   int length;
 
   Song(){
-    this.id = '0';
+    this.id = 0;
     this.title = 'Loading...';
     this.album = 'Loading...';
     this.artist = 'Loading...';

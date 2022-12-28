@@ -67,14 +67,14 @@ class _HomeState extends State<Home> {
         actions: [
           TextButton(
               style: TextButton.styleFrom(
-                  primary: mainColor()
+                  foregroundColor: mainColor()
               ),
               onPressed: (){
                 Get.back();
               }, child: Text('Cancel')),
           TextButton(
               style: TextButton.styleFrom(
-                  primary: mainColor()
+                  foregroundColor: mainColor()
               ),
               onPressed: (){
                   hEngine.pBox.delete(playList);
@@ -102,14 +102,14 @@ class _HomeState extends State<Home> {
       actions: [
         TextButton(
           style: TextButton.styleFrom(
-            primary: mainColor()
+            foregroundColor: mainColor()
           ),
             onPressed: (){
             Get.back();
             }, child: Text('Cancel')),
         TextButton(
             style: TextButton.styleFrom(
-                primary: mainColor()
+                foregroundColor: mainColor()
             ),
         onPressed: (){
               if(hEngine.pBox.keys.contains(playlistName.text)){
@@ -177,7 +177,7 @@ class _HomeState extends State<Home> {
                   height: 48,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: backShadeColor(),
+                      backgroundColor: backShadeColor(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)
                       ),
@@ -240,7 +240,7 @@ class _HomeState extends State<Home> {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: mainColor(),
+                                  backgroundColor: mainColor(),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8)
                                   ),

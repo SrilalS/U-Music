@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
 import 'package:umusicv2/UI/Home.dart';
 
@@ -14,8 +15,16 @@ class _PermissionsReqState extends State<PermissionsReq> {
   bool permitted = false;
 
   void getPermissions() async{
-    if (await Permission.storage.request().isGranted) {
+    bool status = await audioQuery.permissionsStatus();
+    if(status){
+      Get.offAll(()=>Home());
+    } else {
+      if (await Permission.storage.request().isGranted) {
+      //await audioQuery.permissionsRequest().then((value) => print(value));
       Get.offAll(Home());
+    } else {
+      Get.snackbar('Error', 'Permission Denied');
+    }
     }
   }
 
@@ -43,7 +52,7 @@ class _PermissionsReqState extends State<PermissionsReq> {
               height: 48,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: mainColor()
+                  backgroundColor: mainColor()
                 ),
                 onPressed: (){
                   getPermissions();

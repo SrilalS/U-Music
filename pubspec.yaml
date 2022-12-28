@@ -12,21 +12,21 @@ dependencies:
 
   get: ^4.6.5
   path_provider: ^2.0.11
-  flutter_audio_query: ^0.3.5+6
-  http: ^0.13.4
-  shared_preferences: ^2.0.13
-  assets_audio_player: ^3.0.4+1
+  http: ^0.13.5
+  shared_preferences: ^2.0.15
+  assets_audio_player: ^3.0.6
   move_to_background: ^1.0.2
   permission_handler: ^9.2.0
   string_similarity: ^2.0.0
+  on_audio_query: ^3.0.0-beta.0
 
-  hive: ^2.0.6
+  hive: ^2.2.3
   hive_flutter: ^1.1.0
 
 dev_dependencies:
-  hive_generator: ^1.1.0
-  flutter_native_splash: ^1.2.0
-  build_runner: ^2.0.4
+  hive_generator: ^2.0.0
+  flutter_native_splash: ^2.2.16
+  build_runner: ^2.3.2
   flutter_test:
     sdk: flutter
 

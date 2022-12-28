@@ -12,8 +12,8 @@ void main() async{
   await Hive.initFlutter();
   Hive.registerAdapter(SongAdapter());
   await hEngine.init();
-  var status = await Permission.storage.status;
-  if (status.isGranted){
+  var legacyStatus = await Permission.storage.status;
+  if (legacyStatus.isGranted){
     isGranted = true;
   }
   runApp(UMusic());

@@ -55,7 +55,7 @@ class _SettingsState extends State<Settings> {
                 children: [
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: Color(0xffe42c3f)
+                          backgroundColor: Color(0xffe42c3f)
                       ),
                       onPressed: (){
                         changeMainColor(0xffe42c3f);
@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
                   ),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: Color(0xff2051e5)
+                          backgroundColor: Color(0xff2051e5)
                       ),
                       onPressed: (){
                         changeMainColor(0xff2051e5);
@@ -71,7 +71,7 @@ class _SettingsState extends State<Settings> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xff9500ff)
+                      backgroundColor: Color(0xff9500ff)
                     ),
                       onPressed: (){
                         changeMainColor(0xff9500ff);
@@ -79,7 +79,7 @@ class _SettingsState extends State<Settings> {
                   ),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: Color(0xff989898)
+                          backgroundColor: Color(0xff989898)
                       ),
                       onPressed: (){
                         changeMainColor(0xff989898);
@@ -105,7 +105,7 @@ class _SettingsState extends State<Settings> {
                     width: Get.width*0.4,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color(0xff420f10)
+                            backgroundColor: Color(0xff420f10)
                         ),
                         onPressed: (){
                           changeBackColor(0xff420f10,0xff581e1f);
@@ -116,7 +116,7 @@ class _SettingsState extends State<Settings> {
                     width: Get.width*0.4,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color(0xff0f2142)
+                            backgroundColor: Color(0xff0f2142)
                         ),
                         onPressed: (){
                           changeBackColor(0xff0f2142,0xff1e3558);
@@ -134,7 +134,7 @@ class _SettingsState extends State<Settings> {
                     width: Get.width*0.4,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color(0xff260f42)
+                            backgroundColor: Color(0xff260f42)
                         ),
                         onPressed: (){
                           changeBackColor(0xff260f42,0xff381e58);
@@ -145,7 +145,7 @@ class _SettingsState extends State<Settings> {
                     width: Get.width*0.4,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color(0xff222222)
+                            backgroundColor: Color(0xff222222)
                         ),
                         onPressed: (){
                           changeBackColor(0xff222222,0xff565656);
