@@ -1,9 +1,7 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/ServiceModules/AudioEngine.dart';
 import 'package:umusicv2/Styles/Styles.dart';
@@ -16,15 +14,99 @@ class Play extends StatefulWidget {
 }
 
 class _PlayState extends State<Play> {
+
+  RxBool isFavorite = false.obs;
+  List<String> playLists = [];
+
+  RxString selectedValue = ''.obs;
+  RxString holder = 'Select Your Playlist'.obs;
+
+  void processPlayLists(){
+    hEngine.pBox.keys.forEach((element) {
+      print(element);
+      if(element !='AllSongs' && element !='Favorites'){
+        playLists.add(element);
+      }
+    });
+  }
+
+  void addToPlayList(){
+    Get.defaultDialog(
+        radius: 8,
+        backgroundColor: backShadeColor(),
+        title: 'Add to Playlist',
+        content: Obx((){
+          return DropdownButton(
+            underline: Container(),
+            dropdownColor: backColor(),
+            hint: Text(holder.value),
+            value: selectedValue.value == '' ? null : selectedValue.value,
+            items: playLists.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: new Text(value),
+              );
+            }).toList(),
+            onChanged: (val) {
+              selectedValue.value = val;
+            },
+          );
+        }),
+        actions: [
+          TextButton(
+              style: TextButton.styleFrom(
+                  foregroundColor: mainColor()
+              ),
+              onPressed: (){
+                Get.back();
+              }, child: Text('Cancel')),
+          TextButton(
+              style: TextButton.styleFrom(
+                  foregroundColor: mainColor()
+              ),
+              onPressed: (){
+                if(selectedValue.value == ''){
+                  Get.snackbar('Please Select a Playlist!',
+                    'You need to select a playlist to add. please select a playlist',
+                    backgroundColor: backShadeColor(),
+                  );
+                } else {
+                  hEngine.saveToPlayList(selectedValue.value, currentSong.value);
+                  Get.back();
+                }
+
+              }, child: Text('Add'))
+        ]
+    );
+  }
+
+  void checkIfFavorite(){
+    if(hEngine.pBox.get('Favorites').contains(currentSong.value)){
+      isFavorite.value = true;
+      print(hEngine.pBox.get('Favorites'));
+    } else {
+      isFavorite.value = false;
+    }
+  }
+
+  @override
+  void initState() {
+    checkIfFavorite();
+    processPlayLists();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor(),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         title: Text('Now Playing'),
         backgroundColor: Colors.transparent,
       ),
+      //endDrawer: drawer(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -37,9 +119,9 @@ class _PlayState extends State<Play> {
                 child: Obx((){
 
                   return FutureBuilder(
-                    future: audioQuery.getArtwork(
-                      type: ResourceType.SONG,
-                      id: currentSong.value.id,
+                    future: audioQuery.queryArtwork(
+                      currentSong.value.id,
+                      ArtworkType.AUDIO,
                     ),
                     builder: (context, snap) {
                       if (snap.connectionState == ConnectionState.done) {
@@ -183,7 +265,7 @@ class _PlayState extends State<Play> {
                 width: 64,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: mainColor(),
+                      backgroundColor: mainColor(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(256)
                       )
@@ -206,7 +288,7 @@ class _PlayState extends State<Play> {
                         pEngine.pause();
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: mainColor(),
+                          backgroundColor: mainColor(),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(256)
                           )
@@ -220,7 +302,7 @@ class _PlayState extends State<Play> {
                 width: 72,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: mainColor(),
+                      backgroundColor: mainColor(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(256)
                       )
@@ -250,9 +332,27 @@ class _PlayState extends State<Play> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Obx((){
+                return IconButton(
+                  onPressed: () async{
+                    //print(hEngine.pBox.get('Favorites',defaultValue: []));
+                    if(hEngine.pBox.get('Favorites',defaultValue: []).contains(currentSong.value)){
+                      await hEngine.removeFromPlayList('Favorites', currentSong.value);
+                      checkIfFavorite();
+                    } else {
+                      await hEngine.saveToPlayList('Favorites', currentSong.value);
+                      checkIfFavorite();
+                    }
+                    //songsListChanged.value++;
+                  },
+                  //icon: Icon(Icons.favorite)
+                  icon: isFavorite.value ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                );
+              }),
+              SizedBox(width: 32),
               IconButton(onPressed: (){
-                //hEngine.toggleFavorite(currentSong.value);
-              }, icon: Icon(Icons.favorite))
+                addToPlayList();
+              }, icon: Icon(Icons.playlist_add))
             ],
           )
 

@@ -1,20 +1,32 @@
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:umusicv2/Classes/Song.dart';
 
 class HiveEngine{
   Box<Song> fBox;
   Box sBox;
-  Box<Song> asBox;
+
+  Box<List> pBox;
 
   init() async{
     fBox = await Hive.openBox('fBox');
     sBox = await Hive.openBox('sBox');
-    asBox = await Hive.openBox('asBox');
+    pBox = await Hive.openBox('pBox');
   }
 
-  saveSongToBox(Song song) async{
-    await asBox.put(song.id, song);
+  devOPS() async{
+    print(pBox.keys);
+  }
+
+  saveToPlayList(String playList, Song song) async{
+    List temp = pBox.get(playList,defaultValue: []);
+    temp.add(song);
+    await pBox.put(playList,temp);
+  }
+
+  removeFromPlayList(String playList, Song song) async{
+    List temp = pBox.get(playList,defaultValue: []);
+    temp.removeAt(temp.indexOf(song));
+    await pBox.put(playList,temp);
   }
 
   toggleFavorite(Song song){
@@ -30,5 +42,13 @@ class HiveEngine{
 
   saveThemeColor(int colorInt){
     sBox.put('ThemeColor', colorInt);
+  }
+
+  saveBackColor(int colorInt){
+    sBox.put('BackColor', colorInt);
+  }
+
+  saveBackShadeColor(int colorInt){
+    sBox.put('BackShadeColor', colorInt);
   }
 }

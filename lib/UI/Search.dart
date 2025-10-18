@@ -6,6 +6,7 @@ import 'package:string_similarity/string_similarity.dart';
 import 'Play.dart';
 
 class Search extends StatefulWidget {
+  final String playList = 'AllSongs';
   const Search({Key key}) : super(key: key);
 
   @override
@@ -16,12 +17,18 @@ class _SearchState extends State<Search> {
 
   TextEditingController searchText = new TextEditingController();
 
+  void getItems(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor(),
       appBar: AppBar(
-        backgroundColor: Color(0xff381e58),
+        backgroundColor: backShadeColor(),
         title: TextField(
+          autofocus: true,
           controller: searchText,
           onChanged: (val){
             setState(() {});
@@ -36,42 +43,60 @@ class _SearchState extends State<Search> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-        child: ListView.builder(
-          itemCount: hEngine.asBox.length,
-          itemBuilder: (context,index){
-            if (searchText.text.length > 0 &&
-                hEngine.asBox.getAt(index)
-                    .title
-                    .toLowerCase()
-                    .similarityTo(searchText.text.toLowerCase()) <
-                    0.05) {
-              //print(songs[index].title.similarityTo(searchText.text));
-              return Container();
-            }
-            return Obx((){
-              return ListTile(
-                onTap: (){
-                  pEngine.play(hEngine.asBox.getAt(index),index);
-                  Get.to(()=>Play());
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)
-                ),
-                tileColor: index == currentIndex.value
-                    ? mainColor()
-                    : Colors.transparent,
-                title: Text(
-                    hEngine.asBox.getAt(index).title,
-                    overflow: TextOverflow.ellipsis
-                ),
-                trailing: IconButton(
-                  onPressed: (){},
-                  icon: Icon(Icons.favorite_border),
-                ),
-                leading: Icon(Icons.music_note,size: 32),
-              );
-            });
-          },
+        child: GlowingOverscrollIndicator(
+          axisDirection: AxisDirection.down,
+          color: mainColor(),
+          child: ListView.builder(
+            itemCount: hEngine.pBox.get(widget.playList,defaultValue: []).length,
+            itemBuilder: (context,index){
+              if (searchText.text.length > 0 &&
+                  StringSimilarity.findBestMatch(searchText.text.toLowerCase(), hEngine.pBox.get(widget.playList)[index]
+                      .title
+                      .toLowerCase()
+                      .toString().split(' ')).bestMatch.rating < 0.3) {
+                //print(songs[index].title.similarityTo(searchText.text));
+                return Container();
+              }
+
+              /**
+              print(StringSimilarity.findBestMatch(searchText.text.toLowerCase(), hEngine.pBox.get(widget.playList)[index]
+                  .title
+                  .toLowerCase()
+                  .toString().split(' ')));
+                  **/
+              return Obx((){
+                return ListTile(
+                  onTap: (){
+                    pEngine.play(widget.playList,hEngine.pBox.get(widget.playList)[index],index);
+                    Get.to(()=>Play());
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)
+                  ),
+                  tileColor: hEngine.pBox.get(widget.playList)[index].id == currentSong.value.id
+                      ? mainColor()
+                      : Colors.transparent,
+                  title: Text(
+                      hEngine.pBox.get(widget.playList)[index].title,
+                      overflow: TextOverflow.ellipsis
+                  ),
+                  trailing: IconButton(
+                    onPressed: () async{
+                      if(hEngine.pBox.get('Favorites', defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index])){
+                        await hEngine.removeFromPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                        setState(() {});
+                      } else {
+                        await hEngine.saveToPlayList('Favorites', hEngine.pBox.get(widget.playList)[index]);
+                        setState(() {});
+                      }
+                    },
+                    icon: hEngine.pBox.get('Favorites',defaultValue: []).contains(hEngine.pBox.get(widget.playList)[index]) ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+                  ),
+                  leading: Icon(Icons.music_note,size: 32),
+                );
+              });
+            },
+          ),
         ),
       )
     );

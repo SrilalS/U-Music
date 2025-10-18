@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:umusicv2/Classes/PlayInfo.dart';
 import 'package:umusicv2/Engine/MusicEngine.dart';
@@ -21,12 +22,114 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  TextEditingController playlistName = new TextEditingController();
+
   void stateSetter(){
     settingsChanged.listen((value) {
       setState(() {
         print(value);
       });
     });
+  }
+
+  IconData getIcon(String key){
+    if(key =='AllSongs'){
+      return Icons.music_note;
+    } else if(key =='Favorites'){
+      return Icons.favorite;
+    } else {
+      return Icons.playlist_play_rounded;
+    }
+  }
+
+  String getName(String key){
+    if(key =='AllSongs'){
+      return 'All Songs';
+    } else {
+      return key;
+    }
+  }
+
+  bool shouldBeDeletable(String key){
+    if(key =='AllSongs' || key =='Favorites'){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  void deletePlayList(String playList){
+    Get.defaultDialog(
+        radius: 8,
+        backgroundColor: backShadeColor(),
+        title: 'Delete Playlist',
+        content: Text('Are You Sure?'),
+        actions: [
+          TextButton(
+              style: TextButton.styleFrom(
+                  foregroundColor: mainColor()
+              ),
+              onPressed: (){
+                Get.back();
+              }, child: Text('Cancel')),
+          TextButton(
+              style: TextButton.styleFrom(
+                  foregroundColor: mainColor()
+              ),
+              onPressed: (){
+                  hEngine.pBox.delete(playList);
+                  Get.back();
+              }, child: Text('Delete'))
+        ]
+    );
+  }
+
+  void newPlayList(){
+    Get.defaultDialog(
+      radius: 8,
+      backgroundColor: backShadeColor(),
+      title: 'New Playlist',
+      content: TextField(
+        autofocus: true,
+        controller: playlistName,
+        cursorColor: mainColor(),
+        style: TextStyle(fontSize: 18),
+        decoration: InputDecoration(
+            hintText: 'Playlist Name',
+            border: InputBorder.none
+        ),
+      ),
+      actions: [
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: mainColor()
+          ),
+            onPressed: (){
+            Get.back();
+            }, child: Text('Cancel')),
+        TextButton(
+            style: TextButton.styleFrom(
+                foregroundColor: mainColor()
+            ),
+        onPressed: (){
+              if(hEngine.pBox.keys.contains(playlistName.text)){
+                Get.snackbar('This Playlist Already Exists!',
+                  'You Already has a playlist with the same name. please use a different name',
+                  backgroundColor: backShadeColor(),
+                );
+              } else if(playlistName.text.length < 1 || playlistName.text.length > 16){
+                Get.snackbar('Playlist is Too long or Too Short!',
+                  'Playlist name must be shorter than 16 characters and longer than 1 character. please use a proper playlist',
+                  backgroundColor: backShadeColor(),
+                );
+              } else {
+                hEngine.pBox.put(playlistName.text, []);
+                playlistName.clear();
+                Get.back();
+              }
+        }, child: Text('Create'))
+      ]
+    );
   }
 
   @override
@@ -38,8 +141,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backColor(),
       floatingActionButton: mainFAB(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       body: WillPopScope(
         onWillPop: () async{
           if(isPlaying.value){
@@ -72,7 +177,7 @@ class _HomeState extends State<Home> {
                   height: 48,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xff381e58),
+                      backgroundColor: backShadeColor(),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8)
                       ),
@@ -98,76 +203,97 @@ class _HomeState extends State<Home> {
                     Text('Playlists', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
                     IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: (){},
+                      onPressed: (){
+                        newPlayList();
+                      },
                     )
                   ],
                 ),
                 SizedBox(height: 16),
-                Container(
-                  width: Get.width,
-                  height: 180,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        height: 180,
-                        width: 180,
-                        child: ElevatedButton(
-                          onPressed: (){
-                            Get.to(
-                                  ()=>AllSongs(),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: mainColor(),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)
-                            ),
+                Expanded(
+                  child: StreamBuilder(
+                    stream: hEngine.pBox.watch(),
+                    builder: (context, AsyncSnapshot<BoxEvent> snapshot){
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                            AlwaysStoppedAnimation<Color>(mainColor()),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                        );
+                      }
+                      return GlowingOverscrollIndicator(
+                        color: mainColor(),
+                        axisDirection: AxisDirection.down,
+                        child: ListView.builder(
+                          itemCount: hEngine.pBox.length,
+                          itemBuilder: (context,index){
+                            return Container(
+                              height: 128,
+                              margin: const EdgeInsets.all(8),
+                              child: ElevatedButton(
+                                onPressed: (){
+                                  Get.to(
+                                        ()=>AllSongs(
+                                      playList: hEngine.pBox.keys.toList()[index],
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: mainColor(),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8)
+                                  ),
+                                ),
+                                child: shouldBeDeletable(hEngine.pBox.keys.toList()[index])? Stack(
                                   children: [
-                                    Icon(Icons.music_note, size: 72),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
+                                          ],
+                                        ),
+                                        Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                                        Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
+                                      ],
+                                    ),
+                                    Positioned(
+                                        right: 0,
+                                        top: 42,
+                                        child: IconButton(
+                                          icon: Icon(Icons.highlight_remove_rounded),
+                                          onPressed: (){
+                                            deletePlayList(hEngine.pBox.keys.toList()[index]);
+                                          },
+                                        ))
+                                  ],
+                                ) : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(getIcon(hEngine.pBox.keys.toList()[index]), size: 72),
+                                      ],
+                                    ),
+                                    Text(getName(hEngine.pBox.keys.toList()[index]), style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
+                                    Text(hEngine.pBox.get(hEngine.pBox.keys.toList()[index]).length.toString() +' Songs'),
                                   ],
                                 ),
-                                Text('All Songs', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                                /**
-                                    Obx((){
-                                    return Text(songs.length.toString() +' Songs');
-                                    })
-                                 **/
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text('Favorites', style: TextStyle(fontSize: 24,fontWeight: FontWeight.w500),),
-                  ],
-                ),
-                SizedBox(height: 16),
-                /**
-                    Expanded(
-                    child: ListView(
-                    children: hEngine.fBox == null ? []: hEngine.fBox.values.map((element){
-                    return ListTile(
-                    title: Text(element.title),
-                    );
-                    }).toList(),
-                    ),
-                    ),
-                 **/
+                SizedBox(height: 100),
               ],
             ),
           ),
