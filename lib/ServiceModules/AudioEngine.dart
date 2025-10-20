@@ -127,6 +127,7 @@ void playpause(int possition) {
 
   if (audioPlayer.state == AudioPlayerState.PLAYING) {
     audioPlayer.pause();
+    removeNotifications();
   } else if (audioPlayer.state == AudioPlayerState.PAUSED) {
     audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
     audioPlayer.seek(playpauseposition);
@@ -134,6 +135,7 @@ void playpause(int possition) {
     audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
   } else if (audioPlayer.state == AudioPlayerState.COMPLETED) {
     audioPlayer.play(musicPathsList[nowPlayingSongIndex]);
+    removeNotifications();
   }
 }
 
